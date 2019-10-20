@@ -6,10 +6,22 @@
    #include <iostream>
    #include <string>
    #include <map>
-  
    #include "lex.yy.c"
+   #include <string.h>
+   typedef union
+   {
+   int Int;
+   }VAL;   
+   typedef struct{
+   char name[20];
+   int flag;
+   VAL val;
+   }TABLE;
+   TABLE table[10];
+   int count=0;
+   int FIND(char * name);
 %}
-%token ID,INT,REAL,STRING_LITERAL
+%token ID INT REAL STRING_LITERAL
 
 
 %%
@@ -22,20 +34,20 @@ Lines : Lines  stat '\n' prompt
       ;
 prompt : {cout << "miniPy> ";}
        ;
-stat  : assignExpr
+stat  : assignExpr {cout<<"stat"<<endl;}
       ;
 assignExpr:
-        atom_expr '=' assignExpr
-      | add_expr 
+        atom_expr '=' assignExpr{cout<<"$1.name"<<$1.name<<endl;strcpy(table[count].name,$1.name);table[count].val.Int=$3.val;cout<<"table name "<<table[0].name<<endl;cout<<"table value"<<table[0].val.Int<<endl;count++;}
+      | add_expr {cout<<"add_expr"<<endl;cout<<$1.val<<endl;} 
       ;
-number : INT
+number : INT 
        | REAL
        ;
 factor : '+' factor
        | '-' factor
-       | atom_expr
+       | atom_expr{cout<<"atom_expr"<<endl;}
        ; 
-atom  : ID
+atom  : ID {int i;i=FIND($1.name);if(i!=-1){$$.val=table[i].val.Int;cout<<"ID "<<$$.val<<endl;}}
       | STRING_LITERAL 
       | List 
       | number 
@@ -46,7 +58,7 @@ slice_op :  /*  empty production */
 sub_expr:  /*  empty production */
         | add_expr
         ;        
-atom_expr : atom 
+atom_expr : atom {cout<<"atom"<<endl;}
         | atom_expr  '[' sub_expr  ':' sub_expr  slice_op ']'
         | atom_expr  '[' add_expr ']'
         | atom_expr  '.' ID
@@ -67,14 +79,14 @@ List_items
       : add_expr
       | List_items ',' add_expr 
       ;
-add_expr : add_expr '+' mul_expr
-	      |  add_expr '-' mul_expr
-	      |  mul_expr 
+add_expr : add_expr '+' mul_expr  {$$.val=$1.val+$3.val;}
+	      |  add_expr '-' mul_expr {$$.val=$1.val-$3.val;}
+	      |  mul_expr  {cout<<"add_expr"<<endl;}
         ;
-mul_expr : mul_expr '*' factor
-        |  mul_expr '/' factor
-	      |  mul_expr '%' factor
-        |  factor
+mul_expr : mul_expr '*' factor {$$.val=$1.val*$3.val;}
+        |  mul_expr '/' factor {$$.val=$1.val/$3.val;}
+	      |  mul_expr '%' factor {$$.val=$1.val%$3.val;}
+        |  factor {cout<<"factor"<<endl;}
         ;
 
 %%
@@ -91,3 +103,13 @@ void yyerror(char *s)
 
 int yywrap()
 { return 1; }        		    
+
+int FIND(char *s)
+{
+  int i =0;
+  for(i=0;i<count;i++)
+  { if(!strcmp(s,table[i].name))
+	return i;   
+} 
+return -1; 
+}

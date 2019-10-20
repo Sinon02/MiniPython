@@ -4,8 +4,6 @@
 
 #include "y.tab.h"
 
-extern int yylval;
-
 /*  any C declaration  */
 %}
 
@@ -21,17 +19,17 @@ real     {number}'.'{number}?|{number}?'.'{number}
 
 %%
 [ \t]+      {/*do nothing , just skip */}
-{number}    { 
+{number}    { yylval.val = atoi(yytext);
               return INT;
             }
 {real}      {
               return REAL;
             }
-{id}        {
+{id}        { sscanf(yytext,"%s",yylval.name);
               return ID; 
             }
 \"(\\.|[^\\"])*\"	{
              return(STRING_LITERAL); 
                   }
-.|\n        { return yylval = yytext[0];}
+.|\n        { return yylval.name[0] = yytext[0];}
 %%
