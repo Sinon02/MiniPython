@@ -14,7 +14,6 @@
    }VAL;   
    typedef struct{
    char name[20];
-   int flag;
    VAL val;
    }TABLE;
    TABLE table[10];
@@ -37,17 +36,37 @@ prompt : {cout << "miniPy> ";}
 stat  : assignExpr {cout<<"stat"<<endl;}
       ;
 assignExpr:
-        atom_expr '=' assignExpr{cout<<"$1.name"<<$1.name<<endl;strcpy(table[count].name,$1.name);table[count].val.Int=$3.val;cout<<"table name "<<table[0].name<<endl;cout<<"table value"<<table[0].val.Int<<endl;count++;}
-      | add_expr {cout<<"add_expr"<<endl;cout<<$1.val<<endl;} 
+        atom_expr '=' assignExpr	{int i=0;i=FIND($1.name);
+					cout<<"i= "<<i<<endl;
+					cout<<"$1.name "<<$1.name<<endl;
+					if(i==-1)
+					{i=count;
+					strcpy(table[count].name,$1.name);
+					count++;
+					}
+					table[i].val.Int=$3.val;
+					cout<<"table index "<<i<<endl;
+					cout<<"table name "<<table[i].name<<endl;
+					cout<<"table value "<<table[i].val.Int<<endl;
+					}
+      | add_expr	{cout<<"add_expr"<<endl;
+			cout<<$1.val<<endl;} 
       ;
 number : INT 
        | REAL
        ;
 factor : '+' factor
        | '-' factor
-       | atom_expr{cout<<"atom_expr"<<endl;}
+       | atom_expr	{cout<<"atom_expr"<<endl;
+			int i;i=FIND($1.name);
+      			if(i!=-1)
+			{$$.val=table[i].val.Int;
+			cout<<"ID "<<$$.val<<endl;
+			}
+			}
+
        ; 
-atom  : ID {int i;i=FIND($1.name);if(i!=-1){$$.val=table[i].val.Int;cout<<"ID "<<$$.val<<endl;}}
+atom  : ID
       | STRING_LITERAL 
       | List 
       | number 
