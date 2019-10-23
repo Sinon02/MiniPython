@@ -8,17 +8,22 @@
    #include <map>
    #include "lex.yy.c"
    #include <string.h>
-   typedef union
+   #include <iomanip>
+  typedef union
    {
    int Int;
+   float Float;
    }VAL;   
    typedef struct{
    char name[20];
    VAL val;
+   int type; //type
    }TABLE;
    TABLE table[10];
    int count=0;
    int FIND(char * name);
+   void yyerror(char *s);
+   #define eps 1e-6
 %}
 %token ID INT REAL STRING_LITERAL
 
@@ -44,24 +49,45 @@ assignExpr:
 					strcpy(table[count].name,$1.name);
 					count++;
 					}
-					table[i].val.Int=$3.val;
+					table[i].type=$3.Tval.type;
+					cout<<"$3.Type "<<$3.Tval.type<<endl;
+					switch(table[i].type)
+					{
+					case 0: table[i].val.Int=$3.Tval.val;
+					cout<<"table value "<<table[i].val.Int<<endl;
+					break;
+					case 1: table[i].val.Float=$3.Tval.val;
+					if(table[i].val.Float-(int)table[i].val.Float<eps)
+					cout<<"table value(changed) "<<fixed << setprecision(1)<<table[i].val.Float<<endl;
+					else
+					cout<<"table value "<<table[i].val.Float<<endl;
+					break;
+					}
 					cout<<"table index "<<i<<endl;
 					cout<<"table name "<<table[i].name<<endl;
-					cout<<"table value "<<table[i].val.Int<<endl;
-					}
+					cout<<"table type "<<table[i].type<<endl;
+									}
       | add_expr	{cout<<"add_expr"<<endl;
-			cout<<$1.val<<endl;} 
+			cout<<$1.Tval.val<<endl;} 
       ;
-number : INT 
-       | REAL
+number : INT {cout<<"INT "<<endl;$$.Tval.type=0;}
+       | REAL{cout<<"REAL "<<endl;$$.Tval.type=1;}
        ;
 factor : '+' factor
        | '-' factor
        | atom_expr	{cout<<"atom_expr"<<endl;
 			int i;i=FIND($1.name);
       			if(i!=-1)
-			{$$.val=table[i].val.Int;
-			cout<<"ID "<<$$.val<<endl;
+			{switch(table[i].type)
+			{case 0: 
+			$$.Tval.val=table[i].val.Int;
+			break;
+			case 1: 
+			$$.Tval.val=table[i].val.Float;
+			break;
+			$$.Tval.type=table[i].type;
+			cout<<"ID "<<$$.Tval.val<<endl;
+			}
 			}
 			}
 
@@ -69,7 +95,7 @@ factor : '+' factor
 atom  : ID
       | STRING_LITERAL 
       | List 
-      | number 
+      | number{cout<<"number "<<endl;} 
       ;
 slice_op :  /*  empty production */
         | ':' add_expr 
@@ -98,13 +124,13 @@ List_items
       : add_expr
       | List_items ',' add_expr 
       ;
-add_expr : add_expr '+' mul_expr  {$$.val=$1.val+$3.val;}
-	      |  add_expr '-' mul_expr {$$.val=$1.val-$3.val;}
+add_expr : add_expr '+' mul_expr  {$$.Tval.val=$1.Tval.val+$3.Tval.val; $$.Tval.type=($1.Tval.type||$3.Tval.type);}
+	      |  add_expr '-' mul_expr {$$.Tval.val=$1.Tval.val-$3.Tval.val;$$.Tval.type=($1.Tval.type||$3.Tval.type);}
 	      |  mul_expr  {cout<<"add_expr"<<endl;}
         ;
-mul_expr : mul_expr '*' factor {$$.val=$1.val*$3.val;}
-        |  mul_expr '/' factor {$$.val=$1.val/$3.val;}
-	      |  mul_expr '%' factor {$$.val=$1.val%$3.val;}
+mul_expr : mul_expr '*' factor {$$.Tval.val=$1.Tval.val*$3.Tval.val;$$.Tval.type=($1.Tval.type||$3.Tval.type);}
+        |  mul_expr '/' factor {$$.Tval.val=$1.Tval.val/$3.Tval.val;$$.Tval.type=($1.Tval.type||$3.Tval.type);}
+	      |  mul_expr '%' factor {$$.Tval.val=(int)$1.Tval.val%(int)$3.Tval.val;$$.Tval.type=($1.Tval.type||$3.Tval.type);}
         |  factor {cout<<"factor"<<endl;}
         ;
 

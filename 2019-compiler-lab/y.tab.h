@@ -60,12 +60,16 @@ extern int yydebug;
 #define INT 259
 #define REAL 260
 #define STRING_LITERAL 261
-
-typedef union{
-    int val;
-    char name[20];
-}VALUE;
-#define YYSTYPE VALUE
+typedef struct
+{
+	int type;
+	float val;
+}TVAL;
+typedef union
+{
+	TVAL Tval;
+	char name[20];
+}YYSTYPE;
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 //typedef int YYSTYPE;
@@ -78,5 +82,4 @@ extern YYSTYPE yylval;
 
 int yyparse (void);
 
-void yyerror(char *s);
 #endif /* !YY_YY_Y_TAB_H_INCLUDED  */

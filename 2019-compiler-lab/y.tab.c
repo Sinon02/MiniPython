@@ -77,19 +77,24 @@
    #include <map>
    #include "lex.yy.c"
    #include <string.h>
-   typedef union
+   #include <iomanip>
+  typedef union
    {
    int Int;
+   float Float;
    }VAL;   
    typedef struct{
    char name[20];
    VAL val;
+   int type; //type
    }TABLE;
    TABLE table[10];
    int count=0;
    int FIND(char * name);
+   void yyerror(char *s);
+   #define eps 1e-6
 
-#line 93 "y.tab.c"
+#line 98 "y.tab.c"
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus
@@ -442,11 +447,11 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    27,    27,    29,    30,    31,    32,    34,    36,    39,
-      52,    55,    56,    58,    59,    60,    69,    70,    71,    72,
-      74,    75,    77,    78,    80,    81,    82,    83,    84,    85,
-      87,    88,    91,    92,    94,    95,    98,    99,   101,   102,
-     103,   105,   106,   107,   108
+       0,    32,    32,    34,    35,    36,    37,    39,    41,    44,
+      70,    73,    74,    76,    77,    78,    95,    96,    97,    98,
+     100,   101,   103,   104,   106,   107,   108,   109,   110,   111,
+     113,   114,   117,   118,   120,   121,   124,   125,   127,   128,
+     129,   131,   132,   133,   134
 };
 #endif
 
@@ -1270,25 +1275,25 @@ yyreduce:
   switch (yyn)
     {
   case 6:
-#line 32 "minipy-lab.y"
+#line 37 "minipy-lab.y"
     {yyerrok;}
-#line 1276 "y.tab.c"
+#line 1281 "y.tab.c"
     break;
 
   case 7:
-#line 34 "minipy-lab.y"
+#line 39 "minipy-lab.y"
     {cout << "miniPy> ";}
-#line 1282 "y.tab.c"
+#line 1287 "y.tab.c"
     break;
 
   case 8:
-#line 36 "minipy-lab.y"
+#line 41 "minipy-lab.y"
     {cout<<"stat"<<endl;}
-#line 1288 "y.tab.c"
+#line 1293 "y.tab.c"
     break;
 
   case 9:
-#line 39 "minipy-lab.y"
+#line 44 "minipy-lab.y"
     {int i=0;i=FIND(yyvsp[-2].name);
 					cout<<"i= "<<i<<endl;
 					cout<<"$1.name "<<yyvsp[-2].name<<endl;
@@ -1297,83 +1302,122 @@ yyreduce:
 					strcpy(table[count].name,yyvsp[-2].name);
 					count++;
 					}
-					table[i].val.Int=yyvsp[0].val;
+					table[i].type=yyvsp[0].Tval.type;
+					cout<<"$3.Type "<<yyvsp[0].Tval.type<<endl;
+					switch(table[i].type)
+					{
+					case 0: table[i].val.Int=yyvsp[0].Tval.val;
+					cout<<"table value "<<table[i].val.Int<<endl;
+					break;
+					case 1: table[i].val.Float=yyvsp[0].Tval.val;
+					if(table[i].val.Float-(int)table[i].val.Float<eps)
+					cout<<"table value(changed) "<<fixed << setprecision(1)<<table[i].val.Float<<endl;
+					else
+					cout<<"table value "<<table[i].val.Float<<endl;
+					break;
+					}
 					cout<<"table index "<<i<<endl;
 					cout<<"table name "<<table[i].name<<endl;
-					cout<<"table value "<<table[i].val.Int<<endl;
-					}
-#line 1306 "y.tab.c"
+					cout<<"table type "<<table[i].type<<endl;
+									}
+#line 1324 "y.tab.c"
     break;
 
   case 10:
-#line 52 "minipy-lab.y"
+#line 70 "minipy-lab.y"
     {cout<<"add_expr"<<endl;
-			cout<<yyvsp[0].val<<endl;}
-#line 1313 "y.tab.c"
-    break;
-
-  case 15:
-#line 60 "minipy-lab.y"
-    {cout<<"atom_expr"<<endl;
-			int i;i=FIND(yyvsp[0].name);
-      			if(i!=-1)
-			{yyval.val=table[i].val.Int;
-			cout<<"ID "<<yyval.val<<endl;
-			}
-			}
-#line 1325 "y.tab.c"
-    break;
-
-  case 24:
-#line 80 "minipy-lab.y"
-    {cout<<"atom"<<endl;}
+			cout<<yyvsp[0].Tval.val<<endl;}
 #line 1331 "y.tab.c"
     break;
 
-  case 38:
-#line 101 "minipy-lab.y"
-    {yyval.val=yyvsp[-2].val+yyvsp[0].val;}
+  case 11:
+#line 73 "minipy-lab.y"
+    {cout<<"INT "<<endl;yyval.Tval.type=0;}
 #line 1337 "y.tab.c"
     break;
 
-  case 39:
-#line 102 "minipy-lab.y"
-    {yyval.val=yyvsp[-2].val-yyvsp[0].val;}
+  case 12:
+#line 74 "minipy-lab.y"
+    {cout<<"REAL "<<endl;yyval.Tval.type=1;}
 #line 1343 "y.tab.c"
     break;
 
+  case 15:
+#line 78 "minipy-lab.y"
+    {cout<<"atom_expr"<<endl;
+			int i;i=FIND(yyvsp[0].name);
+      			if(i!=-1)
+			{switch(table[i].type)
+			{case 0: 
+			yyval.Tval.val=table[i].val.Int;
+			break;
+			case 1: 
+			yyval.Tval.val=table[i].val.Float;
+			break;
+			yyval.Tval.type=table[i].type;
+			cout<<"ID "<<yyval.Tval.val<<endl;
+			}
+			}
+			}
+#line 1363 "y.tab.c"
+    break;
+
+  case 19:
+#line 98 "minipy-lab.y"
+    {cout<<"number "<<endl;}
+#line 1369 "y.tab.c"
+    break;
+
+  case 24:
+#line 106 "minipy-lab.y"
+    {cout<<"atom"<<endl;}
+#line 1375 "y.tab.c"
+    break;
+
+  case 38:
+#line 127 "minipy-lab.y"
+    {yyval.Tval.val=yyvsp[-2].Tval.val+yyvsp[0].Tval.val; yyval.Tval.type=(yyvsp[-2].Tval.type||yyvsp[0].Tval.type);}
+#line 1381 "y.tab.c"
+    break;
+
+  case 39:
+#line 128 "minipy-lab.y"
+    {yyval.Tval.val=yyvsp[-2].Tval.val-yyvsp[0].Tval.val;yyval.Tval.type=(yyvsp[-2].Tval.type||yyvsp[0].Tval.type);}
+#line 1387 "y.tab.c"
+    break;
+
   case 40:
-#line 103 "minipy-lab.y"
+#line 129 "minipy-lab.y"
     {cout<<"add_expr"<<endl;}
-#line 1349 "y.tab.c"
+#line 1393 "y.tab.c"
     break;
 
   case 41:
-#line 105 "minipy-lab.y"
-    {yyval.val=yyvsp[-2].val*yyvsp[0].val;}
-#line 1355 "y.tab.c"
+#line 131 "minipy-lab.y"
+    {yyval.Tval.val=yyvsp[-2].Tval.val*yyvsp[0].Tval.val;yyval.Tval.type=(yyvsp[-2].Tval.type||yyvsp[0].Tval.type);}
+#line 1399 "y.tab.c"
     break;
 
   case 42:
-#line 106 "minipy-lab.y"
-    {yyval.val=yyvsp[-2].val/yyvsp[0].val;}
-#line 1361 "y.tab.c"
+#line 132 "minipy-lab.y"
+    {yyval.Tval.val=yyvsp[-2].Tval.val/yyvsp[0].Tval.val;yyval.Tval.type=(yyvsp[-2].Tval.type||yyvsp[0].Tval.type);}
+#line 1405 "y.tab.c"
     break;
 
   case 43:
-#line 107 "minipy-lab.y"
-    {yyval.val=yyvsp[-2].val%yyvsp[0].val;}
-#line 1367 "y.tab.c"
+#line 133 "minipy-lab.y"
+    {yyval.Tval.val=(int)yyvsp[-2].Tval.val%(int)yyvsp[0].Tval.val;yyval.Tval.type=(yyvsp[-2].Tval.type||yyvsp[0].Tval.type);}
+#line 1411 "y.tab.c"
     break;
 
   case 44:
-#line 108 "minipy-lab.y"
+#line 134 "minipy-lab.y"
     {cout<<"factor"<<endl;}
-#line 1373 "y.tab.c"
+#line 1417 "y.tab.c"
     break;
 
 
-#line 1377 "y.tab.c"
+#line 1421 "y.tab.c"
 
       default: break;
     }
@@ -1605,7 +1649,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 111 "minipy-lab.y"
+#line 137 "minipy-lab.y"
 
 
 int main()

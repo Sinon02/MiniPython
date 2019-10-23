@@ -15,14 +15,16 @@ number   {digit}+
 
 id       {letter}({letter}|{digit})*
 
-real     {number}'.'{number}?|{number}?'.'{number}
+real     {number}"."{number}?|{number}?"."{number}
 
 %%
 [ \t]+      {/*do nothing , just skip */}
-{number}    { yylval.val = atoi(yytext);
+{number}    { yylval.Tval.val = atoi(yytext);
+	      printf("int %s\n",yytext);
               return INT;
             }
-{real}      {
+{real}      { yylval.Tval.val = atof(yytext);
+	      printf("real %s\n",yytext);
               return REAL;
             }
 {id}        { sscanf(yytext,"%s",yylval.name);
