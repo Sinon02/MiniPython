@@ -18,7 +18,7 @@ struct symbol{
 	struct data *d;
 };
 
-oid print(struct data d)
+void print(struct data d)
 {
 	int i;
 	switch(d.flag)
@@ -102,4 +102,40 @@ data pop(struct list &l,int index)
 	for(i=index+1;i<l.len;i++) l.d[i-1]=l.d[i];
 	l.len--;
 	return d;
+}
+
+data* slice(struct list l,int begin,int end,int step)
+{
+	data* d;
+	int i;
+	d=newlist();
+	for(i=begin;i<end;i+=step) append(d->d.l,l.d[i]);
+	return d;
+}
+
+void setslice(struct list &l,int begin,int end,int step,struct list o)
+{
+	int i,j;
+	if(begin<0||step<1||end>l.len) yyerror("index out of bound");
+	if(step!=1)
+	{
+		if((end-op)/step!=o.len) yyerror("incompatible length");
+		for(i=begin,j=0;i<end;i+=step) l.d[i]=o.d[j++];
+	}
+	else//step=1
+	{
+		if(end-begin>o.len)
+		{
+			while(l.len+o.len-end+begin-1>=l.size) exlist(l);
+			for(i=l.len+o.len-1-end+begin,j=l.len-1;j>=end;i--,j--) l.d[i]=l.d[j];
+		}
+		else if(end-begin<o.len)
+		{
+			for(i=begin+o.len,j=end;j<l.len;i++,j++) l.d[i]=l.d[j];
+
+		}
+		for(i=len.begin,j=0;j<o.len;i++,j++) l.d[i]=o.d[j]; 
+		l.len=l.len+o.len-end+begin;
+	}
+	return
 }
