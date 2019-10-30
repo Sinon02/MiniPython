@@ -17,16 +17,16 @@
 		int i;//flag=0
 		float f;//flag=1
 		string s;//flag=2
-		struct list{
+	}DATA;	
+	struct list{
 			int len;
 			int size;
 			struct VAL *val;
 		}l;//flag=3
-	}DATA;
    }VAL;   
    typedef struct{
    char name[20];
-   VAL *val;
+   VAL val;
    }TABLE;
    TABLE table[10];
    int count=0;
@@ -60,21 +60,21 @@ assignExpr:
 					}
 					table[i].type=$3.Tval.type;
 					cout<<"$3.Type "<<$3.Tval.type<<endl;
-					switch(table[i].type)
+					switch(table[i].val.flag)
 					{
-					case 0: table[i].val.Int=$3.Tval.val;
-					cout<<"table value "<<table[i].val.Int<<endl;
+					case 0: table[i].val.DATA.i=$3.Tval.val;
+					cout<<"table value "<<table[i].val.DATA.i<<endl;
 					break;
-					case 1: table[i].val.Float=$3.Tval.val;
-					if(table[i].val.Float-(int)table[i].val.Float<eps)
-					cout<<"table value(changed) "<<fixed << setprecision(1)<<table[i].val.Float<<endl;
+					case 1: table[i].val.DATA.f=$3.Tval.val;
+					if(table[i].val.DATA.f-(int)table[i].val.DATA.f<eps)
+					cout<<"table value(changed) "<<fixed << setprecision(1)<<table[i].val.DATA.f<<endl;
 					else
-					cout<<"table value "<<table[i].val.Float<<endl;
+					cout<<"table value "<<table[i].val.DATA.f<<endl;
 					break;
 					}
 					cout<<"table index "<<i<<endl;
 					cout<<"table name "<<table[i].name<<endl;
-					cout<<"table type "<<table[i].type<<endl;
+					cout<<"table type "<<table[i].val.flag<<endl;
 									}
       | add_expr	{cout<<"add_expr"<<endl;
 			cout<<$1.Tval.val<<endl;} 
@@ -87,14 +87,14 @@ factor : '+' factor
        | atom_expr	{cout<<"atom_expr"<<endl;
 			int i;i=FIND($1.name);
       			if(i!=-1)
-			{switch(table[i].type)
+			{switch(table[i].val.flag)
 			{case 0: 
-			$$.Tval.val=table[i].val.Int;
+			$$.Tval.val=table[i].val.DATA.i;
 			break;
 			case 1: 
-			$$.Tval.val=table[i].val.Float;
+			$$.Tval.val=table[i].val.DATA.f;
 			break;
-			$$.Tval.type=table[i].type;
+			$$.Tval.type=table[i].val.flag;
 			cout<<"ID "<<$$.Tval.val<<endl;
 			}
 			}
@@ -188,7 +188,7 @@ void print(VAL val)
 			if(VAL.DATA.l.len>0) print(VAL.DATA.l.val[0]);
 			for(i=1;i<VAL.DATA.l.len;i++)
 			{
-				cout<<', ';
+				cout<<", ";
 				print(VAL.DATA.l.val[i]);
 			}
 			cout<<']';
