@@ -64,6 +64,7 @@ typedef struct
 {
 	int type;
 	float val;
+	char *str;
 }TVAL;
 typedef union
 {

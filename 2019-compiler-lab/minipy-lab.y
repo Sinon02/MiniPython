@@ -21,6 +21,7 @@ struct VAL
 	union{
 		int i;//flag=0
 		float f;//flag=1
+                char * s;//flag=2
 		struct list l;//flag=3
 	}DATA;	
    };   
@@ -73,13 +74,18 @@ assignExpr:
 					else
 					cout<<"table value "<<table[i].val.DATA.f<<endl;
 					break;
+					case 2: table[i].val.DATA.s=$3.Tval.str;
 					}
 					cout<<"table index "<<i<<endl;
 					cout<<"table name "<<table[i].name<<endl;
 					cout<<"table type "<<table[i].val.flag<<endl;
 									}
       | add_expr	{cout<<"add_expr"<<endl;
-			cout<<$1.Tval.val<<endl;} 
+			cout<<$1.Tval.val<<endl; 
+			cout<<"need to print String"<<endl;
+			if($1.Tval.type==2)
+			cout<<$1.Tval.str<<endl;
+			}
       ;
 number : INT {cout<<"INT "<<endl;$$.Tval.type=0;}
        | REAL{cout<<"REAL "<<endl;$$.Tval.type=1;}
@@ -96,15 +102,18 @@ factor : '+' factor
 			case 1: 
 			$$.Tval.val=table[i].val.DATA.f;
 			break;
+			case 2:
+			$$.Tval.str=table[i].val.DATA.s;
+			break;
+			}
 			$$.Tval.type=table[i].val.flag;
 			cout<<"ID "<<$$.Tval.val<<endl;
-			}
 			}
 			}
 
        ; 
 atom  : ID
-      | STRING_LITERAL 
+      | STRING_LITERAL {cout<<"String "<<$1.Tval.str<<endl;$$.Tval.type=2;} 
       | List 
       | number{cout<<"number "<<endl;} 
       ;
@@ -182,10 +191,10 @@ void print(VAL val)
 		case 1:
 			cout<<val.DATA.f;
 			break;
-		/*case 2:
+		case 2:
 			cout<<val.DATA.s;
 			break;
-		*/case 3:
+		case 3:
 			cout<<'[';
 			if(val.DATA.l.len>0) print(val.DATA.l.val[0]);
 			for(i=1;i<val.DATA.l.len;i++)

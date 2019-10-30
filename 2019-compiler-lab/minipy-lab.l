@@ -1,7 +1,8 @@
 %{
 #include <stdlib.h>
 #include <stdio.h>
-
+#include<string.h>
+#include<stdlib.h>
 #include "y.tab.h"
 
 /*  any C declaration  */
@@ -30,8 +31,10 @@ real     {number}"."{number}?|{number}?"."{number}
 {id}        { sscanf(yytext,"%s",yylval.name);
               return ID; 
             }
-\"(\\.|[^\\"])*\"	{
-             return(STRING_LITERAL); 
+\"(\\.|[^\\"])*\"	{int len = strlen(yytext);
+		yylval.Tval.str = (char *)malloc(sizeof(char)*len); 
+		strcpy(yylval.Tval.str,yytext);
+             	return(STRING_LITERAL); 
                   }
 .|\n        { return yylval.name[0] = yytext[0];}
 %%

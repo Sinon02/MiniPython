@@ -86,6 +86,7 @@ struct VAL
 	union{
 		int i;//flag=0
 		float f;//flag=1
+                char * s;//flag=2
 		struct list l;//flag=3
 	}DATA;	
    };   
@@ -101,7 +102,7 @@ typedef struct VAL VAL;
    #define eps 1e-6
    #define	 INIT_LIST_SIZE 10
 
-#line 105 "y.tab.c" /* yacc.c:339  */
+#line 106 "y.tab.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -161,7 +162,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 165 "y.tab.c" /* yacc.c:358  */
+#line 166 "y.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -459,11 +460,11 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    43,    43,    45,    46,    47,    48,    50,    52,    55,
-      81,    84,    85,    87,    88,    89,   106,   107,   108,   109,
-     111,   112,   114,   115,   117,   118,   119,   120,   121,   122,
-     124,   125,   128,   129,   131,   132,   135,   136,   138,   139,
-     140,   142,   143,   144,   145
+       0,    44,    44,    46,    47,    48,    49,    51,    53,    56,
+      83,    90,    91,    93,    94,    95,   115,   116,   117,   118,
+     120,   121,   123,   124,   126,   127,   128,   129,   130,   131,
+     133,   134,   137,   138,   140,   141,   144,   145,   147,   148,
+     149,   151,   152,   153,   154
 };
 #endif
 
@@ -1279,25 +1280,25 @@ yyreduce:
   switch (yyn)
     {
         case 6:
-#line 48 "minipy-lab.y" /* yacc.c:1646  */
+#line 49 "minipy-lab.y" /* yacc.c:1646  */
     {yyerrok;}
-#line 1285 "y.tab.c" /* yacc.c:1646  */
+#line 1286 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 50 "minipy-lab.y" /* yacc.c:1646  */
+#line 51 "minipy-lab.y" /* yacc.c:1646  */
     {cout << "miniPy> ";}
-#line 1291 "y.tab.c" /* yacc.c:1646  */
+#line 1292 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 52 "minipy-lab.y" /* yacc.c:1646  */
+#line 53 "minipy-lab.y" /* yacc.c:1646  */
     {cout<<"stat"<<endl;}
-#line 1297 "y.tab.c" /* yacc.c:1646  */
+#line 1298 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 55 "minipy-lab.y" /* yacc.c:1646  */
+#line 56 "minipy-lab.y" /* yacc.c:1646  */
     {int i=0;i=FIND((yyvsp[-2]).name);
 					cout<<"i= "<<i<<endl;
 					cout<<"$1.name "<<(yyvsp[-2]).name<<endl;
@@ -1319,35 +1320,40 @@ yyreduce:
 					else
 					cout<<"table value "<<table[i].val.DATA.f<<endl;
 					break;
+					case 2: table[i].val.DATA.s=(yyvsp[0]).Tval.str;
 					}
 					cout<<"table index "<<i<<endl;
 					cout<<"table name "<<table[i].name<<endl;
 					cout<<"table type "<<table[i].val.flag<<endl;
 									}
-#line 1328 "y.tab.c" /* yacc.c:1646  */
+#line 1330 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 10:
-#line 81 "minipy-lab.y" /* yacc.c:1646  */
+#line 83 "minipy-lab.y" /* yacc.c:1646  */
     {cout<<"add_expr"<<endl;
-			cout<<(yyvsp[0]).Tval.val<<endl;}
-#line 1335 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 11:
-#line 84 "minipy-lab.y" /* yacc.c:1646  */
-    {cout<<"INT "<<endl;(yyval).Tval.type=0;}
+			cout<<(yyvsp[0]).Tval.val<<endl; 
+			cout<<"need to print String"<<endl;
+			if((yyvsp[0]).Tval.type==2)
+			cout<<(yyvsp[0]).Tval.str<<endl;
+			}
 #line 1341 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 12:
-#line 85 "minipy-lab.y" /* yacc.c:1646  */
-    {cout<<"REAL "<<endl;(yyval).Tval.type=1;}
+  case 11:
+#line 90 "minipy-lab.y" /* yacc.c:1646  */
+    {cout<<"INT "<<endl;(yyval).Tval.type=0;}
 #line 1347 "y.tab.c" /* yacc.c:1646  */
     break;
 
+  case 12:
+#line 91 "minipy-lab.y" /* yacc.c:1646  */
+    {cout<<"REAL "<<endl;(yyval).Tval.type=1;}
+#line 1353 "y.tab.c" /* yacc.c:1646  */
+    break;
+
   case 15:
-#line 89 "minipy-lab.y" /* yacc.c:1646  */
+#line 95 "minipy-lab.y" /* yacc.c:1646  */
     {cout<<"atom_expr"<<endl;
 			int i;i=FIND((yyvsp[0]).name);
       			if(i!=-1)
@@ -1358,70 +1364,79 @@ yyreduce:
 			case 1: 
 			(yyval).Tval.val=table[i].val.DATA.f;
 			break;
+			case 2:
+			(yyval).Tval.str=table[i].val.DATA.s;
+			break;
+			}
 			(yyval).Tval.type=table[i].val.flag;
 			cout<<"ID "<<(yyval).Tval.val<<endl;
 			}
 			}
-			}
-#line 1367 "y.tab.c" /* yacc.c:1646  */
+#line 1376 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 17:
+#line 116 "minipy-lab.y" /* yacc.c:1646  */
+    {cout<<"String "<<(yyvsp[0]).Tval.str<<endl;(yyval).Tval.type=2;}
+#line 1382 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 19:
-#line 109 "minipy-lab.y" /* yacc.c:1646  */
+#line 118 "minipy-lab.y" /* yacc.c:1646  */
     {cout<<"number "<<endl;}
-#line 1373 "y.tab.c" /* yacc.c:1646  */
+#line 1388 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 24:
-#line 117 "minipy-lab.y" /* yacc.c:1646  */
+#line 126 "minipy-lab.y" /* yacc.c:1646  */
     {cout<<"atom"<<endl;}
-#line 1379 "y.tab.c" /* yacc.c:1646  */
+#line 1394 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 38:
-#line 138 "minipy-lab.y" /* yacc.c:1646  */
+#line 147 "minipy-lab.y" /* yacc.c:1646  */
     {(yyval).Tval.val=(yyvsp[-2]).Tval.val+(yyvsp[0]).Tval.val; (yyval).Tval.type=((yyvsp[-2]).Tval.type||(yyvsp[0]).Tval.type);}
-#line 1385 "y.tab.c" /* yacc.c:1646  */
+#line 1400 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 39:
-#line 139 "minipy-lab.y" /* yacc.c:1646  */
+#line 148 "minipy-lab.y" /* yacc.c:1646  */
     {(yyval).Tval.val=(yyvsp[-2]).Tval.val-(yyvsp[0]).Tval.val;(yyval).Tval.type=((yyvsp[-2]).Tval.type||(yyvsp[0]).Tval.type);}
-#line 1391 "y.tab.c" /* yacc.c:1646  */
+#line 1406 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 40:
-#line 140 "minipy-lab.y" /* yacc.c:1646  */
+#line 149 "minipy-lab.y" /* yacc.c:1646  */
     {cout<<"add_expr"<<endl;}
-#line 1397 "y.tab.c" /* yacc.c:1646  */
+#line 1412 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 41:
-#line 142 "minipy-lab.y" /* yacc.c:1646  */
+#line 151 "minipy-lab.y" /* yacc.c:1646  */
     {(yyval).Tval.val=(yyvsp[-2]).Tval.val*(yyvsp[0]).Tval.val;(yyval).Tval.type=((yyvsp[-2]).Tval.type||(yyvsp[0]).Tval.type);}
-#line 1403 "y.tab.c" /* yacc.c:1646  */
+#line 1418 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 42:
-#line 143 "minipy-lab.y" /* yacc.c:1646  */
+#line 152 "minipy-lab.y" /* yacc.c:1646  */
     {(yyval).Tval.val=(yyvsp[-2]).Tval.val/(yyvsp[0]).Tval.val;(yyval).Tval.type=((yyvsp[-2]).Tval.type||(yyvsp[0]).Tval.type);}
-#line 1409 "y.tab.c" /* yacc.c:1646  */
+#line 1424 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 43:
-#line 144 "minipy-lab.y" /* yacc.c:1646  */
+#line 153 "minipy-lab.y" /* yacc.c:1646  */
     {(yyval).Tval.val=(int)(yyvsp[-2]).Tval.val%(int)(yyvsp[0]).Tval.val;(yyval).Tval.type=((yyvsp[-2]).Tval.type||(yyvsp[0]).Tval.type);}
-#line 1415 "y.tab.c" /* yacc.c:1646  */
+#line 1430 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 44:
-#line 145 "minipy-lab.y" /* yacc.c:1646  */
+#line 154 "minipy-lab.y" /* yacc.c:1646  */
     {cout<<"factor"<<endl;}
-#line 1421 "y.tab.c" /* yacc.c:1646  */
+#line 1436 "y.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1425 "y.tab.c" /* yacc.c:1646  */
+#line 1440 "y.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1649,7 +1664,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 148 "minipy-lab.y" /* yacc.c:1906  */
+#line 157 "minipy-lab.y" /* yacc.c:1906  */
 
 
 int main()
@@ -1687,10 +1702,10 @@ void print(VAL val)
 		case 1:
 			cout<<val.DATA.f;
 			break;
-		/*case 2:
+		case 2:
 			cout<<val.DATA.s;
 			break;
-		*/case 3:
+		case 3:
 			cout<<'[';
 			if(val.DATA.l.len>0) print(val.DATA.l.val[0]);
 			for(i=1;i<val.DATA.l.len;i++)

@@ -1,5 +1,5 @@
 
-#line 2 "lex.yy.c"
+#line 3 "lex.yy.c"
 
 #define  YY_INT_ALIGNED short int
 
@@ -449,12 +449,13 @@ char *yytext;
 #line 2 "minipy-lab.l"
 #include <stdlib.h>
 #include <stdio.h>
-
+#include<string.h>
+#include<stdlib.h>
 #include "y.tab.h"
 
 /*  any C declaration  */
-#line 456 "lex.yy.c"
-#line 457 "lex.yy.c"
+#line 458 "lex.yy.c"
+#line 459 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -671,9 +672,9 @@ YY_DECL
 		}
 
 	{
-#line 20 "minipy-lab.l"
+#line 21 "minipy-lab.l"
 
-#line 676 "lex.yy.c"
+#line 678 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -732,12 +733,12 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 21 "minipy-lab.l"
+#line 22 "minipy-lab.l"
 {/*do nothing , just skip */}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 22 "minipy-lab.l"
+#line 23 "minipy-lab.l"
 { yylval.Tval.val = atoi(yytext);
 	      printf("int %s\n",yytext);
               return INT;
@@ -745,7 +746,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 26 "minipy-lab.l"
+#line 27 "minipy-lab.l"
 { yylval.Tval.val = atof(yytext);
 	      printf("real %s\n",yytext);
               return REAL;
@@ -753,7 +754,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 30 "minipy-lab.l"
+#line 31 "minipy-lab.l"
 { sscanf(yytext,"%s",yylval.name);
               return ID; 
             }
@@ -761,23 +762,25 @@ YY_RULE_SETUP
 case 5:
 /* rule 5 can match eol */
 YY_RULE_SETUP
-#line 33 "minipy-lab.l"
-{
-             return(STRING_LITERAL); 
+#line 34 "minipy-lab.l"
+{int len = strlen(yytext);
+		yylval.Tval.str = (char *)malloc(sizeof(char)*len); 
+		strcpy(yylval.Tval.str,yytext);
+             	return(STRING_LITERAL); 
                   }
 	YY_BREAK
 case 6:
 /* rule 6 can match eol */
 YY_RULE_SETUP
-#line 36 "minipy-lab.l"
+#line 39 "minipy-lab.l"
 { return yylval.name[0] = yytext[0];}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 37 "minipy-lab.l"
+#line 40 "minipy-lab.l"
 ECHO;
 	YY_BREAK
-#line 780 "lex.yy.c"
+#line 784 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1782,6 +1785,6 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 37 "minipy-lab.l"
+#line 40 "minipy-lab.l"
 
 
