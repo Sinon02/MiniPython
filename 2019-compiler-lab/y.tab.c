@@ -81,13 +81,12 @@
 	union{
 		int i;//flag=0
 		float f;//flag=1
-		string s;//flag=2
-	}DATA;	
-	struct list{
+		struct list{
 			int len;
 			int size;
 			struct VAL *val;
 		}l;//flag=3
+	}DATA;	
    }VAL;   
    typedef struct{
    char name[20];
@@ -98,6 +97,7 @@
    int FIND(char * name);
    void yyerror(char *s);
    #define eps 1e-6
+   #define	 INIT_LIST_SIZE 10
 
 #line 103 "y.tab.c" /* yacc.c:339  */
 
@@ -1304,7 +1304,7 @@ yyreduce:
 					strcpy(table[count].name,(yyvsp[-2]).name);
 					count++;
 					}
-					table[i].type=(yyvsp[0]).Tval.type;
+					table[i].val.flag=(yyvsp[0]).Tval.type;
 					cout<<"$3.Type "<<(yyvsp[0]).Tval.type<<endl;
 					switch(table[i].val.flag)
 					{
@@ -1677,24 +1677,24 @@ return -1;
 void print(VAL val)
 {
 	int i;
-	switch(VAL.flag)
+	switch(val.flag)
 	{
 		case 0:
-			cout<<VAL.DATA.i;
+			cout<<val.DATA.i;
 			break;
 		case 1:
-			cout<<VAL.DATA.f;
+			cout<<val.DATA.f;
 			break;
-		case 2:
-			cout<<VAL.DATA.s;
+		/*case 2:
+			cout<<val.DATA.s;
 			break;
-		case 3:
+		*/case 3:
 			cout<<'[';
-			if(VAL.DATA.l.len>0) print(VAL.DATA.l.val[0]);
-			for(i=1;i<VAL.DATA.l.len;i++)
+			if(val.DATA.l.len>0) print(val.DATA.l.val[0]);
+			for(i=1;i<val.DATA.l.len;i++)
 			{
 				cout<<", ";
-				print(VAL.DATA.l.val[i]);
+				print(val.DATA.l.val[i]);
 			}
 			cout<<']';
 			break;
@@ -1705,11 +1705,11 @@ VAL* newlist()
 {
 	VAL *l;
 	l=(VAL*)malloc(sizeof(VAL));
-	l.flag=3;
-	l.DATA.l.len=0;
-	l.DATA.l.size=INIT_LIST_SIZE;
-	l.DATA.l.val=(VAL*)malloc(INIT_LIST_SIZE*sizeof(VAL));
-	if(l.DATA.l.val==0) 
+	l->flag=3;
+	l->DATA.l.len=0;
+	l->DATA.l.size=INIT_LIST_SIZE;
+	l->DATA.l.val=(VAL*)malloc(INIT_LIST_SIZE*sizeof(VAL));
+	if(l->DATA.l.val==0) 
 	{
 		yyerror("malloc fail");
 		//other operation
