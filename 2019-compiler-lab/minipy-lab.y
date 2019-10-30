@@ -9,20 +9,22 @@
    #include "lex.yy.c"
    #include <string.h>
    #include <iomanip>
-   
-  typedef struct VAL
+struct VAL;
+struct list{
+	int len;
+	int size;
+	struct VAL *val;
+};
+struct VAL
    {
         int flag;
 	union{
 		int i;//flag=0
 		float f;//flag=1
-		struct list{
-			int len;
-			int size;
-			struct VAL *val;
-		}l;//flag=3
+		struct list l;//flag=3
 	}DATA;	
-   }VAL;   
+   };   
+typedef struct VAL VAL;
    typedef struct{
    char name[20];
    VAL val;
@@ -215,7 +217,7 @@ VAL* newlist()
 void exlist(struct list &l) //extend
 {
 	l.size*=2;
-	l.val=realloc(l.val,l.size);
+	l.val=(VAL*)realloc(l.val,l.size);
 	if(l.val==0) 
 	{
 		yyerror("malloc fail");
@@ -249,6 +251,7 @@ void insert(struct list &l,int index,VAL _val)
 
 VAL pop(struct list &l,int index)
 {
+	int i;
 	VAL _val=l.val[index];
 	for(i=index+1;i<l.len;i++) l.val[i-1]=l.val[i];
 	l.len--;

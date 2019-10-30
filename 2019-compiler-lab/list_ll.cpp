@@ -18,6 +18,12 @@ struct data{
 	};
 };
 
+struct list_slice{
+	struct list **ph;
+	int len;
+	int step;
+};
+
 void print(struct data d)
 {
 	struct data *p;
@@ -47,3 +53,5 @@ void print(struct data d)
 			cout<<']';
 	}
 }
+
+struct list_slice slice(
