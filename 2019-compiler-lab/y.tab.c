@@ -71,38 +71,21 @@
    #include <iostream>
    #include <string>
    #include <map>
+   #include <cmath>
    #include "lex.yy.c"
    #include <string.h>
    #include <iomanip>
-struct VAL;
-struct list{
-	int len;
-	int size;
-	struct VAL *val;
-};
-struct VAL
-   {
-        int flag;
-	union{
-		int i;//flag=0
-		float f;//flag=1
-                char * s;//flag=2
-		struct list l;//flag=3
-	}DATA;	
-   };   
-typedef struct VAL VAL;
-   typedef struct{
-   char name[20];
-   VAL val;
-   }TABLE;
-   TABLE table[10];
-   int count=0;
-   int FIND(char * name);
-   void yyerror(char *s);
-   #define eps 1e-6
-   #define	 INIT_LIST_SIZE 10
+   #include "types.h"
+#define eps 1e-6
+#define INIT_LIST_SIZE 10
+#define INIT_TABLE_SIZE 20
 
-#line 106 "y.tab.c" /* yacc.c:339  */
+TABLE *table;
+int tablelen=0;
+int tablesize=INIT_TABLE_SIZE;
+
+
+#line 89 "y.tab.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -162,7 +145,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 166 "y.tab.c" /* yacc.c:358  */
+#line 149 "y.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -458,13 +441,13 @@ static const yytype_uint8 yytranslate[] =
 
 #if YYDEBUG
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
-static const yytype_uint8 yyrline[] =
+static const yytype_uint16 yyrline[] =
 {
-       0,    44,    44,    46,    47,    48,    49,    51,    53,    56,
-      83,    90,    91,    93,    94,    95,   115,   116,   117,   118,
-     120,   121,   123,   124,   126,   127,   128,   129,   130,   131,
-     133,   134,   137,   138,   140,   141,   144,   145,   147,   148,
-     149,   151,   152,   153,   154
+       0,    27,    27,    29,    30,    31,    32,    34,    36,    39,
+      77,    81,    82,    84,    85,    86,   104,   105,   106,   107,
+     109,   110,   112,   113,   115,   116,   144,   151,   152,   153,
+     155,   156,   159,   160,   162,   163,   166,   167,   169,   221,
+     272,   274,   325,   329,   330
 };
 #endif
 
@@ -1280,163 +1263,398 @@ yyreduce:
   switch (yyn)
     {
         case 6:
-#line 49 "minipy-lab.y" /* yacc.c:1646  */
+#line 32 "minipy-lab.y" /* yacc.c:1646  */
     {yyerrok;}
-#line 1286 "y.tab.c" /* yacc.c:1646  */
+#line 1269 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 51 "minipy-lab.y" /* yacc.c:1646  */
+#line 34 "minipy-lab.y" /* yacc.c:1646  */
     {cout << "miniPy> ";}
-#line 1292 "y.tab.c" /* yacc.c:1646  */
+#line 1275 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 53 "minipy-lab.y" /* yacc.c:1646  */
+#line 36 "minipy-lab.y" /* yacc.c:1646  */
     {cout<<"stat"<<endl;}
-#line 1298 "y.tab.c" /* yacc.c:1646  */
+#line 1281 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 56 "minipy-lab.y" /* yacc.c:1646  */
-    {int i=0;i=FIND((yyvsp[-2]).name);
+#line 39 "minipy-lab.y" /* yacc.c:1646  */
+    {
+					switch((yyvsp[-2]).type)
+					{
+					case 0:
+					case 1:
+					case 2:
+					case 3:yyerror("assign to right value");break;
+					case 4:*((yyvsp[-2]).data.v)=pack((yyvsp[0]));break;
+					case 5:if((yyvsp[0]).type==3)setslice((yyvsp[-2]).data.slice,(yyvsp[0]).data.l);else yyerror("type error");
+					}
+					/*{int i=0;i=FIND($1.name);
 					cout<<"i= "<<i<<endl;
-					cout<<"$1.name "<<(yyvsp[-2]).name<<endl;
+					cout<<"$1.name "<<$1.name<<endl;
 					if(i==-1)
 					{i=count;
-					strcpy(table[count].name,(yyvsp[-2]).name);
+					strcpy(table[count].name,$1.name);
 					count++;
 					}
-					table[i].val.flag=(yyvsp[0]).Tval.type;
-					cout<<"$3.Type "<<(yyvsp[0]).Tval.type<<endl;
+					table[i].val.flag=$3.Tval.type;
+					cout<<"$3.Type "<<$3.Tval.type<<endl;
 					switch(table[i].val.flag)
 					{
-					case 0: table[i].val.DATA.i=(yyvsp[0]).Tval.val;
+					case 0: table[i].val.DATA.i=$3.Tval.val;
 					cout<<"table value "<<table[i].val.DATA.i<<endl;
 					break;
-					case 1: table[i].val.DATA.f=(yyvsp[0]).Tval.val;
+					case 1: table[i].val.DATA.f=$3.Tval.val;
 					if(table[i].val.DATA.f-(int)table[i].val.DATA.f<eps)
 					cout<<"table value(changed) "<<fixed << setprecision(1)<<table[i].val.DATA.f<<endl;
 					else
 					cout<<"table value "<<table[i].val.DATA.f<<endl;
 					break;
-					case 2: table[i].val.DATA.s=(yyvsp[0]).Tval.str;
+					case 2: table[i].val.DATA.s=$3.Tval.str;
 					}
 					cout<<"table index "<<i<<endl;
 					cout<<"table name "<<table[i].name<<endl;
 					cout<<"table type "<<table[i].val.flag<<endl;
-									}
-#line 1330 "y.tab.c" /* yacc.c:1646  */
+									}*/
+					}
+#line 1324 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 10:
-#line 83 "minipy-lab.y" /* yacc.c:1646  */
-    {cout<<"add_expr"<<endl;
-			cout<<(yyvsp[0]).Tval.val<<endl; 
-			cout<<"need to print String"<<endl;
-			if((yyvsp[0]).Tval.type==2)
-			cout<<(yyvsp[0]).Tval.str<<endl;
+#line 77 "minipy-lab.y" /* yacc.c:1646  */
+    {cout<<"assignExpr->add_expr"<<endl;
+			print((yyvsp[0]));
 			}
-#line 1341 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 11:
-#line 90 "minipy-lab.y" /* yacc.c:1646  */
-    {cout<<"INT "<<endl;(yyval).Tval.type=0;}
-#line 1347 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 12:
-#line 91 "minipy-lab.y" /* yacc.c:1646  */
-    {cout<<"REAL "<<endl;(yyval).Tval.type=1;}
-#line 1353 "y.tab.c" /* yacc.c:1646  */
+#line 1332 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 15:
-#line 95 "minipy-lab.y" /* yacc.c:1646  */
-    {cout<<"atom_expr"<<endl;
-			int i;i=FIND((yyvsp[0]).name);
-      			if(i!=-1)
-			{switch(table[i].val.flag)
-			{case 0: 
-			(yyval).Tval.val=table[i].val.DATA.i;
-			break;
-			case 1: 
-			(yyval).Tval.val=table[i].val.DATA.f;
-			break;
-			case 2:
-			(yyval).Tval.str=table[i].val.DATA.s;
-			break;
-			}
-			(yyval).Tval.type=table[i].val.flag;
-			cout<<"ID "<<(yyval).Tval.val<<endl;
+#line 86 "minipy-lab.y" /* yacc.c:1646  */
+    {cout<<"factor->atom_expr"<<endl;
+			cout<<"type="<<(yyvsp[0]).type<<endl;
+			{switch((yyvsp[0]).type)
+			{case 4: 
+				(yyval)=unpack(*((yyvsp[0]).data.v));
+				break;
+			case 5:
+				(yyval).type=3;
+				cout<<"slice"<<(yyvsp[0]).data.slice.begin<<' '<<(yyvsp[0]).data.slice.end<<' '<<(yyvsp[0]).data.slice.step<<endl;
+				(yyval).data.l=slice((yyvsp[0]).data.slice); 
+				break;
+			default:
+				break;
 			}
 			}
-#line 1376 "y.tab.c" /* yacc.c:1646  */
+			}
+#line 1353 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 17:
-#line 116 "minipy-lab.y" /* yacc.c:1646  */
-    {cout<<"String "<<(yyvsp[0]).Tval.str<<endl;(yyval).Tval.type=2;}
-#line 1382 "y.tab.c" /* yacc.c:1646  */
+  case 16:
+#line 104 "minipy-lab.y" /* yacc.c:1646  */
+    {(yyval).data.v=&(table[FIND((yyvsp[0]).data.s)].val);(yyval).type=4;}
+#line 1359 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 19:
-#line 118 "minipy-lab.y" /* yacc.c:1646  */
-    {cout<<"number "<<endl;}
-#line 1388 "y.tab.c" /* yacc.c:1646  */
+  case 20:
+#line 109 "minipy-lab.y" /* yacc.c:1646  */
+    {(yyval).type=1;(yyval).data.i=1;}
+#line 1365 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 21:
+#line 110 "minipy-lab.y" /* yacc.c:1646  */
+    {if((yyvsp[-1]).type!=0)yyerror("type error");else (yyval)=(yyvsp[0]);}
+#line 1371 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 22:
+#line 112 "minipy-lab.y" /* yacc.c:1646  */
+    {(yyval).type=-1;}
+#line 1377 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 23:
+#line 113 "minipy-lab.y" /* yacc.c:1646  */
+    {if((yyvsp[0]).type!=0)yyerror("type error");}
+#line 1383 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 24:
-#line 126 "minipy-lab.y" /* yacc.c:1646  */
+#line 115 "minipy-lab.y" /* yacc.c:1646  */
     {cout<<"atom"<<endl;}
-#line 1394 "y.tab.c" /* yacc.c:1646  */
+#line 1389 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 25:
+#line 116 "minipy-lab.y" /* yacc.c:1646  */
+    {
+				if((yyvsp[-6]).type==5)
+				{
+					(yyval).type=5;
+					(yyval).data.slice.l=(yyvsp[-6]).data.slice.l;
+					(yyval).data.slice.end=(yyvsp[-2]).type==0?((yyvsp[-6]).data.slice.begin+(yyvsp[-6]).data.slice.step*(yyvsp[-2]).data.i):(yyvsp[-6]).data.slice.end;
+					(yyval).data.slice.begin+=(yyvsp[-6]).data.slice.step*((yyvsp[-4]).type==0?(yyvsp[-4]).data.i:0);
+					(yyval).data.slice.step=(yyvsp[-6]).data.slice.step*(yyvsp[-1]).data.i;
+				} 
+				else if((yyvsp[-6]).type==3)
+				{
+					(yyval).data.l=slice((yyvsp[-6]).data.l,(yyvsp[-4]).type==0?(yyvsp[-4]).data.i:0,(yyvsp[-2]).type==0?(yyvsp[-2]).data.i:(yyvsp[-6]).data.l.len,(yyvsp[-1]).data.i);
+					(yyval).type=3;
+				}
+				else if((yyvsp[-6]).type==4)
+				{
+					if((*((yyvsp[-6]).data.v)).flag==3)
+					{
+						(yyval).data.slice.l=&((*((yyvsp[-6]).data.v)).DATA.l);
+						(yyval).data.slice.end=(yyvsp[-2]).type==0?(yyvsp[-2]).data.i:((*((yyvsp[-6]).data.v)).DATA.l.len);
+						(yyval).data.slice.begin=(yyvsp[-4]).type==0?(yyvsp[-4]).data.i:0;
+						(yyval).data.slice.step=(yyvsp[-1]).data.i;
+						(yyval).type=5;
+					}	
+					else yyerror("type error");
+				}
+				else yyerror("type error");
+				}
+#line 1422 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 26:
+#line 144 "minipy-lab.y" /* yacc.c:1646  */
+    {
+				if((yyvsp[-3]).type==5){(yyvsp[-3]).type=3;(yyvsp[-3]).data.l=slice((yyvsp[-3]).data.slice);}
+				else if((yyvsp[-3]).type==4) {(yyvsp[-3])=unpack(*((yyvsp[-3]).data.v));}
+				cout<<"$1type="<<(yyvsp[-3]).type<<endl;
+				if((yyvsp[-1]).type==0&&(yyvsp[-3]).type==3){(yyval).type=4;(yyval).data.v=(yyvsp[-3]).data.l.val+(yyvsp[-1]).data.i;}
+				else{yyerror("type error");}
+				}
+#line 1434 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 32:
+#line 159 "minipy-lab.y" /* yacc.c:1646  */
+    {(yyval).type=3;(yyval).data.l=newlist();}
+#line 1440 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 33:
+#line 160 "minipy-lab.y" /* yacc.c:1646  */
+    {(yyval)=(yyvsp[-2]);}
+#line 1446 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 36:
+#line 166 "minipy-lab.y" /* yacc.c:1646  */
+    {struct list l;l=newlist();append(l,pack((yyvsp[0])));(yyval).type=3;(yyval).data.l=l;}
+#line 1452 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 37:
+#line 167 "minipy-lab.y" /* yacc.c:1646  */
+    {append((yyvsp[-2]).data.l,pack((yyvsp[0])));(yyval)=(yyvsp[-2]);}
+#line 1458 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 38:
-#line 147 "minipy-lab.y" /* yacc.c:1646  */
-    {(yyval).Tval.val=(yyvsp[-2]).Tval.val+(yyvsp[0]).Tval.val; (yyval).Tval.type=((yyvsp[-2]).Tval.type||(yyvsp[0]).Tval.type);}
-#line 1400 "y.tab.c" /* yacc.c:1646  */
+#line 169 "minipy-lab.y" /* yacc.c:1646  */
+    {
+	 			cout<<"$1type="<<(yyvsp[-2]).type<<"$3type="<<(yyvsp[0]).type<<endl;
+	 			switch((yyvsp[-2]).type)
+				{
+				case 0:
+					switch((yyvsp[0]).type)
+					{
+					case 0: (yyval).type=0;(yyval).data.i=(yyvsp[-2]).data.i+(yyvsp[0]).data.i;break;
+					case 1: (yyval).type=1;(yyval).data.f=(yyvsp[-2]).data.i+(yyvsp[0]).data.f;break;
+					case 2: 
+					case 3: yyerror("type error"); break;
+					case 4:
+					case 5: yyerror("internal error");break;
+					}
+					break;
+				case 1:
+					switch((yyvsp[0]).type)
+					{
+					case 0: (yyval).type=1;(yyval).data.f=(yyvsp[-2]).data.f+(yyvsp[0]).data.i;break;
+					case 1: (yyval).type=1;(yyval).data.f=(yyvsp[-2]).data.f+(yyvsp[0]).data.f;break;
+					case 2:
+					case 3: yyerror("type error"); break;
+					case 4:
+					case 5: yyerror("internal error");break;
+					}
+					break;
+				case 2:
+					switch((yyvsp[0]).type)
+					{
+					case 2:/*TODO:str + str*/  break; 
+					case 1:
+					case 0:
+					case 3: yyerror("type error"); break;
+					case 4:
+					case 5: yyerror("internal error");break;
+					}
+					break;
+				case 3:
+					switch((yyvsp[0]).type)
+					{
+					case 0: 
+					case 1:
+					case 2: yyerror("type error"); break;
+					case 3: (yyval).type=3;(yyval).data.l=newlist();add((yyval).data.l,(yyvsp[-2]).data.l);add((yyval).data.l,(yyvsp[0]).data.l);break;
+					case 4:
+					case 5: yyerror("internal error");break;
+					}
+					break;
+				case 4:
+				case 5: yyerror("internal error");
+				}
+				}
+#line 1515 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 39:
-#line 148 "minipy-lab.y" /* yacc.c:1646  */
-    {(yyval).Tval.val=(yyvsp[-2]).Tval.val-(yyvsp[0]).Tval.val;(yyval).Tval.type=((yyvsp[-2]).Tval.type||(yyvsp[0]).Tval.type);}
-#line 1406 "y.tab.c" /* yacc.c:1646  */
+#line 221 "minipy-lab.y" /* yacc.c:1646  */
+    {
+	 			switch((yyvsp[-2]).type)
+				{
+				case 0:
+					switch((yyvsp[0]).type)
+					{
+					case 0: (yyval).type=0;(yyval).data.i=(yyvsp[-2]).data.i-(yyvsp[0]).data.i;break;
+					case 1: (yyval).type=1;(yyval).data.f=(yyvsp[-2]).data.i-(yyvsp[0]).data.f;break;
+					case 2: 
+					case 3: yyerror("type error"); break;
+					case 4:
+					case 5: yyerror("internal error");break;
+					}
+					break;
+				case 1:
+					switch((yyvsp[0]).type)
+					{
+					case 0: (yyval).type=1;(yyval).data.f=(yyvsp[-2]).data.f-(yyvsp[0]).data.i;break;
+					case 1: (yyval).type=1;(yyval).data.f=(yyvsp[-2]).data.f-(yyvsp[0]).data.f;break;
+					case 2:
+					case 3: yyerror("type error"); break;
+					case 4:
+					case 5: yyerror("internal error");break;
+					}
+					break;
+				case 2:
+					switch((yyvsp[0]).type)
+					{
+					case 2:/*TODO:str + str*/  break; 
+					case 1:
+					case 0:
+					case 3: yyerror("type error"); break;
+					case 4:
+					case 5: yyerror("internal error");break;
+					}
+					break;
+				case 3:
+					switch((yyvsp[0]).type)
+					{
+					case 0: 
+					case 1:
+					case 2: 
+					case 3: yyerror("type error"); break;
+					case 4:
+					case 5: yyerror("internal error");break;
+					}
+					break;
+				case 4:
+				case 5: yyerror("internal error");
+				}
+				}
+#line 1571 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 40:
-#line 149 "minipy-lab.y" /* yacc.c:1646  */
+#line 272 "minipy-lab.y" /* yacc.c:1646  */
     {cout<<"add_expr"<<endl;}
-#line 1412 "y.tab.c" /* yacc.c:1646  */
+#line 1577 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 41:
-#line 151 "minipy-lab.y" /* yacc.c:1646  */
-    {(yyval).Tval.val=(yyvsp[-2]).Tval.val*(yyvsp[0]).Tval.val;(yyval).Tval.type=((yyvsp[-2]).Tval.type||(yyvsp[0]).Tval.type);}
-#line 1418 "y.tab.c" /* yacc.c:1646  */
+#line 274 "minipy-lab.y" /* yacc.c:1646  */
+    {
+	 			switch((yyvsp[-2]).type)
+				{
+				case 0:
+					switch((yyvsp[0]).type)
+					{
+					case 0: (yyval).type=0;(yyval).data.i=(yyvsp[-2]).data.i*(yyvsp[0]).data.i;break;
+					case 1: (yyval).type=1;(yyval).data.f=(yyvsp[-2]).data.i*(yyvsp[0]).data.f;break;
+					case 2: /*TODO:str * int*/break;
+					case 3: (yyval).type=3;(yyval).data.l=newlist();for(int i=0;i<(yyvsp[-2]).data.i;i++) add((yyval).data.l,(yyvsp[0]).data.l); break;
+					case 4:
+					case 5: yyerror("internal error");break;
+					}
+					break;
+				case 1:
+					switch((yyvsp[0]).type)
+					{
+					case 0: (yyval).type=1;(yyval).data.f=(yyvsp[-2]).data.f*(yyvsp[0]).data.i;break;
+					case 1: (yyval).type=1;(yyval).data.f=(yyvsp[-2]).data.f*(yyvsp[0]).data.f;break;
+					case 2:
+					case 3: yyerror("type error"); break;
+					case 4:
+					case 5: yyerror("internal error");break;
+					}
+					break;
+				case 2:
+					switch((yyvsp[0]).type)
+					{
+					case 0: /*TODO:str * int*/ break; 
+					case 1:
+					case 2:
+					case 3: yyerror("type error"); break;
+					case 4:
+					case 5: yyerror("internal error");break;
+					}
+					break;
+				case 3:
+					switch((yyvsp[0]).type)
+					{
+					case 0: (yyval).type=3;(yyval).data.l=newlist();for(int i=0;i<(yyvsp[0]).data.i;i++) add((yyval).data.l,(yyvsp[-2]).data.l); break;
+					case 1:
+					case 2:
+					case 3: yyerror("type error"); break;
+					case 4:
+					case 5: yyerror("internal error");break;
+					}
+					break;
+				case 4:
+				case 5: yyerror("internal error");
+				}
+				}
+#line 1633 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 42:
-#line 152 "minipy-lab.y" /* yacc.c:1646  */
-    {(yyval).Tval.val=(yyvsp[-2]).Tval.val/(yyvsp[0]).Tval.val;(yyval).Tval.type=((yyvsp[-2]).Tval.type||(yyvsp[0]).Tval.type);}
-#line 1424 "y.tab.c" /* yacc.c:1646  */
+#line 325 "minipy-lab.y" /* yacc.c:1646  */
+    {
+				if((yyvsp[-2]).type<2&&(yyvsp[0]).type<2) {(yyval).type=1;(yyval).data.i=((yyvsp[-2]).type?(yyvsp[-2]).data.f:(yyvsp[-2]).data.i)/((yyvsp[0]).type?(yyvsp[0]).data.f:(yyvsp[0]).data.i);}
+				else yyerror("type error");
+				}
+#line 1642 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 43:
-#line 153 "minipy-lab.y" /* yacc.c:1646  */
-    {(yyval).Tval.val=(int)(yyvsp[-2]).Tval.val%(int)(yyvsp[0]).Tval.val;(yyval).Tval.type=((yyvsp[-2]).Tval.type||(yyvsp[0]).Tval.type);}
-#line 1430 "y.tab.c" /* yacc.c:1646  */
+#line 329 "minipy-lab.y" /* yacc.c:1646  */
+    {if((yyvsp[-2]).type<2&&(yyvsp[0]).type<2) /*{$$.type=1;$$.data.i=($1.type?$1.data.f:$1.data.i)%($3.type?$3.data.f:$3.data.i);}*/;/*TODO:change to py mod*/}
+#line 1648 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 44:
-#line 154 "minipy-lab.y" /* yacc.c:1646  */
+#line 330 "minipy-lab.y" /* yacc.c:1646  */
     {cout<<"factor"<<endl;}
-#line 1436 "y.tab.c" /* yacc.c:1646  */
+#line 1654 "y.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1440 "y.tab.c" /* yacc.c:1646  */
+#line 1658 "y.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1664,15 +1882,16 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 157 "minipy-lab.y" /* yacc.c:1906  */
+#line 333 "minipy-lab.y" /* yacc.c:1906  */
 
 
 int main()
 {
+	table=(TABLE*)malloc(INIT_TABLE_SIZE*sizeof(TABLE));
    return yyparse();
 }
 
-void yyerror(char *s)
+void yyerror(const char *s)
 {
    cout << s << endl<<"miniPy> "; 
 }
@@ -1680,20 +1899,59 @@ void yyerror(char *s)
 int yywrap()
 { return 1; }        		    
 
-int FIND(char *s)
+VAL pack(YYSTYPE val)
 {
-  int i =0;
-  for(i=0;i<count;i++)
-  { if(!strcmp(s,table[i].name))
-	return i;   
-} 
-return -1; 
+	VAL r;
+	switch(val.type)
+	{
+	case 0:
+	case 1:
+	case 2:
+	case 3:
+		r.flag=val.type;
+		r.DATA=*((union vald*)(&(val.data)));
+		break;
+	case 4:
+		r=*(val.data.v);
+		break;
+	case 5:
+		r.flag=3;
+		r.DATA.l=slice(val.data.slice);
+		break;
+	}
+	return r;
 }
 
+YYSTYPE unpack(VAL val)
+{
+	YYSTYPE r;
+	r.type=val.flag;
+	r.data=*((union yyd*)(&(val.DATA)));
+	return r;
+}
+int FIND(char *s)
+{
+	int i =0;
+	for(i=0;i<tablelen;i++) if(!strcmp(s,table[i].name))
+	{
+		free(s);
+		return i;
+	} 
+	if(tablelen>=tablesize)
+	{
+		tablesize*=2;
+		table=(TABLE*)realloc(table,tablesize);
+	}
+	table[tablelen].name=s;
+	table[tablelen].val.flag=-1;
+	tablelen++;
+	return i;
+}
 
-void print(VAL val)
+void print(VAL val)//FIXME: a=[a]
 {
 	int i;
+	cout<<"type:"<<val.flag<<" ";
 	switch(val.flag)
 	{
 		case 0:
@@ -1718,15 +1976,17 @@ void print(VAL val)
 	}
 }
 
-VAL* newlist()
+inline void print(YYSTYPE val)
 {
-	VAL *l;
-	l=(VAL*)malloc(sizeof(VAL));
-	l->flag=3;
-	l->DATA.l.len=0;
-	l->DATA.l.size=INIT_LIST_SIZE;
-	l->DATA.l.val=(VAL*)malloc(INIT_LIST_SIZE*sizeof(VAL));
-	if(l->DATA.l.val==0) 
+	print(pack(val));
+}
+struct list newlist()//TODO:gc
+{
+	struct list l;
+	l.len=0;
+	l.size=INIT_LIST_SIZE;
+	l.val=(VAL*)malloc(INIT_LIST_SIZE*sizeof(VAL));
+	if(l.val==0) 
 	{
 		yyerror("malloc fail");
 		//other operation
@@ -1737,7 +1997,7 @@ VAL* newlist()
 void exlist(struct list &l) //extend
 {
 	l.size*=2;
-	l.val=(VAL*)realloc(l.val,l.size);
+	l.val=(VAL*)realloc(l.val,l.size*sizeof(VAL));
 	if(l.val==0) 
 	{
 		yyerror("malloc fail");
@@ -1778,38 +2038,51 @@ VAL pop(struct list &l,int index)
 	return _val;
 }
 
-VAL* slice(struct list l,int begin,int end,int step)
+struct list slice(struct list l,int begin,int end,int step)
 {
-	VAL* _val;
+	struct list _val;
 	int i;
 	_val=newlist();
-	for(i=begin;i<end;i+=step) append(_val->DATA.l,l.val[i]);
+	while(begin<0) begin+=l.len;
+	while(end<0) begin+=l.len;
+	for(i=begin;i<end;i+=step) append(_val,l.val[i]);
 	return _val;
 }
 
-/*void setslice(struct list &l,int begin,int end,int step,struct list o)
+inline struct list slice(struct slice s)
+{
+	return slice(*(s.l),s.begin,s.end,s.step);
+}
+
+void setslice(struct list &l,int begin,int end,int step,struct list o)
 {
 	int i,j;
 	if(begin<0||step<1||end>l.len) yyerror("index out of bound");
 	if(step!=1)
 	{
-		if((end-begin)/step!=o.len) yyerror("incompatible length");
-		for(i=begin,j=0;i<end;i+=step) l.d[i]=o.d[j++];
+		if((int)ceil((double)(end-begin)/step)!=o.len) yyerror("incompatible length");
+		for(i=begin,j=0;i<end;i+=step) l.val[i]=o.val[j++];
 	}
 	else//step=1
 	{
 		if(end-begin>o.len)
 		{
 			while(l.len+o.len-end+begin-1>=l.size) exlist(l);
-			for(i=l.len+o.len-1-end+begin,j=l.len-1;j>=end;i--,j--) l.d[i]=l.d[j];
+			for(i=l.len+o.len-1-end+begin,j=l.len-1;j>=end;i--,j--) l.val[i]=l.val[j];
 		}
 		else if(end-begin<o.len)
 		{
-			for(i=begin+o.len,j=end;j<l.len;i++,j++) l.d[i]=l.d[j];
+			for(i=begin+o.len,j=end;j<l.len;i++,j++) l.val[i]=l.val[j];
 
 		}
-		for(i=len.begin,j=0;j<o.len;i++,j++) l.d[i]=o.d[j]; 
+		for(i=begin,j=0;j<o.len;i++,j++) l.val[i]=o.val[j]; 
 		l.len=l.len+o.len-end+begin;
 	}
-	return
-}*/
+	return;
+}
+
+inline void setslice(struct slice s,struct list o)
+{
+	setslice(*(s.l),s.begin,s.end,s.step,o);
+	return;
+}

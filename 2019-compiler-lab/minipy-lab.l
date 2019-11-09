@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include<string.h>
 #include<stdlib.h>
+#define YYSTYPE_IS_DECLARED 
+#include "types.h"
 #include "y.tab.h"
 
 /*  any C declaration  */
@@ -19,22 +21,45 @@ id       {letter}({letter}|{digit})*
 real     {number}"."{number}?|{number}?"."{number}
 
 %%
-[ \t]+      {/*do nothing , just skip */}
-{number}    { yylval.Tval.val = atoi(yytext);
-	      printf("int %s\n",yytext);
-              return INT;
-            }
-{real}      { yylval.Tval.val = atof(yytext);
-	      printf("real %s\n",yytext);
-              return REAL;
-            }
-{id}        { sscanf(yytext,"%s",yylval.name);
-              return ID; 
-            }
+[ \t]+		{/*do nothing , just skip */}
+{number}	{
+			yylval.type=0; 
+			yylval.data.i = atoi(yytext);
+			printf("int %s\n",yytext);
+			return INT;
+		}
+{real}		{
+			yylval.type=1; 
+			yylval.data.f = atof(yytext);
+			printf("real %s\n",yytext);
+			return REAL;
+		}
+{id}		{
+			int len = strlen(yytext);
+			yylval.data.s = (char *)malloc(sizeof(char)*(len+1)); 
+			strcpy(yylval.data.s,yytext);
+			yylval.type=2;
+			printf("ID %s\n",yylval.data.s);
+             		return ID; 
+		}
 \"(\\.|[^\\"])*\"	{int len = strlen(yytext);
-		yylval.Tval.str = (char *)malloc(sizeof(char)*len); 
-		strcpy(yylval.Tval.str,yytext);
-             	return(STRING_LITERAL); 
-                  }
-.|\n        { return yylval.name[0] = yytext[0];}
+			yylval.data.s = (char *)malloc(sizeof(char)*(len-1)); 
+			yytext[len-1]=0;
+			strcpy(yylval.data.s,yytext+1);
+			yylval.type=2;
+			printf("string literial %s\n",yylval.data.s);
+             		return(STRING_LITERAL); 
+		}
+.|\n        { return yytext[0];}
 %%
+#ifdef LEX
+YYSTYPE yylval;
+int main()
+ {
+while(1) yylex();
+ }
+ int yywrap()
+ {
+ return 1;
+ }
+#endif
