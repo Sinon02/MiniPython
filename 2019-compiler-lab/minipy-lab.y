@@ -5,6 +5,7 @@
    using namespace std;
    #include <iostream>
    #include <string>
+   #include <vector>
    #include <map>
    #include <cmath>
    #include "lex.yy.c"
@@ -18,6 +19,7 @@
 TABLE *table;
 int tablelen=0;
 int tablesize=INIT_TABLE_SIZE;
+vector<unsigned long> print_stack;
 
 %}
 %token ID INT REAL STRING_LITERAL
@@ -411,6 +413,15 @@ void print(VAL val)//FIXME: a=[a]
 			cout<<val.DATA.s;
 			break;
 		case 3:
+			for(auto& p : print_stack)
+			{
+				if(p==(unsigned long)val.DATA.l.val)
+				{
+					cout<<"[...]";
+					return;
+				}
+			}
+			print_stack.push_back((unsigned long)val.DATA.l.val);
 			cout<<'[';
 			if(val.DATA.l.len>0) print(val.DATA.l.val[0]);
 			for(i=1;i<val.DATA.l.len;i++)
@@ -419,6 +430,7 @@ void print(VAL val)//FIXME: a=[a]
 				print(val.DATA.l.val[i]);
 			}
 			cout<<']';
+			print_stack.pop_back();
 			break;
 	}
 }
