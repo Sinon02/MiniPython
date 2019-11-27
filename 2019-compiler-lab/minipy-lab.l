@@ -40,10 +40,10 @@ real     {number}"."{number}?|{number}?"."{number}
              		return ID; 
 		}
 \"(\\.|[^\\"])*\"	{int len = strlen(yytext);
-			yylval.data.s = (char *)malloc(sizeof(char)*(len-1)); 
-			yytext[len-1]=0;
-			strcpy(yylval.data.s,yytext+1);
-			yylval.type=2;
+		            yylval.data.s = (char *)malloc(sizeof(char)*len); 
+		            strncpy(yylval.data.s,yytext+1,len-2);
+					yylval.data.s[len-2]=0;
+					yylval.type=2;
              		return(STRING_LITERAL); 
 		}
 .|\n        { return yytext[0];}

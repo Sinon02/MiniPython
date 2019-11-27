@@ -45,7 +45,14 @@ assignExpr:
 					case 1:
 					case 2:
 					case 3:yyerror("assign to right value");break;
-					case 4:*($1.data.v)=pack($3);break;
+					case 4:{*($1.data.v)=pack($3);
+				 			int i=FIND($1.name);
+							if(table[i].Res==1)
+							{
+								table[i].Res=0;
+							}
+							break;
+					}
 					case 5:if($3.type==3)setslice($1.data.slice,$3.data.l);else yyerror("type error");
 					}
 					}
@@ -74,7 +81,7 @@ factor : '+' factor
 			}
 
        ; 
-atom  : ID {$$.data.v=&(table[FIND($1.data.s)].val);$$.type=4;}
+atom  : ID {$$.name=(char *)malloc(sizeof(char)*strlen($1.data.s));strcpy($$.name,$1.data.s);$$.data.v=&(table[FIND($1.data.s)].val);$$.type=4;}
       | STRING_LITERAL 
       | List 
       | number
@@ -120,12 +127,112 @@ atom_expr : atom
 				if($3.type==0&&$1.type==3){if($3.data.i<$1.data.l.len){$$.type=4;$$.data.v=$1.data.l.val+$3.data.i;}else yyerror("index out of bound");}
 				else{yyerror("type error");}
 				}
-        | atom_expr  '.' ID
-        | atom_expr  '(' arglist opt_comma ')'
+        | atom_expr  '.' ID {$$=$1;$$.name=$3.data.s;}
+        | atom_expr  '(' arglist opt_comma ')'{
+			if(!strcmp($1.name,"len"))
+			{
+				int i=FIND($1.name);
+				if(table[i].Res==0)
+				{
+					yyerror("TypeError: object is not callable");
+				}
+				int len=$3.data.l.len;
+				if(len>1)
+				{
+					yyerror("TypeError: len() takes exactly one argument");
+				}
+				int type=$3.data.l.val[0].flag;
+				if(type==2)
+				{
+					$$.data.i=strlen($3.data.l.val[0].DATA.s);
+				}
+				else if(type==3)
+				{
+					$$.data.i=$3.data.l.val[0].DATA.l.len;
+				}
+				else{
+					yyerror("TypeError: object has no len()");
+				}
+				$$.type=0;
+			}
+			else if(!strcmp($1.name,"range"))
+			{
+				int len=$3.data.l.len;
+				if(len==1)
+				{
+					struct list l;
+					l=newlist();
+					for(int i=0;i<$3.data.l.val[0].DATA.i;i++)
+					{
+						VAL val;
+						val.flag=0;
+						val.DATA.i=i;
+						append(l,val);
+					}
+				    $$.data.l=l;
+					$$.type=3;
+				}
+				else if(len==2)
+				{
+					struct list l;
+					l=newlist();
+					int start=$3.data.l.val[0].DATA.i;
+					int end=$3.data.l.val[1].DATA.i;
+					for(int i=start;i<end;i++)
+					{
+						VAL val;
+						val.flag=0;
+						val.DATA.i=i;
+						append(l,val);
+					}
+					$$.data.l=l;
+					$$.type=3;
+				}
+				else if(len==3)
+				{
+					struct list l;
+					l=newlist();
+					int start=$3.data.l.val[0].DATA.i;
+					int end=$3.data.l.val[1].DATA.i;
+					int step=$3.data.l.val[2].DATA.i;
+					for(int i=start;i<end;i+=step)
+					{
+						VAL val;
+						val.flag=0;
+						val.DATA.i=i;
+						append(l,val);
+					}
+					$$.data.l=l;
+					$$.type=3;
+				}
+
+
+			}
+			else if(!strcmp($1.name,"print"))
+			{
+				int len=$3.data.l.len;
+				for(int i=0;i<len;i++)
+				{
+					print($3.data.l.val[i]);
+					cout<<" ";
+				}
+				
+			}
+			else if(!strcmp($1.name,"append"))
+			{
+				int len=$3.data.l.len;
+				if(len==1)
+				{
+					append((*($$.data.v)).DATA.l,$3.data.l.val[0]);
+				}
+				//error message
+			}
+
+			}
         | atom_expr  '('  ')'
         ;
-arglist : add_expr
-        | arglist ',' add_expr 
+arglist : add_expr {struct list l;l=newlist();append(l,pack($1));$$.type=3;$$.data.l=l;}
+        | arglist ',' add_expr {append($1.data.l,pack($3));$$=$1;}
         ;
         ;      
 List  : '[' ']'{$$.type=3;$$.data.l=newlist();}
@@ -166,7 +273,13 @@ add_expr : add_expr '+' mul_expr  {
 				case 2:
 					switch($3.type)
 					{
-					case 2:/*TODO:str + str*/  break; 
+					case 2:	{
+							int sum_len = strlen($1.data.s)+strlen($3.data.s)+1;
+							char *temp = (char *)malloc(sizeof(char)*sum_len);
+							sprintf(temp,"%s%s",$1.data.s,$3.data.s);
+							$$.type=2;
+							$$.data.s=temp;  break;
+					} 
 					case 1:
 					case 0:
 					case 3: yyerror("type error"); break;
@@ -306,6 +419,10 @@ mul_expr : mul_expr '*' factor  {
 int main()
 {
 	table=(TABLE*)malloc(INIT_TABLE_SIZE*sizeof(TABLE));
+	table[0].Res=1;
+	table[0].name=(char *)malloc(sizeof(char)*10);
+	strcpy(table[0].name,"len");
+	tablelen=1;
 	return yyparse();
 }
 

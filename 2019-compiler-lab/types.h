@@ -20,6 +20,7 @@ typedef struct VAL VAL;
 typedef struct{
 	char *name;
 	VAL val;
+	int Res;
 }TABLE;
 struct slice{
 	struct list *l;
@@ -37,6 +38,7 @@ union yyd{
 	};
 typedef struct{
 	int type;
+	char *name;
 	union yyd data;
 }YYSTYPE;
 
