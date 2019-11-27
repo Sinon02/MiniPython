@@ -13,7 +13,7 @@ union vald{
 	struct list l;//flag=3
 	};
 struct VAL{
-        int flag;
+    int flag;
 	union vald DATA;	
 };   
 typedef struct VAL VAL;

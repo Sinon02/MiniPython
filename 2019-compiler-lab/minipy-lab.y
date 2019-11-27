@@ -2,6 +2,7 @@
    /* definition */
    #include <stdio.h>
    #include <ctype.h>
+   #include <time.h>
    using namespace std;
    #include <iostream>
    #include <string>
@@ -66,22 +67,29 @@ number : INT
 factor : '+' factor
        | '-' factor
        | atom_expr	{
-			{switch($1.type)
-			{case 4: 
-				$$=unpack(*($1.data.v));
-				break;
-			case 5:
-				$$.type=3;
-				$$.data.l=slice($1.data.slice); 
-				break;
-			default:
-				break;
+			{
+				switch($1.type)
+				{	
+					case 4: 
+						$$=unpack(*($1.data.v));
+						break;
+					case 5:
+						$$.type=3;
+						$$.data.l=slice($1.data.slice); 
+						break;
+					default:
+						break;
+				}
 			}
-			}
-			}
+		}
 
        ; 
-atom  : ID {$$.name=(char *)malloc(sizeof(char)*strlen($1.data.s));strcpy($$.name,$1.data.s);$$.data.v=&(table[FIND($1.data.s)].val);$$.type=4;}
+atom  : ID {
+			$$.name=(char *)malloc(sizeof(char)*strlen($1.data.s));
+			strcpy($$.name,$1.data.s);
+			$$.data.v=&(table[FIND($1.data.s)].val);
+			$$.type=4;
+		}
       | STRING_LITERAL 
       | List 
       | number
@@ -89,8 +97,8 @@ atom  : ID {$$.name=(char *)malloc(sizeof(char)*strlen($1.data.s));strcpy($$.nam
 slice_op :  /*  empty production */{$$.type=1;$$.data.i=1;}
         | ':' add_expr {if($1.type!=0)yyerror("type error");else $$=$2;}
         ;
-sub_expr:  /*  empty production */{$$.type=-1;}
-        | add_expr{if($1.type!=0)yyerror("type error");}
+sub_expr:  /*  empty production */  {$$.type=-1;}
+        | add_expr {if($1.type!=0) yyerror("type error");}
         ;        
 atom_expr : atom 
         | atom_expr  '[' sub_expr  ':' sub_expr  slice_op ']'{
@@ -225,16 +233,37 @@ atom_expr : atom
 				{
 					append((*($$.data.v)).DATA.l,$3.data.l.val[0]);
 				}
-				//error message
+				else
+				{
+					char *tmp=(char*)malloc(sizeof(char)*60);
+					sprintf(tmp, "TypeError: append() takes exactly one argument (%d given)",len);
+					$$.data.s=tmp;
+					$$.type=2;
+				}
 			}
-
-			}
+		}
         | atom_expr  '('  ')'
+		{
+			if(!strcmp($1.name,"quit"))
+			{
+				exit(-1);
+			}
+			else if(!strcmp($1.name,"time"))
+			{
+				time_t t = time(NULL);
+    			struct tm* stime=localtime(&t);
+				char *tmp=(char*)malloc(sizeof(char)*32);
+     			sprintf(tmp, "%04d-%02d-%02d %02d:%02d:%02d",1900+stime->tm_year,1+stime->tm_mon,
+                stime->tm_mday, stime->tm_hour,
+                stime->tm_min,stime->tm_sec);
+				$$.data.s=tmp;
+				$$.type=2;
+			}
+		}
         ;
 arglist : add_expr {struct list l;l=newlist();append(l,pack($1));$$.type=3;$$.data.l=l;}
         | arglist ',' add_expr {append($1.data.l,pack($3));$$=$1;}
-        ;
-        ;      
+        ;  
 List  : '[' ']'{$$.type=3;$$.data.l=newlist();}
       | '[' List_items opt_comma ']'{$$=$2;}
       ;
@@ -251,34 +280,35 @@ add_expr : add_expr '+' mul_expr  {
 				case 0:
 					switch($3.type)
 					{
-					case 0: $$.type=0;$$.data.i=$1.data.i+$3.data.i;break;
-					case 1: $$.type=1;$$.data.f=$1.data.i+$3.data.f;break;
-					case 2: 
-					case 3: yyerror("type error"); break;
-					case 4:
-					case 5: yyerror("internal error");break;
+						case 0: $$.type=0;$$.data.i=$1.data.i+$3.data.i;break;
+						case 1: $$.type=1;$$.data.f=$1.data.i+$3.data.f;break;
+						case 2: 
+						case 3: yyerror("type error"); break;
+						case 4:
+						case 5: yyerror("internal error");break;
 					}
 					break;
 				case 1:
 					switch($3.type)
 					{
-					case 0: $$.type=1;$$.data.f=$1.data.f+$3.data.i;break;
-					case 1: $$.type=1;$$.data.f=$1.data.f+$3.data.f;break;
-					case 2:
-					case 3: yyerror("type error"); break;
-					case 4:
-					case 5: yyerror("internal error");break;
+						case 0: $$.type=1;$$.data.f=$1.data.f+$3.data.i;break;
+						case 1: $$.type=1;$$.data.f=$1.data.f+$3.data.f;break;
+						case 2:
+						case 3: yyerror("type error"); break;
+						case 4:
+						case 5: yyerror("internal error");break;
 					}
 					break;
 				case 2:
 					switch($3.type)
 					{
 					case 2:	{
-							int sum_len = strlen($1.data.s)+strlen($3.data.s)+1;
-							char *temp = (char *)malloc(sizeof(char)*sum_len);
-							sprintf(temp,"%s%s",$1.data.s,$3.data.s);
-							$$.type=2;
-							$$.data.s=temp;  break;
+						int sum_len = strlen($1.data.s)+strlen($3.data.s)+1;
+						char *temp = (char *)malloc(sizeof(char)*sum_len);
+						sprintf(temp,"%s%s",$1.data.s,$3.data.s);
+						$$.type=2;
+						$$.data.s=temp;  
+						break;
 					} 
 					case 1:
 					case 0:
@@ -290,12 +320,12 @@ add_expr : add_expr '+' mul_expr  {
 				case 3:
 					switch($3.type)
 					{
-					case 0: 
-					case 1:
-					case 2: yyerror("type error"); break;
-					case 3: $$.type=3;$$.data.l=newlist();add($$.data.l,$1.data.l);add($$.data.l,$3.data.l);break;
-					case 4:
-					case 5: yyerror("internal error");break;
+						case 0: 
+						case 1:
+						case 2: yyerror("type error"); break;
+						case 3: $$.type=3;$$.data.l=newlist();add($$.data.l,$1.data.l);add($$.data.l,$3.data.l);break;
+						case 4:
+						case 5: yyerror("internal error");break;
 					}
 					break;
 				case 4:
@@ -308,45 +338,45 @@ add_expr : add_expr '+' mul_expr  {
 				case 0:
 					switch($3.type)
 					{
-					case 0: $$.type=0;$$.data.i=$1.data.i-$3.data.i;break;
-					case 1: $$.type=1;$$.data.f=$1.data.i-$3.data.f;break;
-					case 2: 
-					case 3: yyerror("type error"); break;
-					case 4:
-					case 5: yyerror("internal error");break;
+						case 0: $$.type=0;$$.data.i=$1.data.i-$3.data.i;break;
+						case 1: $$.type=1;$$.data.f=$1.data.i-$3.data.f;break;
+						case 2: 
+						case 3: yyerror("type error"); break;
+						case 4:
+						case 5: yyerror("internal error");break;
 					}
 					break;
 				case 1:
 					switch($3.type)
 					{
-					case 0: $$.type=1;$$.data.f=$1.data.f-$3.data.i;break;
-					case 1: $$.type=1;$$.data.f=$1.data.f-$3.data.f;break;
-					case 2:
-					case 3: yyerror("type error"); break;
-					case 4:
-					case 5: yyerror("internal error");break;
+						case 0: $$.type=1;$$.data.f=$1.data.f-$3.data.i;break;
+						case 1: $$.type=1;$$.data.f=$1.data.f-$3.data.f;break;
+						case 2:
+						case 3: yyerror("type error"); break;
+						case 4:
+						case 5: yyerror("internal error");break;
 					}
 					break;
 				case 2:
 					switch($3.type)
 					{
-					case 2:/*TODO:str + str*/  break; 
-					case 1:
-					case 0:
-					case 3: yyerror("type error"); break;
-					case 4:
-					case 5: yyerror("internal error");break;
+						case 2:/*TODO:str + str*/  break; 
+						case 1:
+						case 0:
+						case 3: yyerror("type error"); break;
+						case 4:
+						case 5: yyerror("internal error");break;
 					}
 					break;
 				case 3:
 					switch($3.type)
 					{
-					case 0: 
-					case 1:
-					case 2: 
-					case 3: yyerror("type error"); break;
-					case 4:
-					case 5: yyerror("internal error");break;
+						case 0: 
+						case 1:
+						case 2: 
+						case 3: yyerror("type error"); break;
+						case 4:
+						case 5: yyerror("internal error");break;
 					}
 					break;
 				case 4:
@@ -361,45 +391,45 @@ mul_expr : mul_expr '*' factor  {
 				case 0:
 					switch($3.type)
 					{
-					case 0: $$.type=0;$$.data.i=$1.data.i*$3.data.i;break;
-					case 1: $$.type=1;$$.data.f=$1.data.i*$3.data.f;break;
-					case 2: /*TODO:str * int*/break;
-					case 3: $$.type=3;$$.data.l=newlist();for(int i=0;i<$1.data.i;i++) add($$.data.l,$3.data.l); break;
-					case 4:
-					case 5: yyerror("internal error");break;
+						case 0: $$.type=0;$$.data.i=$1.data.i*$3.data.i;break;
+						case 1: $$.type=1;$$.data.f=$1.data.i*$3.data.f;break;
+						case 2: /*TODO:str * int*/break;
+						case 3: $$.type=3;$$.data.l=newlist();for(int i=0;i<$1.data.i;i++) add($$.data.l,$3.data.l); break;
+						case 4:
+						case 5: yyerror("internal error");break;
 					}
 					break;
 				case 1:
 					switch($3.type)
 					{
-					case 0: $$.type=1;$$.data.f=$1.data.f*$3.data.i;break;
-					case 1: $$.type=1;$$.data.f=$1.data.f*$3.data.f;break;
-					case 2:
-					case 3: yyerror("type error"); break;
-					case 4:
-					case 5: yyerror("internal error");break;
+						case 0: $$.type=1;$$.data.f=$1.data.f*$3.data.i;break;
+						case 1: $$.type=1;$$.data.f=$1.data.f*$3.data.f;break;
+						case 2:
+						case 3: yyerror("type error"); break;
+						case 4:
+						case 5: yyerror("internal error");break;
 					}
 					break;
 				case 2:
 					switch($3.type)
 					{
-					case 0: /*TODO:str * int*/ break; 
-					case 1:
-					case 2:
-					case 3: yyerror("type error"); break;
-					case 4:
-					case 5: yyerror("internal error");break;
+						case 0: /*TODO:str * int*/ break; 
+						case 1:
+						case 2:
+						case 3: yyerror("type error"); break;
+						case 4:
+						case 5: yyerror("internal error");break;
 					}
 					break;
 				case 3:
 					switch($3.type)
 					{
-					case 0: $$.type=3;$$.data.l=newlist();for(int i=0;i<$3.data.i;i++) add($$.data.l,$1.data.l); break;
-					case 1:
-					case 2:
-					case 3: yyerror("type error"); break;
-					case 4:
-					case 5: yyerror("internal error");break;
+						case 0: $$.type=3;$$.data.l=newlist();for(int i=0;i<$3.data.i;i++) add($$.data.l,$1.data.l); break;
+						case 1:
+						case 2:
+						case 3: yyerror("type error"); break;
+						case 4:
+						case 5: yyerror("internal error");break;
 					}
 					break;
 				case 4:
@@ -417,12 +447,22 @@ mul_expr : mul_expr '*' factor  {
 %%
 
 int main()
-{
+{	int i;
+    int FuncNum=10;
 	table=(TABLE*)malloc(INIT_TABLE_SIZE*sizeof(TABLE));
-	table[0].Res=1;
-	table[0].name=(char *)malloc(sizeof(char)*10);
+	for(i=0;i<FuncNum;i++)
+	{
+		table[i].Res=1;
+		table[i].name=(char *)malloc(sizeof(char)*10);
+	}
 	strcpy(table[0].name,"len");
-	tablelen=1;
+	strcpy(table[1].name,"time");
+	strcpy(table[2].name,"list");
+	strcpy(table[3].name,"print");
+	strcpy(table[4].name,"range");
+	strcpy(table[5].name,"quit");
+
+	tablelen=10;
 	return yyparse();
 }
 
@@ -524,7 +564,8 @@ inline void print(YYSTYPE val)
 {
 	print(pack(val));
 }
-struct list newlist()//TODO:gc
+
+struct list newlist()  //TODO:gc
 {
 	struct list l;
 	l.len=0;
