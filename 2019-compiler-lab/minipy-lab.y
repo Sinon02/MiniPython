@@ -33,9 +33,9 @@ Lines : Lines  stat '\n' prompt
       | 
       | error '\n' {yyerrok;}
       ;
-prompt : {cout << "miniPy> ";}
+prompt : {cout << "\nminiPy> ";}
        ;
-stat  : assignExpr {cout<<"stat"<<endl;}
+stat  : assignExpr 
       ;
 assignExpr:
         atom_expr '=' assignExpr	{
@@ -48,35 +48,8 @@ assignExpr:
 					case 4:*($1.data.v)=pack($3);break;
 					case 5:if($3.type==3)setslice($1.data.slice,$3.data.l);else yyerror("type error");
 					}
-					/*{int i=0;i=FIND($1.name);
-					cout<<"i= "<<i<<endl;
-					cout<<"$1.name "<<$1.name<<endl;
-					if(i==-1)
-					{i=count;
-					strcpy(table[count].name,$1.name);
-					count++;
 					}
-					table[i].val.flag=$3.Tval.type;
-					cout<<"$3.Type "<<$3.Tval.type<<endl;
-					switch(table[i].val.flag)
-					{
-					case 0: table[i].val.DATA.i=$3.Tval.val;
-					cout<<"table value "<<table[i].val.DATA.i<<endl;
-					break;
-					case 1: table[i].val.DATA.f=$3.Tval.val;
-					if(table[i].val.DATA.f-(int)table[i].val.DATA.f<eps)
-					cout<<"table value(changed) "<<fixed << setprecision(1)<<table[i].val.DATA.f<<endl;
-					else
-					cout<<"table value "<<table[i].val.DATA.f<<endl;
-					break;
-					case 2: table[i].val.DATA.s=$3.Tval.str;
-					}
-					cout<<"table index "<<i<<endl;
-					cout<<"table name "<<table[i].name<<endl;
-					cout<<"table type "<<table[i].val.flag<<endl;
-									}*/
-					}
-      | add_expr	{cout<<"assignExpr->add_expr"<<endl;
+      | add_expr	{
 			print($1);
 			}
       ;
@@ -85,15 +58,13 @@ number : INT
        ;
 factor : '+' factor
        | '-' factor
-       | atom_expr	{cout<<"factor->atom_expr"<<endl;
-			cout<<"type="<<$1.type<<endl;
+       | atom_expr	{
 			{switch($1.type)
 			{case 4: 
 				$$=unpack(*($1.data.v));
 				break;
 			case 5:
 				$$.type=3;
-				cout<<"slice"<<$1.data.slice.begin<<' '<<$1.data.slice.end<<' '<<$1.data.slice.step<<endl;
 				$$.data.l=slice($1.data.slice); 
 				break;
 			default:
@@ -114,7 +85,7 @@ slice_op :  /*  empty production */{$$.type=1;$$.data.i=1;}
 sub_expr:  /*  empty production */{$$.type=-1;}
         | add_expr{if($1.type!=0)yyerror("type error");}
         ;        
-atom_expr : atom {cout<<"atom"<<endl;}
+atom_expr : atom 
         | atom_expr  '[' sub_expr  ':' sub_expr  slice_op ']'{
 				if($1.type==5)
 				{
@@ -146,8 +117,7 @@ atom_expr : atom {cout<<"atom"<<endl;}
         | atom_expr  '[' add_expr ']'{
 				if($1.type==5){$1.type=3;$1.data.l=slice($1.data.slice);}
 				else if($1.type==4) {$1=unpack(*($1.data.v));}
-				cout<<"$1type="<<$1.type<<endl;
-				if($3.type==0&&$1.type==3){$$.type=4;$$.data.v=$1.data.l.val+$3.data.i;}
+				if($3.type==0&&$1.type==3){if($3.data.i<$1.data.l.len){$$.type=4;$$.data.v=$1.data.l.val+$3.data.i;}else yyerror("index out of bound");}
 				else{yyerror("type error");}
 				}
         | atom_expr  '.' ID
@@ -169,7 +139,6 @@ List_items
       | List_items ',' add_expr {append($1.data.l,pack($3));$$=$1;}
       ;
 add_expr : add_expr '+' mul_expr  {
-	 			cout<<"$1type="<<$1.type<<"$3type="<<$3.type<<endl;
 	 			switch($1.type)
 				{
 				case 0:
@@ -271,7 +240,7 @@ add_expr : add_expr '+' mul_expr  {
 				case 5: yyerror("internal error");
 				}
 				}
-	      |  mul_expr  {cout<<"add_expr"<<endl;}
+	      |  mul_expr  
         ;
 mul_expr : mul_expr '*' factor  {
 	 			switch($1.type)
@@ -329,7 +298,7 @@ mul_expr : mul_expr '*' factor  {
 				else yyerror("type error");
 				}
         |  mul_expr '%' factor {if($1.type<2&&$3.type<2) /*{$$.type=1;$$.data.i=($1.type?$1.data.f:$1.data.i)%($3.type?$3.data.f:$3.data.i);}*/;/*TODO:change to py mod*/}
-        |  factor {cout<<"factor"<<endl;}
+        |  factor 
         ;
 
 %%
@@ -337,7 +306,7 @@ mul_expr : mul_expr '*' factor  {
 int main()
 {
 	table=(TABLE*)malloc(INIT_TABLE_SIZE*sizeof(TABLE));
-   return yyparse();
+	return yyparse();
 }
 
 void yyerror(const char *s)
@@ -400,7 +369,6 @@ int FIND(char *s)
 void print(VAL val)//FIXME: a=[a]
 {
 	int i;
-	cout<<"type:"<<val.flag<<" ";
 	switch(val.flag)
 	{
 		case 0:

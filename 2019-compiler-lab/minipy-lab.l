@@ -25,13 +25,11 @@ real     {number}"."{number}?|{number}?"."{number}
 {number}	{
 			yylval.type=0; 
 			yylval.data.i = atoi(yytext);
-			printf("int %s\n",yytext);
 			return INT;
 		}
 {real}		{
 			yylval.type=1; 
 			yylval.data.f = atof(yytext);
-			printf("real %s\n",yytext);
 			return REAL;
 		}
 {id}		{
@@ -39,7 +37,6 @@ real     {number}"."{number}?|{number}?"."{number}
 			yylval.data.s = (char *)malloc(sizeof(char)*(len+1)); 
 			strcpy(yylval.data.s,yytext);
 			yylval.type=2;
-			printf("ID %s\n",yylval.data.s);
              		return ID; 
 		}
 \"(\\.|[^\\"])*\"	{int len = strlen(yytext);
@@ -47,7 +44,6 @@ real     {number}"."{number}?|{number}?"."{number}
 			yytext[len-1]=0;
 			strcpy(yylval.data.s,yytext+1);
 			yylval.type=2;
-			printf("string literial %s\n",yylval.data.s);
              		return(STRING_LITERAL); 
 		}
 .|\n        { return yytext[0];}
