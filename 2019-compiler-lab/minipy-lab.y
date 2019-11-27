@@ -54,7 +54,7 @@ assignExpr:
 							}
 							break;
 					}
-					case 5:if($3.type==3)setslice($1.data.slice,$3.data.l);else yyerror("type error");
+					case 5:if($3.type==3)setslice($1.data.slice,$3.data.l);else {yyerror("type error");YYERROR;}
 					}
 					}
       | add_expr	{
@@ -95,10 +95,10 @@ atom  : ID {
       | number
       ;
 slice_op :  /*  empty production */{$$.type=1;$$.data.i=1;}
-        | ':' add_expr {if($1.type!=0)yyerror("type error");else $$=$2;}
+        | ':' add_expr {if($1.type!=0){yyerror("type error");YYERROR;}else $$=$2;}
         ;
 sub_expr:  /*  empty production */  {$$.type=-1;}
-        | add_expr {if($1.type!=0) yyerror("type error");}
+        | add_expr {if($1.type!=0) {yyerror("type error");YYERROR;}}
         ;        
 atom_expr : atom 
         | atom_expr  '[' sub_expr  ':' sub_expr  slice_op ']'{
@@ -125,15 +125,15 @@ atom_expr : atom
 						$$.data.slice.step=$6.data.i;
 						$$.type=5;
 					}	
-					else yyerror("type error");
+					else {yyerror("type error");YYERROR;}
 				}
-				else yyerror("type error");
+				else {yyerror("type error");YYERROR;}
 				}
         | atom_expr  '[' add_expr ']'{
 				if($1.type==5){$1.type=3;$1.data.l=slice($1.data.slice);}
 				else if($1.type==4) {$1=unpack(*($1.data.v));}
 				if($3.type==0&&$1.type==3){if($3.data.i<$1.data.l.len){$$.type=4;$$.data.v=$1.data.l.val+$3.data.i;}else yyerror("index out of bound");}
-				else{yyerror("type error");}
+				else{yyerror("type error");YYERROR;}
 				}
         | atom_expr  '.' ID {$$=$1;$$.name=$3.data.s;}
         | atom_expr  '(' arglist opt_comma ')'{
@@ -143,11 +143,13 @@ atom_expr : atom
 				if(table[i].Res==0)
 				{
 					yyerror("TypeError: object is not callable");
+					YYERROR;
 				}
 				int len=$3.data.l.len;
 				if(len>1)
 				{
 					yyerror("TypeError: len() takes exactly one argument");
+					YYERROR;
 				}
 				int type=$3.data.l.val[0].flag;
 				if(type==2)
@@ -160,6 +162,7 @@ atom_expr : atom
 				}
 				else{
 					yyerror("TypeError: object has no len()");
+					YYERROR;
 				}
 				$$.type=0;
 			}
@@ -283,9 +286,9 @@ add_expr : add_expr '+' mul_expr  {
 						case 0: $$.type=0;$$.data.i=$1.data.i+$3.data.i;break;
 						case 1: $$.type=1;$$.data.f=$1.data.i+$3.data.f;break;
 						case 2: 
-						case 3: yyerror("type error"); break;
+						case 3: yyerror("type error");YYERROR; break;
 						case 4:
-						case 5: yyerror("internal error");break;
+						case 5: yyerror("internal error");YYERROR;break;
 					}
 					break;
 				case 1:
@@ -294,9 +297,9 @@ add_expr : add_expr '+' mul_expr  {
 						case 0: $$.type=1;$$.data.f=$1.data.f+$3.data.i;break;
 						case 1: $$.type=1;$$.data.f=$1.data.f+$3.data.f;break;
 						case 2:
-						case 3: yyerror("type error"); break;
+						case 3: yyerror("type error");YYERROR; break;
 						case 4:
-						case 5: yyerror("internal error");break;
+						case 5: yyerror("internal error");YYERROR;break;
 					}
 					break;
 				case 2:
@@ -312,9 +315,9 @@ add_expr : add_expr '+' mul_expr  {
 					} 
 					case 1:
 					case 0:
-					case 3: yyerror("type error"); break;
+					case 3: yyerror("type error");YYERROR; break;
 					case 4:
-					case 5: yyerror("internal error");break;
+					case 5: yyerror("internal error");YYERROR;break;
 					}
 					break;
 				case 3:
@@ -322,14 +325,14 @@ add_expr : add_expr '+' mul_expr  {
 					{
 						case 0: 
 						case 1:
-						case 2: yyerror("type error"); break;
+						case 2: yyerror("type error");YYERROR; break;
 						case 3: $$.type=3;$$.data.l=newlist();add($$.data.l,$1.data.l);add($$.data.l,$3.data.l);break;
 						case 4:
-						case 5: yyerror("internal error");break;
+						case 5: yyerror("internal error");YYERROR;break;
 					}
 					break;
 				case 4:
-				case 5: yyerror("internal error");
+				case 5: yyerror("internal error");YYERROR;
 				}
 				}
 	      |  add_expr '-' mul_expr {
@@ -341,9 +344,9 @@ add_expr : add_expr '+' mul_expr  {
 						case 0: $$.type=0;$$.data.i=$1.data.i-$3.data.i;break;
 						case 1: $$.type=1;$$.data.f=$1.data.i-$3.data.f;break;
 						case 2: 
-						case 3: yyerror("type error"); break;
+						case 3: yyerror("type error");YYERROR; break;
 						case 4:
-						case 5: yyerror("internal error");break;
+						case 5: yyerror("internal error");YYERROR;break;
 					}
 					break;
 				case 1:
@@ -352,9 +355,9 @@ add_expr : add_expr '+' mul_expr  {
 						case 0: $$.type=1;$$.data.f=$1.data.f-$3.data.i;break;
 						case 1: $$.type=1;$$.data.f=$1.data.f-$3.data.f;break;
 						case 2:
-						case 3: yyerror("type error"); break;
+						case 3: yyerror("type error"); YYERROR;break;
 						case 4:
-						case 5: yyerror("internal error");break;
+						case 5: yyerror("internal error");YYERROR;break;
 					}
 					break;
 				case 2:
@@ -363,9 +366,9 @@ add_expr : add_expr '+' mul_expr  {
 						case 2:/*TODO:str + str*/  break; 
 						case 1:
 						case 0:
-						case 3: yyerror("type error"); break;
+						case 3: yyerror("type error");YYERROR; break;
 						case 4:
-						case 5: yyerror("internal error");break;
+						case 5: yyerror("internal error");YYERROR;break;
 					}
 					break;
 				case 3:
@@ -374,13 +377,13 @@ add_expr : add_expr '+' mul_expr  {
 						case 0: 
 						case 1:
 						case 2: 
-						case 3: yyerror("type error"); break;
+						case 3: yyerror("type error"); YYERROR;break;
 						case 4:
-						case 5: yyerror("internal error");break;
+						case 5: yyerror("internal error");YYERROR;break;
 					}
 					break;
 				case 4:
-				case 5: yyerror("internal error");
+				case 5: yyerror("internal error");YYERROR;
 				}
 				}
 	      |  mul_expr  
@@ -396,7 +399,7 @@ mul_expr : mul_expr '*' factor  {
 						case 2: /*TODO:str * int*/break;
 						case 3: $$.type=3;$$.data.l=newlist();for(int i=0;i<$1.data.i;i++) add($$.data.l,$3.data.l); break;
 						case 4:
-						case 5: yyerror("internal error");break;
+						case 5: yyerror("internal error");YYERROR;break;
 					}
 					break;
 				case 1:
@@ -405,9 +408,9 @@ mul_expr : mul_expr '*' factor  {
 						case 0: $$.type=1;$$.data.f=$1.data.f*$3.data.i;break;
 						case 1: $$.type=1;$$.data.f=$1.data.f*$3.data.f;break;
 						case 2:
-						case 3: yyerror("type error"); break;
+						case 3: yyerror("type error");YYERROR; break;
 						case 4:
-						case 5: yyerror("internal error");break;
+						case 5: yyerror("internal error");YYERROR;break;
 					}
 					break;
 				case 2:
@@ -416,9 +419,9 @@ mul_expr : mul_expr '*' factor  {
 						case 0: /*TODO:str * int*/ break; 
 						case 1:
 						case 2:
-						case 3: yyerror("type error"); break;
+						case 3: yyerror("type error");YYERROR; break;
 						case 4:
-						case 5: yyerror("internal error");break;
+						case 5: yyerror("internal error");YYERROR;break;
 					}
 					break;
 				case 3:
@@ -427,18 +430,18 @@ mul_expr : mul_expr '*' factor  {
 						case 0: $$.type=3;$$.data.l=newlist();for(int i=0;i<$3.data.i;i++) add($$.data.l,$1.data.l); break;
 						case 1:
 						case 2:
-						case 3: yyerror("type error"); break;
+						case 3: yyerror("type error"); YYERROR;break;
 						case 4:
-						case 5: yyerror("internal error");break;
+						case 5: yyerror("internal error");YYERROR;break;
 					}
 					break;
 				case 4:
-				case 5: yyerror("internal error");
+				case 5: yyerror("internal error");YYERROR;
 				}
 				} 
         |  mul_expr '/' factor  {
 				if($1.type<2&&$3.type<2) {$$.type=1;$$.data.i=($1.type?$1.data.f:$1.data.i)/($3.type?$3.data.f:$3.data.i);}
-				else yyerror("type error");
+				else {yyerror("type error");YYERROR;};
 				}
         |  mul_expr '%' factor {if($1.type<2&&$3.type<2) /*{$$.type=1;$$.data.i=($1.type?$1.data.f:$1.data.i)%($3.type?$3.data.f:$3.data.i);}*/;/*TODO:change to py mod*/}
         |  factor 
