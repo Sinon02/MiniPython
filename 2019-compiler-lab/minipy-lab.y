@@ -167,8 +167,23 @@ atom_expr : atom
 				$$.type=0;
 			}
 			else if(!strcmp($1.name,"range"))
-			{
+			{	
+				int i=FIND($1.name);
+				if(table[i].Res==0)
+				{
+					yyerror("TypeError: object is not callable");
+					YYERROR;
+				}
 				int len=$3.data.l.len;
+				for(i=0;i<len;i++)
+				{
+					if($3.data.l.val[i].flag==3)
+					{
+						yyerror("TypeError: range() integer end argument expected, got list.");
+						YYERROR;
+					}
+				}
+				
 				if(len==1)
 				{
 					struct list l;
@@ -216,11 +231,21 @@ atom_expr : atom
 					$$.data.l=l;
 					$$.type=3;
 				}
-
+				else
+				{
+					yyerror("TypeError: range expected at most 3 arguments");
+					YYERROR;
+				}
 
 			}
 			else if(!strcmp($1.name,"print"))
 			{
+				int i=FIND($1.name);
+				if(table[i].Res==0)
+				{
+					yyerror("TypeError: object is not callable");
+					YYERROR;
+				}
 				int len=$3.data.l.len;
 				for(int i=0;i<len;i++)
 				{
@@ -231,6 +256,12 @@ atom_expr : atom
 			}
 			else if(!strcmp($1.name,"append"))
 			{
+				int i=FIND($1.name);
+				if(table[i].Res==0)
+				{
+					yyerror("TypeError: object is not callable");
+					YYERROR;
+				}
 				int len=$3.data.l.len;
 				if(len==1)
 				{
@@ -249,10 +280,22 @@ atom_expr : atom
 		{
 			if(!strcmp($1.name,"quit"))
 			{
+				int i=FIND($1.name);
+				if(table[i].Res==0)
+				{
+					yyerror("TypeError: object is not callable");
+					YYERROR;
+				}
 				exit(-1);
 			}
 			else if(!strcmp($1.name,"time"))
 			{
+				int i=FIND($1.name);
+				if(table[i].Res==0)
+				{
+					yyerror("TypeError: object is not callable");
+					YYERROR;
+				}
 				time_t t = time(NULL);
     			struct tm* stime=localtime(&t);
 				char *tmp=(char*)malloc(sizeof(char)*32);
