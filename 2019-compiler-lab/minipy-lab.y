@@ -211,7 +211,6 @@ atom_expr : atom
 						val.DATA.i=i;
 						append(l,val);
 					}
-					$$.data.l=l;
 					$$.type=3;
 				}
 				else if(len==3)
@@ -252,6 +251,8 @@ atom_expr : atom
 					print($3.data.l.val[i]);
 					cout<<" ";
 				}
+				yyerror("");
+				YYERROR;
 				
 			}
 			else if(!strcmp($1.name,"append"))
@@ -581,7 +582,7 @@ void print(VAL val)//FIXME: a=[a]
 			cout<<val.DATA.f;
 			break;
 		case 2:
-			cout<<val.DATA.s;
+			cout<<"'"<<val.DATA.s<<"'";
 			break;
 		case 3:
 			for(auto& p : print_stack)
