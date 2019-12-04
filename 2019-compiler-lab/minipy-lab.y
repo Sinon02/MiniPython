@@ -258,11 +258,6 @@ atom_expr : atom
 			else if(!strcmp($1.name,"append"))
 			{
 				int i=FIND($1.name);
-				if(table[i].Res==0)
-				{
-					yyerror("TypeError: object is not callable");
-					YYERROR;
-				}
 				int len=$3.data.l.len;
 				if(len==1)
 				{
@@ -275,6 +270,47 @@ atom_expr : atom
 					$$.data.s=tmp;
 					$$.type=2;
 				}
+			}
+			else if(!strcmp($1.name,"list"))
+			{
+				int i=FIND($1.name);
+				if(table[i].Res==0)
+				{
+					yyerror("TypeError: object is not callable");
+					YYERROR;
+				}
+				int len=$3.data.l.len;
+				if(len>1)
+				{
+					yyerror("TypeError: list() takes at most 1 argument");
+					YYERROR;
+				}
+				int type=$3.data.l.val[0].flag;
+				if(type==2)
+				{
+					struct list l;l=newlist();
+					int str_len=strlen($3.data.l.val[0].DATA.s);
+					for(int i=0;i<str_len;i++)
+					{
+						VAL val;val.flag=2;val.DATA.s=(char *)malloc(sizeof(char));
+						*val.DATA.s=$3.data.l.val[0].DATA.s[i];
+						append(l,val);
+					}
+					$$.type=3;
+					$$.data.l=l;
+				}
+				else if(type==3)
+				{
+					$$.type=3;
+					$$.data.l=$3.data.l.val[0].DATA.l;
+				}
+				else
+				{
+					yyerror("TypeError: object is not iterable");
+					YYERROR;
+				}
+				
+				
 			}
 		}
         | atom_expr  '('  ')'
@@ -298,13 +334,20 @@ atom_expr : atom
 					YYERROR;
 				}
 				time_t t = time(NULL);
-    			struct tm* stime=localtime(&t);
+    				struct tm* stime=localtime(&t);
 				char *tmp=(char*)malloc(sizeof(char)*32);
-     			sprintf(tmp, "%04d-%02d-%02d %02d:%02d:%02d",1900+stime->tm_year,1+stime->tm_mon,
-                stime->tm_mday, stime->tm_hour,
-                stime->tm_min,stime->tm_sec);
+     				sprintf(tmp, "%04d-%02d-%02d %02d:%02d:%02d",1900+stime->tm_year,1+stime->tm_mon,
+                		stime->tm_mday, stime->tm_hour,
+                		stime->tm_min,stime->tm_sec);
 				$$.data.s=tmp;
 				$$.type=2;
+			}
+			else if(!strcmp($1.name,"list"))/*TODO:list.append(5)*/
+			{
+				struct list l;
+				l=newlist();
+				$$.data.l=l;
+				$$.type=3;
 			}
 		}
         ;
