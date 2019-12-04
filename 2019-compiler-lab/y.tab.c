@@ -450,7 +450,7 @@ static const yytype_uint16 yyrline[] =
       60,    64,    65,    67,    68,    69,    87,    93,    94,    95,
       97,    98,   100,   101,   103,   104,   132,   138,   139,   280,
      311,   312,   314,   315,   317,   318,   321,   322,   324,   382,
-     433,   435,   486,   490,   491
+     433,   435,   511,   515,   516
 };
 #endif
 
@@ -1723,7 +1723,7 @@ yyreduce:
 				case 2:
 					switch((yyvsp[0]).type)
 					{
-						case 2:/*TODO:str + str*/  break; 
+						case 2: yyerror("TypeError: unsupported operand type(s) for -: 'str' and 'str'");YYERROR;  break; 
 						case 1:
 						case 0:
 						case 3: yyerror("type error");YYERROR; break;
@@ -1759,7 +1759,20 @@ yyreduce:
 					{
 						case 0: (yyval).type=0;(yyval).data.i=(yyvsp[-2]).data.i*(yyvsp[0]).data.i;break;
 						case 1: (yyval).type=1;(yyval).data.f=(yyvsp[-2]).data.i*(yyvsp[0]).data.f;break;
-						case 2: /*TODO:str * int*/break;
+						case 2:
+							{
+							int sum_len = strlen((yyvsp[0]).data.s)*(yyvsp[-2]).data.i+1;
+							char *temp = (char *)malloc(sizeof(char)*sum_len);
+							strcpy(temp,(yyvsp[0]).data.s);
+							for(int i=0;i<(yyvsp[-2]).data.i-1;i++)
+							{	
+							sprintf(temp,"%s%s",temp,(yyvsp[0]).data.s);
+							}
+							(yyval).type=2;
+							(yyval).data.s=temp;  
+							break;
+							} 
+
 						case 3: (yyval).type=3;(yyval).data.l=newlist();for(int i=0;i<(yyvsp[-2]).data.i;i++) add((yyval).data.l,(yyvsp[0]).data.l); break;
 						case 4:
 						case 5: yyerror("internal error");YYERROR;break;
@@ -1779,7 +1792,19 @@ yyreduce:
 				case 2:
 					switch((yyvsp[0]).type)
 					{
-						case 0: /*TODO:str * int*/ break; 
+						case 0: 
+							{
+							int sum_len = strlen((yyvsp[-2]).data.s)*(yyvsp[0]).data.i+1;
+							char *temp = (char *)malloc(sizeof(char)*sum_len);
+							strcpy(temp,(yyvsp[-2]).data.s);
+							for(int i=0;i<(yyvsp[0]).data.i-1;i++)
+							{	
+							sprintf(temp,"%s%s",temp,(yyvsp[-2]).data.s);
+							}
+							(yyval).type=2;
+							(yyval).data.s=temp;  
+							break;
+							}
 						case 1:
 						case 2:
 						case 3: yyerror("type error");YYERROR; break;
@@ -1802,26 +1827,26 @@ yyreduce:
 				case 5: yyerror("internal error");YYERROR;
 				}
 				}
-#line 1806 "y.tab.c" /* yacc.c:1646  */
+#line 1831 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 42:
-#line 486 "minipy-lab.y" /* yacc.c:1646  */
+#line 511 "minipy-lab.y" /* yacc.c:1646  */
     {
 				if((yyvsp[-2]).type<2&&(yyvsp[0]).type<2) {(yyval).type=1;(yyval).data.i=((yyvsp[-2]).type?(yyvsp[-2]).data.f:(yyvsp[-2]).data.i)/((yyvsp[0]).type?(yyvsp[0]).data.f:(yyvsp[0]).data.i);}
 				else {yyerror("type error");YYERROR;};
 				}
-#line 1815 "y.tab.c" /* yacc.c:1646  */
+#line 1840 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 43:
-#line 490 "minipy-lab.y" /* yacc.c:1646  */
+#line 515 "minipy-lab.y" /* yacc.c:1646  */
     {if((yyvsp[-2]).type<2&&(yyvsp[0]).type<2) /*{$$.type=1;$$.data.i=($1.type?$1.data.f:$1.data.i)%($3.type?$3.data.f:$3.data.i);}*/;/*TODO:change to py mod*/}
-#line 1821 "y.tab.c" /* yacc.c:1646  */
+#line 1846 "y.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1825 "y.tab.c" /* yacc.c:1646  */
+#line 1850 "y.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2049,7 +2074,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 494 "minipy-lab.y" /* yacc.c:1906  */
+#line 519 "minipy-lab.y" /* yacc.c:1906  */
 
 
 int main()

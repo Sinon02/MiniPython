@@ -407,7 +407,7 @@ add_expr : add_expr '+' mul_expr  {
 				case 2:
 					switch($3.type)
 					{
-						case 2:/*TODO:str + str*/  break; 
+						case 2: yyerror("TypeError: unsupported operand type(s) for -: 'str' and 'str'");YYERROR;  break; 
 						case 1:
 						case 0:
 						case 3: yyerror("type error");YYERROR; break;
@@ -440,7 +440,20 @@ mul_expr : mul_expr '*' factor  {
 					{
 						case 0: $$.type=0;$$.data.i=$1.data.i*$3.data.i;break;
 						case 1: $$.type=1;$$.data.f=$1.data.i*$3.data.f;break;
-						case 2: /*TODO:str * int*/break;
+						case 2:
+							{
+							int sum_len = strlen($3.data.s)*$1.data.i+1;
+							char *temp = (char *)malloc(sizeof(char)*sum_len);
+							strcpy(temp,$3.data.s);
+							for(int i=0;i<$1.data.i-1;i++)
+							{	
+							sprintf(temp,"%s%s",temp,$3.data.s);
+							}
+							$$.type=2;
+							$$.data.s=temp;  
+							break;
+							} 
+
 						case 3: $$.type=3;$$.data.l=newlist();for(int i=0;i<$1.data.i;i++) add($$.data.l,$3.data.l); break;
 						case 4:
 						case 5: yyerror("internal error");YYERROR;break;
@@ -460,7 +473,19 @@ mul_expr : mul_expr '*' factor  {
 				case 2:
 					switch($3.type)
 					{
-						case 0: /*TODO:str * int*/ break; 
+						case 0: 
+							{
+							int sum_len = strlen($1.data.s)*$3.data.i+1;
+							char *temp = (char *)malloc(sizeof(char)*sum_len);
+							strcpy(temp,$1.data.s);
+							for(int i=0;i<$3.data.i-1;i++)
+							{	
+							sprintf(temp,"%s%s",temp,$1.data.s);
+							}
+							$$.type=2;
+							$$.data.s=temp;  
+							break;
+							}
 						case 1:
 						case 2:
 						case 3: yyerror("type error");YYERROR; break;
