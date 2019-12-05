@@ -142,7 +142,7 @@ atom_expr : atom
 				else {yyerror("type error");YYERROR;}
 				}
         | atom_expr  '[' add_expr ']'{
-				if($1.type==5){$1.type=3;$1.data.l=slice($1.data.slice);}
+				if($1.type==5){if($3.type==0){$3.data.i=$1.data.slice.begin+$1.data.slice.step*$3.data.i;$1.type=3;$1.data.l=*($1.data.slice.l);}else{yyerror("type error");YYERROR;}}
 				else if($1.type==4) {$1=unpack(*($1.data.v));}
 				if($3.type==0&&$1.type==3){if($3.data.i<$1.data.l.len){$$.type=4;$$.data.v=$1.data.l.val+$3.data.i;}else yyerror("index out of bound");}
 				else{yyerror("type error");YYERROR;}
@@ -275,6 +275,7 @@ atom_expr : atom
 				if(len==1)
 				{
 					append((*($$.data.v)).DATA.l,$3.data.l.val[0]);
+					$$.type=-1;
 				}
 				else
 				{
@@ -607,10 +608,7 @@ VAL pack(YYSTYPE val)
 	VAL r;
 	switch(val.type)
 	{
-	case 0:
-	case 1:
-	case 2:
-	case 3:
+	default:
 		r.flag=val.type;
 		r.DATA=*((union vald*)(&(val.data)));
 		break;
@@ -651,11 +649,14 @@ int FIND(char *s)
 	return i;
 }
 
-void print(VAL val)//FIXME: a=[a]
+void print(VAL val)
 {
 	int i;
 	switch(val.flag)
 	{
+		case -1:
+			cout<<"None";
+			break;
 		case 0:
 			cout<<val.DATA.i;
 			break;
