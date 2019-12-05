@@ -13,7 +13,7 @@ union vald{
 	struct list l;//flag=3
 	};
 struct VAL{
-    int flag;
+    	int flag;
 	union vald DATA;	
 };   
 typedef struct VAL VAL;
@@ -59,4 +59,7 @@ struct list slice(struct slice s);
 struct list slice(struct list l,int begin,int end,int step);
 inline void setslice(struct slice s,struct list o);
 void setslice(struct list &l,int begin,int end,int step,struct list o);
+int MOD(int n,int M);
+float FMOD(float n,float M);
+void PrintFloat(float a);
 #endif

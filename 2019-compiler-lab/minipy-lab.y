@@ -46,7 +46,7 @@ assignExpr:
 					case 1:
 					case 2:
 					case 3:yyerror("assign to right value");break;
-					case 4:{*($1.data.v)=pack($3);
+					case 4:{	*($1.data.v)=pack($3);
 				 			int i=FIND($1.name);
 							if(table[i].Res==1)
 							{
@@ -147,7 +147,7 @@ atom_expr : atom
 				if($3.type==0&&$1.type==3){if($3.data.i<$1.data.l.len){$$.type=4;$$.data.v=$1.data.l.val+$3.data.i;}else yyerror("index out of bound");}
 				else{yyerror("type error");YYERROR;}
 				}
-        | atom_expr  '.' ID {$$=$1;$$.name=$3.data.s;}
+        | atom_expr  '.' ID {$$.name=$3.data.s;}
         | atom_expr  '(' arglist opt_comma ')'{
 			if(!strcmp($1.name,"len"))
 			{
@@ -270,20 +270,21 @@ atom_expr : atom
 			}
 			else if(!strcmp($1.name,"append"))
 			{
-				int i=FIND($1.name);
 				int len=$3.data.l.len;
 				if(len==1)
 				{
+					if($1.type==4)
 					append((*($$.data.v)).DATA.l,$3.data.l.val[0]);
+					else if($1.type==3)
+					append($$.data.l,$3.data.l.val[0]); 
 					$$.type=-1;
 				}
 				else
 				{
-					char *tmp=(char*)malloc(sizeof(char)*60);
-					sprintf(tmp, "TypeError: append() takes exactly one argument (%d given)",len);
-					$$.data.s=tmp;
-					$$.type=2;
+					yyerror("TypeError: append() takes exactly one argument");
+					YYERROR;
 				}
+				
 			}
 			else if(!strcmp($1.name,"list"))
 			{
@@ -379,6 +380,11 @@ List_items
       | List_items ',' add_expr {append($1.data.l,pack($3));$$=$1;}
       ;
 add_expr : add_expr '+' mul_expr  {
+	 			if($1.type==-1||$3.type==-1)
+				{
+					yyerror("TypeError: unsupported operand type(s) for +: 'NoneType'");
+					YYERROR;
+				}
 	 			switch($1.type)
 				{
 				case 0:
@@ -437,6 +443,11 @@ add_expr : add_expr '+' mul_expr  {
 				}
 				}
 	      |  add_expr '-' mul_expr {
+				if($1.type==-1||$3.type==-1)
+				{
+					yyerror("TypeError: unsupported operand type(s) for -: 'NoneType'");
+					YYERROR;
+				}
 	 			switch($1.type)
 				{
 				case 0:
@@ -490,6 +501,11 @@ add_expr : add_expr '+' mul_expr  {
 	      |  mul_expr  
         ;
 mul_expr : mul_expr '*' factor  {
+				if($1.type==-1||$3.type==-1)
+				{
+					yyerror("TypeError: unsupported operand type(s) for *: 'NoneType'");
+					YYERROR;
+				}
 	 			switch($1.type)
 				{
 				case 0:
@@ -566,10 +582,40 @@ mul_expr : mul_expr '*' factor  {
 				}
 				} 
         |  mul_expr '/' factor  {
-				if($1.type<2&&$3.type<2) {$$.type=1;$$.data.i=($1.type?$1.data.f:$1.data.i)/($3.type?$3.data.f:$3.data.i);}
+				if($1.type==-1||$3.type==-1)
+				{
+					yyerror("TypeError: unsupported operand type(s) for /: 'NoneType'");
+					YYERROR;
+				}
+				if($1.type<2&&$3.type<2) {$$.type=1;$$.data.f=($1.type?$1.data.f:$1.data.i)/($3.type?$3.data.f:$3.data.i);}
+
 				else {yyerror("type error");YYERROR;};
 				}
-        |  mul_expr '%' factor {if($1.type<2&&$3.type<2) /*{$$.type=1;$$.data.i=($1.type?$1.data.f:$1.data.i)%($3.type?$3.data.f:$3.data.i);}*/;/*TODO:change to py mod*/}
+        |  mul_expr '%' factor 	{
+					if($1.type==-1||$3.type==-1)
+					{
+						yyerror("TypeError: unsupported operand type(s) for /: 'NoneType'");
+						YYERROR;
+					}	
+					if($1.type<2&&$3.type<2)
+					{
+						if($1.type==0&&$3.type==0)
+						{
+							$$.type=0;
+							$$.data.i=MOD($1.data.i,$3.data.i);
+						}
+						else
+						{
+							$$.type=1;
+							$$.data.f=FMOD($1.type?$1.data.f:$1.data.i,$3.type?$3.data.f:$3.data.i);
+						}
+					}
+					else
+					{
+						yyerror("TypeError");
+						YYERROR;
+					}
+				}
         |  factor 
         ;
 
@@ -577,7 +623,7 @@ mul_expr : mul_expr '*' factor  {
 
 int main()
 {	int i;
-    int FuncNum=10;
+   	int FuncNum=10;
 	table=(TABLE*)malloc(INIT_TABLE_SIZE*sizeof(TABLE));
 	for(i=0;i<FuncNum;i++)
 	{
@@ -661,7 +707,7 @@ void print(VAL val)
 			cout<<val.DATA.i;
 			break;
 		case 1:
-			cout<<val.DATA.f;
+			PrintFloat(val.DATA.f);
 			break;
 		case 2:
 			cout<<"'"<<val.DATA.s<<"'";
@@ -799,4 +845,27 @@ inline void setslice(struct slice s,struct list o)
 {
 	setslice(*(s.l),s.begin,s.end,s.step,o);
 	return;
+}
+
+int MOD(int n,int M)
+{
+	return (n%M+M)%M; 
+}
+
+float FMOD(float n,float M)
+{
+	return fmod(fmod(n,M)+M,M);
+}
+void PrintFloat(float a)
+{
+    	std::streamsize ss = std::cout.precision();
+	if(a==(int)a)
+	{	
+		std::cout<<std::setprecision(1)<<std::fixed<<a;
+	}
+	else
+	{
+		std::cout<<a;
+	}
+    	std::cout << std::defaultfloat << std::setprecision(ss);
 }
