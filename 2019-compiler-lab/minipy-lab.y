@@ -65,7 +65,19 @@ number : INT
        | REAL
        ;
 factor : '+' factor
-       | '-' factor
+       | '-' factor	{
+				switch($2.type)
+				{
+					case 0: $$.data.i=-$2.data.i;$$.type=$2.type;break;
+					case 1: $$.data.f=-$2.data.f;$$.type=$2.type;break;
+					case 2:	yyerror("TypeError: bad operand type for unary -: 'str'");
+						YYERROR;
+					case 3: yyerror("TypeError: bad operand type for unary -: 'list'");
+						YYERROR;
+					default: yyerror("TypeError: bad operand type");
+						YYERROR;
+				}	
+			}
        | atom_expr	{
 			{
 				switch($1.type)
@@ -195,7 +207,7 @@ atom_expr : atom
 						val.DATA.i=i;
 						append(l,val);
 					}
-				    $$.data.l=l;
+				    	$$.data.l=l;
 					$$.type=3;
 				}
 				else if(len==2)
@@ -211,6 +223,7 @@ atom_expr : atom
 						val.DATA.i=i;
 						append(l,val);
 					}
+					$$.data.l=l;
 					$$.type=3;
 				}
 				else if(len==3)
@@ -220,7 +233,7 @@ atom_expr : atom
 					int start=$3.data.l.val[0].DATA.i;
 					int end=$3.data.l.val[1].DATA.i;
 					int step=$3.data.l.val[2].DATA.i;
-					for(int i=start;i<end;i+=step)
+					for(int i=start;i!=end;i+=step)
 					{
 						VAL val;
 						val.flag=0;
