@@ -78,7 +78,6 @@
    #include <string.h>
    #include <iomanip>
    #include "types.h"
-#define eps 1e-6
 #define INIT_LIST_SIZE 10
 #define INIT_TABLE_SIZE 20
 
@@ -88,7 +87,7 @@ int tablesize=INIT_TABLE_SIZE;
 vector<unsigned long> print_stack;
 
 
-#line 92 "y.tab.c" /* yacc.c:339  */
+#line 91 "y.tab.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -148,7 +147,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 152 "y.tab.c" /* yacc.c:358  */
+#line 151 "y.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -446,11 +445,11 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,    30,    30,    32,    33,    34,    35,    37,    39,    42,
+       0,    29,    29,    31,    32,    33,    34,    36,    38,    41,
       60,    64,    65,    67,    68,    81,    99,   105,   106,   107,
-     109,   110,   112,   113,   115,   116,   144,   173,   174,   351,
-     387,   394,   396,   397,   399,   400,   403,   410,   412,   475,
-     531,   533,   613,   623,   648
+     109,   110,   119,   120,   122,   123,   151,   180,   181,   358,
+     394,   401,   403,   404,   406,   407,   410,   417,   419,   482,
+     538,   540,   624,   634,   659
 };
 #endif
 
@@ -1266,19 +1265,19 @@ yyreduce:
   switch (yyn)
     {
         case 6:
-#line 35 "minipy-lab.y" /* yacc.c:1646  */
+#line 34 "minipy-lab.y" /* yacc.c:1646  */
     {yyerrok;}
-#line 1272 "y.tab.c" /* yacc.c:1646  */
+#line 1271 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 37 "minipy-lab.y" /* yacc.c:1646  */
+#line 36 "minipy-lab.y" /* yacc.c:1646  */
     {cout << "\nminiPy> ";}
-#line 1278 "y.tab.c" /* yacc.c:1646  */
+#line 1277 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 42 "minipy-lab.y" /* yacc.c:1646  */
+#line 41 "minipy-lab.y" /* yacc.c:1646  */
     {
 					switch((yyvsp[-2]).type)
 					{
@@ -1286,7 +1285,8 @@ yyreduce:
 					case 1:
 					case 2:
 					case 3:yyerror("assign to right value");break;
-					case 4:{	*((yyvsp[-2]).data.v)=pack((yyvsp[0]));
+					case 4:{	
+							*((yyvsp[-2]).data.v)=pack((yyvsp[0]));
 				 			int i=FIND((yyvsp[-2]).name);
 							if(table[i].Res==1)
 							{
@@ -1360,30 +1360,37 @@ yyreduce:
 
   case 20:
 #line 109 "minipy-lab.y" /* yacc.c:1646  */
-    {(yyval).type=1;(yyval).data.i=1;}
+    {(yyval).type=1; (yyval).data.i=1;}
 #line 1365 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 21:
 #line 110 "minipy-lab.y" /* yacc.c:1646  */
-    {if((yyvsp[-1]).type!=0){yyerror("type error");YYERROR;}else (yyval)=(yyvsp[0]);}
-#line 1371 "y.tab.c" /* yacc.c:1646  */
+    {
+			if((yyvsp[-1]).type!=0)
+			{
+				yyerror("type error"); 
+				YYERROR;
+			}
+			else (yyval)=(yyvsp[0]);
+			}
+#line 1378 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 22:
-#line 112 "minipy-lab.y" /* yacc.c:1646  */
+#line 119 "minipy-lab.y" /* yacc.c:1646  */
     {(yyval).type=-1;}
-#line 1377 "y.tab.c" /* yacc.c:1646  */
+#line 1384 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 23:
-#line 113 "minipy-lab.y" /* yacc.c:1646  */
+#line 120 "minipy-lab.y" /* yacc.c:1646  */
     {if((yyvsp[0]).type!=0) {yyerror("type error");YYERROR;}}
-#line 1383 "y.tab.c" /* yacc.c:1646  */
+#line 1390 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 25:
-#line 116 "minipy-lab.y" /* yacc.c:1646  */
+#line 123 "minipy-lab.y" /* yacc.c:1646  */
     {
 				if((yyvsp[-6]).type==5)
 				{
@@ -1412,11 +1419,11 @@ yyreduce:
 				}
 				else {yyerror("type error");YYERROR;}
 				}
-#line 1416 "y.tab.c" /* yacc.c:1646  */
+#line 1423 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 26:
-#line 144 "minipy-lab.y" /* yacc.c:1646  */
+#line 151 "minipy-lab.y" /* yacc.c:1646  */
     {
 				if((yyvsp[-3]).type==5)
 				{
@@ -1446,17 +1453,17 @@ yyreduce:
 					YYERROR;
 				}
 			}
-#line 1450 "y.tab.c" /* yacc.c:1646  */
+#line 1457 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 27:
-#line 173 "minipy-lab.y" /* yacc.c:1646  */
+#line 180 "minipy-lab.y" /* yacc.c:1646  */
     {(yyval).name=(yyvsp[0]).data.s;}
-#line 1456 "y.tab.c" /* yacc.c:1646  */
+#line 1463 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 28:
-#line 174 "minipy-lab.y" /* yacc.c:1646  */
+#line 181 "minipy-lab.y" /* yacc.c:1646  */
     {
 			if(!strcmp((yyvsp[-4]).name,"len"))
 			{
@@ -1634,11 +1641,11 @@ yyreduce:
 			}
 			free((yyvsp[-2]).data.l.val);
 		}
-#line 1638 "y.tab.c" /* yacc.c:1646  */
+#line 1645 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 29:
-#line 352 "minipy-lab.y" /* yacc.c:1646  */
+#line 359 "minipy-lab.y" /* yacc.c:1646  */
     {
 			if(!strcmp((yyvsp[-2]).name,"quit"))
 			{
@@ -1661,7 +1668,7 @@ yyreduce:
 				time_t t = time(NULL);
     			struct tm* stime=localtime(&t);
 				char *tmp=(char*)malloc(sizeof(char)*32);
-     			sprintf(tmp, "%04d-%02d-%02d %02d:%02d:%02d",1900+stime->tm_year,1+stime->tm_mon,stime->tm_mday, stime->tm_hour,stime->tm_min,stime->tm_sec);
+     			sprintf(tmp, "%04d-%02d-%02d %02d:%02d:%02d", 1900+stime->tm_year, 1+stime->tm_mon,stime->tm_mday, stime->tm_hour, stime->tm_min, stime->tm_sec);
 				(yyval).data.s=tmp;
 				(yyval).type=2;
 			}
@@ -1673,11 +1680,11 @@ yyreduce:
 				(yyval).type=3;
 			}
 		}
-#line 1677 "y.tab.c" /* yacc.c:1646  */
+#line 1684 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 30:
-#line 387 "minipy-lab.y" /* yacc.c:1646  */
+#line 394 "minipy-lab.y" /* yacc.c:1646  */
     {
 				struct list l;
 				l=newlist();
@@ -1685,29 +1692,29 @@ yyreduce:
 				(yyval).type=3;
 				(yyval).data.l=l;
 			}
-#line 1689 "y.tab.c" /* yacc.c:1646  */
+#line 1696 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 31:
-#line 394 "minipy-lab.y" /* yacc.c:1646  */
+#line 401 "minipy-lab.y" /* yacc.c:1646  */
     {append((yyvsp[-2]).data.l,pack((yyvsp[0])));(yyval)=(yyvsp[-2]);}
-#line 1695 "y.tab.c" /* yacc.c:1646  */
+#line 1702 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 32:
-#line 396 "minipy-lab.y" /* yacc.c:1646  */
+#line 403 "minipy-lab.y" /* yacc.c:1646  */
     {(yyval).type=3;(yyval).data.l=newlist();}
-#line 1701 "y.tab.c" /* yacc.c:1646  */
+#line 1708 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 33:
-#line 397 "minipy-lab.y" /* yacc.c:1646  */
+#line 404 "minipy-lab.y" /* yacc.c:1646  */
     {(yyval)=(yyvsp[-2]);}
-#line 1707 "y.tab.c" /* yacc.c:1646  */
+#line 1714 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 36:
-#line 403 "minipy-lab.y" /* yacc.c:1646  */
+#line 410 "minipy-lab.y" /* yacc.c:1646  */
     {
 					struct list l;
 					l=newlist();
@@ -1715,17 +1722,17 @@ yyreduce:
 					(yyval).type=3;
 					(yyval).data.l=l;
 				}
-#line 1719 "y.tab.c" /* yacc.c:1646  */
+#line 1726 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 37:
-#line 410 "minipy-lab.y" /* yacc.c:1646  */
+#line 417 "minipy-lab.y" /* yacc.c:1646  */
     {append((yyvsp[-2]).data.l,pack((yyvsp[0])));(yyval)=(yyvsp[-2]);}
-#line 1725 "y.tab.c" /* yacc.c:1646  */
+#line 1732 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 38:
-#line 412 "minipy-lab.y" /* yacc.c:1646  */
+#line 419 "minipy-lab.y" /* yacc.c:1646  */
     {
 	 			if((yyvsp[-2]).type==-1||(yyvsp[0]).type==-1)
 				{
@@ -1789,11 +1796,11 @@ yyreduce:
 				case 5: yyerror("internal error");YYERROR;
 				}
 				}
-#line 1793 "y.tab.c" /* yacc.c:1646  */
+#line 1800 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 39:
-#line 475 "minipy-lab.y" /* yacc.c:1646  */
+#line 482 "minipy-lab.y" /* yacc.c:1646  */
     {
 				if((yyvsp[-2]).type==-1||(yyvsp[0]).type==-1)
 				{
@@ -1850,11 +1857,11 @@ yyreduce:
 				case 5: yyerror("internal error");YYERROR;
 				}
 				}
-#line 1854 "y.tab.c" /* yacc.c:1646  */
+#line 1861 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 41:
-#line 533 "minipy-lab.y" /* yacc.c:1646  */
+#line 540 "minipy-lab.y" /* yacc.c:1646  */
     {
 				if((yyvsp[-2]).type==-1||(yyvsp[0]).type==-1)
 				{
@@ -1881,7 +1888,11 @@ yyreduce:
 							(yyval).data.s=temp;  
 							break;
 							} 
-						case 3: (yyval).type=3;(yyval).data.l=newlist();for(int i=0;i<(yyvsp[-2]).data.i;i++) add((yyval).data.l,(yyvsp[0]).data.l); break;
+						case 3: (yyval).type=3;
+								(yyval).data.l=newlist();
+								for(int i=0;i<(yyvsp[-2]).data.i;i++) 
+									add((yyval).data.l,(yyvsp[0]).data.l);
+								break;
 						case 4:
 						case 5: yyerror("internal error");YYERROR;break;
 					}
@@ -1935,11 +1946,11 @@ yyreduce:
 				case 5: yyerror("internal error");YYERROR;
 				}
 				}
-#line 1939 "y.tab.c" /* yacc.c:1646  */
+#line 1950 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 42:
-#line 613 "minipy-lab.y" /* yacc.c:1646  */
+#line 624 "minipy-lab.y" /* yacc.c:1646  */
     {
 				if((yyvsp[-2]).type==-1||(yyvsp[0]).type==-1)
 				{
@@ -1950,11 +1961,11 @@ yyreduce:
 
 				else {yyerror("type error");YYERROR;};
 				}
-#line 1954 "y.tab.c" /* yacc.c:1646  */
+#line 1965 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 43:
-#line 623 "minipy-lab.y" /* yacc.c:1646  */
+#line 634 "minipy-lab.y" /* yacc.c:1646  */
     {
 					if((yyvsp[-2]).type==-1||(yyvsp[0]).type==-1)
 					{
@@ -1980,11 +1991,11 @@ yyreduce:
 						YYERROR;
 					}
 				}
-#line 1984 "y.tab.c" /* yacc.c:1646  */
+#line 1995 "y.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1988 "y.tab.c" /* yacc.c:1646  */
+#line 1999 "y.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2212,7 +2223,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 651 "minipy-lab.y" /* yacc.c:1906  */
+#line 662 "minipy-lab.y" /* yacc.c:1906  */
 
 
 int main()

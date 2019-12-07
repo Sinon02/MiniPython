@@ -740,55 +740,56 @@ case 2:
 YY_RULE_SETUP
 #line 23 "minipy-lab.l"
 {
-			yylval.type=0; 
-			yylval.data.i = atoi(yytext);
-			return INT;
-		}
+				yylval.type=0; 
+				yylval.data.i = atoi(yytext);
+				return INT;
+			}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
 #line 28 "minipy-lab.l"
 {
-			yylval.type=1; 
-			yylval.data.f = atof(yytext);
-			return REAL;
-		}
+				yylval.type=1; 
+				yylval.data.f = atof(yytext);
+				return REAL;
+			}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
 #line 33 "minipy-lab.l"
 {
-			int len = strlen(yytext);
-			yylval.data.s = (char *)malloc(sizeof(char)*(len+1)); 
-			strcpy(yylval.data.s,yytext);
-			yylval.type=2;
-             		return ID; 
-		}
+				int len = strlen(yytext);
+				yylval.data.s = (char *)malloc(sizeof(char)*(len+1)); 
+				strcpy(yylval.data.s,yytext);
+				yylval.type=2;
+				return ID; 
+			}
 	YY_BREAK
 case 5:
 /* rule 5 can match eol */
 YY_RULE_SETUP
 #line 40 "minipy-lab.l"
-{int len = strlen(yytext);
-		            yylval.data.s = (char *)malloc(sizeof(char)*len); 
-		            strncpy(yylval.data.s,yytext+1,len-2);
-					yylval.data.s[len-2]=0;
-					yylval.type=2;
-             		return(STRING_LITERAL); 
-		}
+{
+						int len = strlen(yytext);
+						yylval.data.s = (char *)malloc(sizeof(char)*len); 
+						strncpy(yylval.data.s,yytext+1,len-2);
+						yylval.data.s[len-2]=0;
+						yylval.type=2;
+						return(STRING_LITERAL); 
+					}
 	YY_BREAK
 case 6:
 /* rule 6 can match eol */
 YY_RULE_SETUP
-#line 47 "minipy-lab.l"
+#line 48 "minipy-lab.l"
 { return yytext[0];}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 48 "minipy-lab.l"
+#line 49 "minipy-lab.l"
 ECHO;
 	YY_BREAK
-#line 792 "lex.yy.c"
+#line 793 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1793,17 +1794,19 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 48 "minipy-lab.l"
+#line 49 "minipy-lab.l"
 
 #ifdef LEX
 YYSTYPE yylval;
 int main()
- {
-while(1) yylex();
- }
- int yywrap()
- {
- return 1;
- }
+{
+	while(1) 
+		yylex();
+}
+
+int yywrap()
+{
+ 	return 1;
+}
 #endif
 

@@ -13,7 +13,6 @@
    #include <string.h>
    #include <iomanip>
    #include "types.h"
-#define eps 1e-6
 #define INIT_LIST_SIZE 10
 #define INIT_TABLE_SIZE 20
 
@@ -46,7 +45,8 @@ assignExpr:
 					case 1:
 					case 2:
 					case 3:yyerror("assign to right value");break;
-					case 4:{	*($1.data.v)=pack($3);
+					case 4:{	
+							*($1.data.v)=pack($3);
 				 			int i=FIND($1.name);
 							if(table[i].Res==1)
 							{
@@ -106,8 +106,15 @@ atom  : ID {
       | List 
       | number
       ;
-slice_op :  /*  empty production */{$$.type=1;$$.data.i=1;}
-        | ':' add_expr {if($1.type!=0){yyerror("type error");YYERROR;}else $$=$2;}
+slice_op :  /*  empty production */{$$.type=1; $$.data.i=1;}
+        | ':' add_expr {
+			if($1.type!=0)
+			{
+				yyerror("type error"); 
+				YYERROR;
+			}
+			else $$=$2;
+			}
         ;
 sub_expr:  /*  empty production */  {$$.type=-1;}
         | add_expr {if($1.type!=0) {yyerror("type error");YYERROR;}}
@@ -371,7 +378,7 @@ atom_expr : atom
 				time_t t = time(NULL);
     			struct tm* stime=localtime(&t);
 				char *tmp=(char*)malloc(sizeof(char)*32);
-     			sprintf(tmp, "%04d-%02d-%02d %02d:%02d:%02d",1900+stime->tm_year,1+stime->tm_mon,stime->tm_mday, stime->tm_hour,stime->tm_min,stime->tm_sec);
+     			sprintf(tmp, "%04d-%02d-%02d %02d:%02d:%02d", 1900+stime->tm_year, 1+stime->tm_mon,stime->tm_mday, stime->tm_hour, stime->tm_min, stime->tm_sec);
 				$$.data.s=tmp;
 				$$.type=2;
 			}
@@ -556,7 +563,11 @@ mul_expr : mul_expr '*' factor  {
 							$$.data.s=temp;  
 							break;
 							} 
-						case 3: $$.type=3;$$.data.l=newlist();for(int i=0;i<$1.data.i;i++) add($$.data.l,$3.data.l); break;
+						case 3: $$.type=3;
+								$$.data.l=newlist();
+								for(int i=0;i<$1.data.i;i++) 
+									add($$.data.l,$3.data.l);
+								break;
 						case 4:
 						case 5: yyerror("internal error");YYERROR;break;
 					}
