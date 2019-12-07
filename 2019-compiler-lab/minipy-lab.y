@@ -142,11 +142,34 @@ atom_expr : atom
 				else {yyerror("type error");YYERROR;}
 				}
         | atom_expr  '[' add_expr ']'{
-				if($1.type==5){if($3.type==0){$3.data.i=$1.data.slice.begin+$1.data.slice.step*$3.data.i;$1.type=3;$1.data.l=*($1.data.slice.l);}else{yyerror("type error");YYERROR;}}
-				else if($1.type==4) {$1=unpack(*($1.data.v));}
-				if($3.type==0&&$1.type==3){if($3.data.i<$1.data.l.len){$$.type=4;$$.data.v=$1.data.l.val+$3.data.i;}else yyerror("index out of bound");}
-				else{yyerror("type error");YYERROR;}
+				if($1.type==5)
+				{
+					if($3.type==0)
+					{	
+						$3.data.i=$1.data.slice.begin+$1.data.slice.step*$3.data.i;
+						$1.type=3;$1.data.l=*($1.data.slice.l);
+					}
+					else
+					{
+						yyerror("type error");
+						YYERROR;
+					}
 				}
+				else if($1.type==4) {$1=unpack(*($1.data.v));}
+				if($3.type==0&&$1.type==3)
+				{
+					if($3.data.i<$1.data.l.len)
+					{
+						$$.type=4;$$.data.v=$1.data.l.val+$3.data.i;
+					}
+					else yyerror("index out of bound");
+				}
+				else 
+				{
+					yyerror("type error");
+					YYERROR;
+				}
+			}
         | atom_expr  '.' ID {$$.name=$3.data.s;}
         | atom_expr  '(' arglist opt_comma ')'{
 			if(!strcmp($1.name,"len"))
@@ -207,7 +230,7 @@ atom_expr : atom
 						val.DATA.i=i;
 						append(l,val);
 					}
-				    	$$.data.l=l;
+				    $$.data.l=l;
 					$$.type=3;
 				}
 				else if(len==2)
@@ -248,7 +271,6 @@ atom_expr : atom
 					yyerror("TypeError: range expected at most 3 arguments");
 					YYERROR;
 				}
-
 			}
 			else if(!strcmp($1.name,"print"))
 			{
@@ -266,7 +288,6 @@ atom_expr : atom
 				}
 				yyerror("");
 				YYERROR;
-				
 			}
 			else if(!strcmp($1.name,"append"))
 			{
@@ -284,7 +305,6 @@ atom_expr : atom
 					yyerror("TypeError: append() takes exactly one argument");
 					YYERROR;
 				}
-				
 			}
 			else if(!strcmp($1.name,"list"))
 			{
@@ -303,7 +323,8 @@ atom_expr : atom
 				int type=$3.data.l.val[0].flag;
 				if(type==2)
 				{
-					struct list l;l=newlist();
+					struct list l;
+					l=newlist();
 					int str_len=strlen($3.data.l.val[0].DATA.s);
 					for(int i=0;i<str_len;i++)
 					{
@@ -324,9 +345,8 @@ atom_expr : atom
 					yyerror("TypeError: object is not iterable");
 					YYERROR;
 				}
-				
-				
 			}
+			free($3.data.l.val);
 		}
         | atom_expr  '('  ')'
 		{
@@ -349,11 +369,9 @@ atom_expr : atom
 					YYERROR;
 				}
 				time_t t = time(NULL);
-    				struct tm* stime=localtime(&t);
+    			struct tm* stime=localtime(&t);
 				char *tmp=(char*)malloc(sizeof(char)*32);
-     				sprintf(tmp, "%04d-%02d-%02d %02d:%02d:%02d",1900+stime->tm_year,1+stime->tm_mon,
-                		stime->tm_mday, stime->tm_hour,
-                		stime->tm_min,stime->tm_sec);
+     			sprintf(tmp, "%04d-%02d-%02d %02d:%02d:%02d",1900+stime->tm_year,1+stime->tm_mon,stime->tm_mday, stime->tm_hour,stime->tm_min,stime->tm_sec);
 				$$.data.s=tmp;
 				$$.type=2;
 			}
@@ -366,7 +384,13 @@ atom_expr : atom
 			}
 		}
         ;
-arglist : add_expr {struct list l;l=newlist();append(l,pack($1));$$.type=3;$$.data.l=l;}
+arglist : add_expr {
+				struct list l;
+				l=newlist();
+				append(l,pack($1));
+				$$.type=3;
+				$$.data.l=l;
+			}
         | arglist ',' add_expr {append($1.data.l,pack($3));$$=$1;}
         ;  
 List  : '[' ']'{$$.type=3;$$.data.l=newlist();}
@@ -376,7 +400,13 @@ opt_comma : /*  empty production */
           | ','
           ;
 List_items  
-      : add_expr {struct list l;l=newlist();append(l,pack($1));$$.type=3;$$.data.l=l;}
+      : add_expr {
+					struct list l;
+					l=newlist();
+					append(l,pack($1));
+					$$.type=3;
+					$$.data.l=l;
+				}
       | List_items ',' add_expr {append($1.data.l,pack($3));$$=$1;}
       ;
 add_expr : add_expr '+' mul_expr  {
@@ -520,13 +550,12 @@ mul_expr : mul_expr '*' factor  {
 							strcpy(temp,$3.data.s);
 							for(int i=0;i<$1.data.i-1;i++)
 							{	
-							sprintf(temp,"%s%s",temp,$3.data.s);
+								sprintf(temp,"%s%s",temp,$3.data.s);
 							}
 							$$.type=2;
 							$$.data.s=temp;  
 							break;
 							} 
-
 						case 3: $$.type=3;$$.data.l=newlist();for(int i=0;i<$1.data.i;i++) add($$.data.l,$3.data.l); break;
 						case 4:
 						case 5: yyerror("internal error");YYERROR;break;
@@ -547,18 +576,18 @@ mul_expr : mul_expr '*' factor  {
 					switch($3.type)
 					{
 						case 0: 
-							{
+						{
 							int sum_len = strlen($1.data.s)*$3.data.i+1;
 							char *temp = (char *)malloc(sizeof(char)*sum_len);
 							strcpy(temp,$1.data.s);
 							for(int i=0;i<$3.data.i-1;i++)
 							{	
-							sprintf(temp,"%s%s",temp,$1.data.s);
+								sprintf(temp,"%s%s",temp,$1.data.s);
 							}
 							$$.type=2;
 							$$.data.s=temp;  
 							break;
-							}
+						}
 						case 1:
 						case 2:
 						case 3: yyerror("type error");YYERROR; break;
@@ -636,7 +665,7 @@ int main()
 	strcpy(table[3].name,"print");
 	strcpy(table[4].name,"range");
 	strcpy(table[5].name,"quit");
-
+    
 	tablelen=10;
 	return yyparse();
 }
@@ -676,6 +705,7 @@ YYSTYPE unpack(VAL val)
 	r.data=*((union yyd*)(&(val.DATA)));
 	return r;
 }
+
 int FIND(char *s)
 {
 	int i =0;
@@ -749,7 +779,6 @@ struct list newlist()  //TODO:gc
 	if(l.val==0) 
 	{
 		yyerror("malloc fail");
-		//other operation
 	}
 	return l;
 }
@@ -761,7 +790,6 @@ void exlist(struct list &l) //extend
 	if(l.val==0) 
 	{
 		yyerror("malloc fail");
-		//other operation
 	}
 	return;
 }
@@ -782,7 +810,10 @@ void add(struct list &l,struct list o)
 void insert(struct list &l,int index,VAL _val)
 {
 	int i;
-	if(index>l.len) yyerror("index out of bound");
+	if(index>l.len) 
+	{
+		yyerror("index out of bound");
+	}
 	if(l.len>=l.size) exlist(l);
 	for(i=l.len;i>index;i--) l.val[i]=l.val[i-1];
 	l.len++;
@@ -856,9 +887,10 @@ float FMOD(float n,float M)
 {
 	return fmod(fmod(n,M)+M,M);
 }
+
 void PrintFloat(float a)
 {
-    	std::streamsize ss = std::cout.precision();
+    std::streamsize ss = std::cout.precision();
 	if(a==(int)a)
 	{	
 		std::cout<<std::setprecision(1)<<std::fixed<<a;

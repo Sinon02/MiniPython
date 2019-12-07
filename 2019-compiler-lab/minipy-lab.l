@@ -6,8 +6,6 @@
 #define YYSTYPE_IS_DECLARED 
 #include "types.h"
 #include "y.tab.h"
-
-/*  any C declaration  */
 %}
 
 letter    [a-zA-Z]

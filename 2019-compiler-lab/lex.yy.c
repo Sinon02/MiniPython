@@ -454,10 +454,8 @@ char *yytext;
 #define YYSTYPE_IS_DECLARED 
 #include "types.h"
 #include "y.tab.h"
-
-/*  any C declaration  */
-#line 460 "lex.yy.c"
-#line 461 "lex.yy.c"
+#line 458 "lex.yy.c"
+#line 459 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -674,9 +672,9 @@ YY_DECL
 		}
 
 	{
-#line 23 "minipy-lab.l"
+#line 21 "minipy-lab.l"
 
-#line 680 "lex.yy.c"
+#line 678 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -735,12 +733,12 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 24 "minipy-lab.l"
+#line 22 "minipy-lab.l"
 {/*do nothing , just skip */}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 25 "minipy-lab.l"
+#line 23 "minipy-lab.l"
 {
 			yylval.type=0; 
 			yylval.data.i = atoi(yytext);
@@ -749,7 +747,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 30 "minipy-lab.l"
+#line 28 "minipy-lab.l"
 {
 			yylval.type=1; 
 			yylval.data.f = atof(yytext);
@@ -758,7 +756,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 35 "minipy-lab.l"
+#line 33 "minipy-lab.l"
 {
 			int len = strlen(yytext);
 			yylval.data.s = (char *)malloc(sizeof(char)*(len+1)); 
@@ -770,7 +768,7 @@ YY_RULE_SETUP
 case 5:
 /* rule 5 can match eol */
 YY_RULE_SETUP
-#line 42 "minipy-lab.l"
+#line 40 "minipy-lab.l"
 {int len = strlen(yytext);
 		            yylval.data.s = (char *)malloc(sizeof(char)*len); 
 		            strncpy(yylval.data.s,yytext+1,len-2);
@@ -782,15 +780,15 @@ YY_RULE_SETUP
 case 6:
 /* rule 6 can match eol */
 YY_RULE_SETUP
-#line 49 "minipy-lab.l"
+#line 47 "minipy-lab.l"
 { return yytext[0];}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 50 "minipy-lab.l"
+#line 48 "minipy-lab.l"
 ECHO;
 	YY_BREAK
-#line 794 "lex.yy.c"
+#line 792 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1795,7 +1793,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 50 "minipy-lab.l"
+#line 48 "minipy-lab.l"
 
 #ifdef LEX
 YYSTYPE yylval;
