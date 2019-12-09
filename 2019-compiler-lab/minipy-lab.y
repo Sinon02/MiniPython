@@ -20,7 +20,6 @@ TABLE *table;
 int tablelen=0;
 int tablesize=INIT_TABLE_SIZE;
 int print_or_not=1;
-vector<unsigned long> print_stack;
 
 %}
 %token ID INT REAL STRING_LITERAL
@@ -136,15 +135,15 @@ atom_expr : atom
 				} 
 				else if($1.type==3)
 				{
-					$$.data.l=slice($1.data.l,$3.type==0?$3.data.i:0,$5.type==0?$5.data.i:$1.data.l.len,$6.data.i);
+					$$.data.l=slice($1.data.l,$3.type==0?$3.data.i:0,$5.type==0?$5.data.i:$1.data.l->len,$6.data.i);
 					$$.type=3;
 				}
 				else if($1.type==4)
 				{
 					if((*($1.data.v)).flag==3)
 					{
-						$$.data.slice.l=&((*($1.data.v)).DATA.l);
-						$$.data.slice.end=$5.type==0?$5.data.i:((*($1.data.v)).DATA.l.len);
+						$$.data.slice.l=(*($1.data.v)).DATA.l;
+						$$.data.slice.end=$5.type==0?$5.data.i:((*($1.data.v)).DATA.l->len);
 						$$.data.slice.begin=$3.type==0?$3.data.i:0;
 						$$.data.slice.step=$6.data.i;
 						$$.type=5;
@@ -159,7 +158,7 @@ atom_expr : atom
 					if($3.type==0)
 					{	
 						$3.data.i=$1.data.slice.begin+$1.data.slice.step*$3.data.i;
-						$1.type=3;$1.data.l=*($1.data.slice.l);
+						$1.type=3;$1.data.l=$1.data.slice.l;
 					}
 					else
 					{
@@ -170,9 +169,9 @@ atom_expr : atom
 				else if($1.type==4) {$1=unpack(*($1.data.v));}
 				if($3.type==0&&$1.type==3)
 				{
-					if($3.data.i<$1.data.l.len)
+					if($3.data.i<$1.data.l->len)
 					{
-						$$.type=4;$$.data.v=$1.data.l.val+$3.data.i;
+						$$.type=4;$$.data.v=$1.data.l->val+$3.data.i;
 					}
 					else yyerror("index out of bound");
 				}
@@ -192,20 +191,20 @@ atom_expr : atom
 					yyerror("TypeError: object is not callable");
 					YYERROR;
 				}
-				int len=$3.data.l.len;
+				int len=$3.data.l->len;
 				if(len>1)
 				{
 					yyerror("TypeError: len() takes exactly one argument");
 					YYERROR;
 				}
-				int type=$3.data.l.val[0].flag;
+				int type=$3.data.l->val[0].flag;
 				if(type==2)
 				{
-					$$.data.i=strlen($3.data.l.val[0].DATA.s);
+					$$.data.i=strlen($3.data.l->val[0].DATA.s);
 				}
 				else if(type==3)
 				{
-					$$.data.i=$3.data.l.val[0].DATA.l.len;
+					$$.data.i=$3.data.l->val[0].DATA.l->len;
 				}
 				else{
 					yyerror("TypeError: object has no len()");
@@ -221,10 +220,10 @@ atom_expr : atom
 					yyerror("TypeError: object is not callable");
 					YYERROR;
 				}
-				int len=$3.data.l.len;
+				int len=$3.data.l->len;
 				for(i=0;i<len;i++)
 				{
-					if($3.data.l.val[i].flag==3)
+					if($3.data.l->val[i].flag==3)
 					{
 						yyerror("TypeError: range() integer end argument expected, got list.");
 						YYERROR;
@@ -233,9 +232,9 @@ atom_expr : atom
 				
 				if(len==1)
 				{
-					struct list l;
+					struct list *l;
 					l=newlist();
-					for(int i=0;i<$3.data.l.val[0].DATA.i;i++)
+					for(int i=0;i<$3.data.l->val[0].DATA.i;i++)
 					{
 						VAL val;
 						val.flag=0;
@@ -247,10 +246,10 @@ atom_expr : atom
 				}
 				else if(len==2)
 				{
-					struct list l;
+					struct list *l;
 					l=newlist();
-					int start=$3.data.l.val[0].DATA.i;
-					int end=$3.data.l.val[1].DATA.i;
+					int start=$3.data.l->val[0].DATA.i;
+					int end=$3.data.l->val[1].DATA.i;
 					for(int i=start;i<end;i++)
 					{
 						VAL val;
@@ -263,11 +262,11 @@ atom_expr : atom
 				}
 				else if(len==3)
 				{
-					struct list l;
+					struct list *l;
 					l=newlist();
-					int start=$3.data.l.val[0].DATA.i;
-					int end=$3.data.l.val[1].DATA.i;
-					int step=$3.data.l.val[2].DATA.i;
+					int start=$3.data.l->val[0].DATA.i;
+					int end=$3.data.l->val[1].DATA.i;
+					int step=$3.data.l->val[2].DATA.i;
 					for(int i=start;i!=end;i+=step)
 					{
 						VAL val;
@@ -292,10 +291,10 @@ atom_expr : atom
 					yyerror("TypeError: object is not callable");
 					YYERROR;
 				}
-				int len=$3.data.l.len;
+				int len=$3.data.l->len;
 				for(int i=0;i<len;i++)
 				{
-					print($3.data.l.val[i]);
+					print($3.data.l->val[i]);
 					cout<<" ";
 				}
 				yyerror("");
@@ -303,7 +302,7 @@ atom_expr : atom
 			}
 			else if(!strcmp($1.name,"append"))
 			{
-				int len=$3.data.l.len;
+				int len=$3.data.l->len;
 				if(len==1)
 				{
 					if($1.type==4)
@@ -314,10 +313,10 @@ atom_expr : atom
 							yyerror("Unsupported append operation");
 							YYERROR;
 						}
-						append((*($$.data.v)).DATA.l,$3.data.l.val[0]);
+						append((*($$.data.v)).DATA.l,$3.data.l->val[0]);
 					}
 					else if($1.type==3)
-					append($$.data.l,$3.data.l.val[0]); 
+					append($$.data.l,$3.data.l->val[0]); 
 					$$.type=-1;
 					print_or_not=0;
 				}
@@ -335,22 +334,22 @@ atom_expr : atom
 					yyerror("TypeError: object is not callable");
 					YYERROR;
 				}
-				int len=$3.data.l.len;
+				int len=$3.data.l->len;
 				if(len>1)
 				{
 					yyerror("TypeError: list() takes at most 1 argument");
 					YYERROR;
 				}
-				int type=$3.data.l.val[0].flag;
+				int type=$3.data.l->val[0].flag;
 				if(type==2)
 				{
-					struct list l;
+					struct list *l;
 					l=newlist();
-					int str_len=strlen($3.data.l.val[0].DATA.s);
+					int str_len=strlen($3.data.l->val[0].DATA.s);
 					for(int i=0;i<str_len;i++)
 					{
 						VAL val;val.flag=2;val.DATA.s=(char *)malloc(sizeof(char));
-						*val.DATA.s=$3.data.l.val[0].DATA.s[i];
+						*val.DATA.s=$3.data.l->val[0].DATA.s[i];
 						append(l,val);
 					}
 					$$.type=3;
@@ -359,7 +358,7 @@ atom_expr : atom
 				else if(type==3)
 				{
 					$$.type=3;
-					$$.data.l=$3.data.l.val[0].DATA.l;
+					$$.data.l=$3.data.l->val[0].DATA.l;
 				}
 				else
 				{
@@ -367,7 +366,7 @@ atom_expr : atom
 					YYERROR;
 				}
 			}
-			free($3.data.l.val);
+			free($3.data.l->val);
 		}
         | atom_expr  '('  ')'
 		{
@@ -398,7 +397,7 @@ atom_expr : atom
 		}
 			else if(!strcmp($1.name,"list"))
 			{
-				struct list l;
+				struct list *l;
 				l=newlist();
 				$$.data.l=l;
 				$$.type=3;
@@ -406,7 +405,7 @@ atom_expr : atom
 		}
         ;
 arglist : add_expr {
-				struct list l;
+				struct list *l;
 				l=newlist();
 				append(l,pack($1));
 				$$.type=3;
@@ -422,7 +421,7 @@ opt_comma : /*  empty production */
           ;
 List_items  
       : add_expr {
-					struct list l;
+					struct list *l;
 					l=newlist();
 					append(l,pack($1));
 					$$.type=3;
@@ -753,6 +752,7 @@ int FIND(char *s)
 void print(VAL val)
 {
 	int i;
+	static vector<unsigned long> print_stack;
 	switch(val.flag)
 	{
 		case -1:
@@ -770,19 +770,19 @@ void print(VAL val)
 		case 3:
 			for(auto& p : print_stack)
 			{
-				if(p==*(unsigned long *)(&val.DATA.l.val))
+				if(p==*(unsigned long *)(&val.DATA.l))
 				{
 					cout<<"[...]";
 					return;
 				}
 			}
-			print_stack.push_back(*(unsigned long *)(&val.DATA.l.val));
+			print_stack.push_back(*(unsigned long *)(&val.DATA.l));
 			cout<<'[';
-			if(val.DATA.l.len>0) print(val.DATA.l.val[0]);
-			for(i=1;i<val.DATA.l.len;i++)
+			if(val.DATA.l->len>0) print(val.DATA.l->val[0]);
+			for(i=1;i<val.DATA.l->len;i++)
 			{
 				cout<<", ";
-				print(val.DATA.l.val[i]);
+				print(val.DATA.l->val[i]);
 			}
 			cout<<']';
 			print_stack.pop_back();
@@ -795,111 +795,111 @@ inline void print(YYSTYPE val)
 	print(pack(val));
 }
 
-struct list newlist()  //TODO:gc
+struct list* newlist()  //TODO:gc
 {
-	struct list l;
-	l.len=0;
-	l.size=INIT_LIST_SIZE;
-	l.val=(VAL*)malloc(INIT_LIST_SIZE*sizeof(VAL));
-	if(l.val==0) 
+	struct list *l=(struct list *)malloc(sizeof(struct list));
+	l->len=0;
+	l->size=INIT_LIST_SIZE;
+	l->val=(VAL*)malloc(INIT_LIST_SIZE*sizeof(VAL));
+	if(l->val==0) 
 	{
 		yyerror("malloc fail");
 	}
 	return l;
 }
 
-void exlist(struct list &l) //extend
+void exlist(struct list *l) //extend
 {
-	l.size*=2;
-	l.val=(VAL*)realloc(l.val,l.size*sizeof(VAL));
-	if(l.val==0) 
+	l->size*=2;
+	l->val=(VAL*)realloc(l->val,l->size*sizeof(VAL));
+	if(l->val==0) 
 	{
 		yyerror("malloc fail");
 	}
 	return;
 }
 
-void append(struct list &l,VAL _val)
+void append(struct list *l,VAL _val)
 {
-	if(l.len>=l.size) exlist(l);
-	l.val[l.len++]=_val;
+	if(l->len>=l->size) exlist(l);
+	l->val[l->len++]=_val;
 }
 
-void add(struct list &l,struct list o)
+void add(struct list *l,struct list *o)
 {
 	int i;
-	while(l.len+o.len-1>=l.size) exlist(l);
-	for(i=0;i<o.len;i++)l.val[l.len++]=o.val[i];
+	while(l->len+o->len-1>=l->size) exlist(l);
+	for(i=0;i<o->len;i++)l->val[l->len++]=o->val[i];
 }
 
-void insert(struct list &l,int index,VAL _val)
+void insert(struct list *l,int index,VAL _val)
 {
 	int i;
-	if(index>l.len) 
+	if(index>l->len) 
 	{
 		yyerror("index out of bound");
 	}
-	if(l.len>=l.size) exlist(l);
-	for(i=l.len;i>index;i--) l.val[i]=l.val[i-1];
-	l.len++;
-	l.val[index]=_val;
+	if(l->len>=l->size) exlist(l);
+	for(i=l->len;i>index;i--) l->val[i]=l->val[i-1];
+	l->len++;
+	l->val[index]=_val;
 }
 
-VAL pop(struct list &l,int index)
+VAL pop(struct list *l,int index)
 {
 	int i;
-	VAL _val=l.val[index];
-	for(i=index+1;i<l.len;i++) l.val[i-1]=l.val[i];
-	l.len--;
+	VAL _val=l->val[index];
+	for(i=index+1;i<l->len;i++) l->val[i-1]=l->val[i];
+	l->len--;
 	return _val;
 }
 
-struct list slice(struct list l,int begin,int end,int step)
+struct list* slice(struct list *l,int begin,int end,int step)
 {
-	struct list _val;
+	struct list* _val;
 	int i;
 	_val=newlist();
-	while(begin<0) begin+=l.len;
-	while(end<0) begin+=l.len;
-	for(i=begin;step>0?(i<end):(i>end);i+=step) append(_val,l.val[i]);
+	while(begin<0) begin+=l->len;
+	while(end<0) begin+=l->len;
+	for(i=begin;step>0?(i<end):(i>end);i+=step) append(_val,l->val[i]);
 	return _val;
 }
 
-inline struct list slice(struct slice s)
+inline struct list* slice(struct slice s)
 {
-	return slice(*(s.l),s.begin,s.end,s.step);
+	return slice(s.l,s.begin,s.end,s.step);
 }
 
-void setslice(struct list &l,int begin,int end,int step,struct list o)
+void setslice(struct list *l,int begin,int end,int step,struct list *o)
 {
 	int i,j;
-	if(begin<0||step<1||end>l.len) yyerror("index out of bound");
+	if(begin<0||step<1||end>l->len) yyerror("index out of bound");
 	if(step!=1)
 	{
-		if((int)ceil((double)(end-begin)/step)!=o.len) yyerror("incompatible length");
-		for(i=begin,j=0;i<end;i+=step) l.val[i]=o.val[j++];
+		if((int)ceil((double)(end-begin)/step)!=o->len) yyerror("incompatible length");
+		for(i=begin,j=0;i<end;i+=step) l->val[i]=o->val[j++];
 	}
 	else//step=1
 	{
-		if(end-begin>o.len)
+		if(end-begin>o->len)
 		{
-			while(l.len+o.len-end+begin-1>=l.size) exlist(l);
-			for(i=l.len+o.len-1-end+begin,j=l.len-1;j>=end;i--,j--) l.val[i]=l.val[j];
+			while(l->len+o->len-end+begin-1>=l->size) exlist(l);
+			for(i=l->len+o->len-1-end+begin,j=l->len-1;j>=end;i--,j--) l->val[i]=l->val[j];
 		}
-		else if(end-begin<o.len)
+		else if(end-begin<o->len)
 		{
-			for(i=begin+o.len,j=end;j<l.len;i++,j++) l.val[i]=l.val[j];
+			for(i=begin+o->len,j=end;j<l->len;i++,j++) l->val[i]=l->val[j];
 
 		}
-		for(i=begin,j=0;j<o.len;i++,j++) l.val[i]=o.val[j]; 
-		l.len=l.len+o.len-end+begin;
+		for(i=begin,j=0;j<o->len;i++,j++) l->val[i]=o->val[j]; 
+		l->len=l->len+o->len-end+begin;
 	}
 	return;
 }
 
-inline void setslice(struct slice s,struct list o)
+inline void setslice(struct slice s,struct list *o)
 {
-	setslice(*(s.l),s.begin,s.end,s.step,o);
+	setslice(s.l,s.begin,s.end,s.step,o);
 	return;
 }
 
