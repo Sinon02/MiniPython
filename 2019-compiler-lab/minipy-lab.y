@@ -267,7 +267,16 @@ atom_expr : atom
 					int start=$3.data.l->val[0].DATA.i;
 					int end=$3.data.l->val[1].DATA.i;
 					int step=$3.data.l->val[2].DATA.i;
-					for(int i=start;i!=end;i+=step)
+					if(step>0)
+					for(int i=start;i<=end;i+=step)
+					{
+						VAL val;
+						val.flag=0;
+						val.DATA.i=i;
+						append(l,val);
+					}
+					else
+					for(int i=start;i>=end;i+=step)
 					{
 						VAL val;
 						val.flag=0;
@@ -348,8 +357,9 @@ atom_expr : atom
 					int str_len=strlen($3.data.l->val[0].DATA.s);
 					for(int i=0;i<str_len;i++)
 					{
-						VAL val;val.flag=2;val.DATA.s=(char *)malloc(sizeof(char));
+						VAL val;val.flag=2;val.DATA.s=(char *)malloc(sizeof(char)*2);
 						*val.DATA.s=$3.data.l->val[0].DATA.s[i];
+						*(val.DATA.s+1)=0;
 						append(l,val);
 					}
 					$$.type=3;

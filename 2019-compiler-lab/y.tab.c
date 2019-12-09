@@ -85,10 +85,9 @@ TABLE *table;
 int tablelen=0;
 int tablesize=INIT_TABLE_SIZE;
 int print_or_not=1;
-vector<unsigned long> print_stack;
 
 
-#line 92 "y.tab.c" /* yacc.c:339  */
+#line 91 "y.tab.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -148,7 +147,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 152 "y.tab.c" /* yacc.c:358  */
+#line 151 "y.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -446,11 +445,11 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,    30,    30,    32,    33,    34,    35,    37,    39,    42,
-      61,    69,    70,    72,    73,    86,   104,   110,   111,   112,
-     114,   115,   124,   125,   127,   128,   156,   185,   186,   372,
-     408,   415,   417,   418,   420,   421,   424,   431,   433,   496,
-     552,   554,   638,   648,   673
+       0,    29,    29,    31,    32,    33,    34,    36,    38,    41,
+      60,    68,    69,    71,    72,    85,   103,   109,   110,   111,
+     113,   114,   123,   124,   126,   127,   155,   184,   185,   381,
+     417,   424,   426,   427,   429,   430,   433,   440,   442,   505,
+     561,   563,   647,   657,   682
 };
 #endif
 
@@ -1266,19 +1265,19 @@ yyreduce:
   switch (yyn)
     {
         case 6:
-#line 35 "minipy-lab.y" /* yacc.c:1646  */
+#line 34 "minipy-lab.y" /* yacc.c:1646  */
     {yyerrok;}
-#line 1272 "y.tab.c" /* yacc.c:1646  */
+#line 1271 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 37 "minipy-lab.y" /* yacc.c:1646  */
+#line 36 "minipy-lab.y" /* yacc.c:1646  */
     {cout << "miniPy> ";}
-#line 1278 "y.tab.c" /* yacc.c:1646  */
+#line 1277 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 42 "minipy-lab.y" /* yacc.c:1646  */
+#line 41 "minipy-lab.y" /* yacc.c:1646  */
     {
 					switch((yyvsp[-2]).type)
 					{
@@ -1298,11 +1297,11 @@ yyreduce:
 					case 5:if((yyvsp[0]).type==3)setslice((yyvsp[-2]).data.slice,(yyvsp[0]).data.l);else {yyerror("type error");YYERROR;}
 					}
 					}
-#line 1302 "y.tab.c" /* yacc.c:1646  */
+#line 1301 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 10:
-#line 61 "minipy-lab.y" /* yacc.c:1646  */
+#line 60 "minipy-lab.y" /* yacc.c:1646  */
     {
 			if(print_or_not)
 			{	print((yyvsp[0]));
@@ -1310,11 +1309,11 @@ yyreduce:
 			}
 			print_or_not=1;
 			}
-#line 1314 "y.tab.c" /* yacc.c:1646  */
+#line 1313 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 14:
-#line 73 "minipy-lab.y" /* yacc.c:1646  */
+#line 72 "minipy-lab.y" /* yacc.c:1646  */
     {
 				switch((yyvsp[0]).type)
 				{
@@ -1328,11 +1327,11 @@ yyreduce:
 						YYERROR;
 				}	
 			}
-#line 1332 "y.tab.c" /* yacc.c:1646  */
+#line 1331 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 15:
-#line 86 "minipy-lab.y" /* yacc.c:1646  */
+#line 85 "minipy-lab.y" /* yacc.c:1646  */
     {
 			{
 				switch((yyvsp[0]).type)
@@ -1349,28 +1348,28 @@ yyreduce:
 				}
 			}
 		}
-#line 1353 "y.tab.c" /* yacc.c:1646  */
+#line 1352 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 16:
-#line 104 "minipy-lab.y" /* yacc.c:1646  */
+#line 103 "minipy-lab.y" /* yacc.c:1646  */
     {
 			(yyval).name=(char *)malloc(sizeof(char)*strlen((yyvsp[0]).data.s));
 			strcpy((yyval).name,(yyvsp[0]).data.s);
 			(yyval).data.v=&(table[FIND((yyvsp[0]).data.s)].val);
 			(yyval).type=4;
 		}
-#line 1364 "y.tab.c" /* yacc.c:1646  */
+#line 1363 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 20:
-#line 114 "minipy-lab.y" /* yacc.c:1646  */
+#line 113 "minipy-lab.y" /* yacc.c:1646  */
     {(yyval).type=1; (yyval).data.i=1;}
-#line 1370 "y.tab.c" /* yacc.c:1646  */
+#line 1369 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 21:
-#line 115 "minipy-lab.y" /* yacc.c:1646  */
+#line 114 "minipy-lab.y" /* yacc.c:1646  */
     {
 			if((yyvsp[-1]).type!=0)
 			{
@@ -1379,23 +1378,23 @@ yyreduce:
 			}
 			else (yyval)=(yyvsp[0]);
 			}
-#line 1383 "y.tab.c" /* yacc.c:1646  */
+#line 1382 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 22:
-#line 124 "minipy-lab.y" /* yacc.c:1646  */
+#line 123 "minipy-lab.y" /* yacc.c:1646  */
     {(yyval).type=-1;}
-#line 1389 "y.tab.c" /* yacc.c:1646  */
+#line 1388 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 23:
-#line 125 "minipy-lab.y" /* yacc.c:1646  */
+#line 124 "minipy-lab.y" /* yacc.c:1646  */
     {if((yyvsp[0]).type!=0) {yyerror("type error");YYERROR;}}
-#line 1395 "y.tab.c" /* yacc.c:1646  */
+#line 1394 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 25:
-#line 128 "minipy-lab.y" /* yacc.c:1646  */
+#line 127 "minipy-lab.y" /* yacc.c:1646  */
     {
 				if((yyvsp[-6]).type==5)
 				{
@@ -1407,15 +1406,15 @@ yyreduce:
 				} 
 				else if((yyvsp[-6]).type==3)
 				{
-					(yyval).data.l=slice((yyvsp[-6]).data.l,(yyvsp[-4]).type==0?(yyvsp[-4]).data.i:0,(yyvsp[-2]).type==0?(yyvsp[-2]).data.i:(yyvsp[-6]).data.l.len,(yyvsp[-1]).data.i);
+					(yyval).data.l=slice((yyvsp[-6]).data.l,(yyvsp[-4]).type==0?(yyvsp[-4]).data.i:0,(yyvsp[-2]).type==0?(yyvsp[-2]).data.i:(yyvsp[-6]).data.l->len,(yyvsp[-1]).data.i);
 					(yyval).type=3;
 				}
 				else if((yyvsp[-6]).type==4)
 				{
 					if((*((yyvsp[-6]).data.v)).flag==3)
 					{
-						(yyval).data.slice.l=&((*((yyvsp[-6]).data.v)).DATA.l);
-						(yyval).data.slice.end=(yyvsp[-2]).type==0?(yyvsp[-2]).data.i:((*((yyvsp[-6]).data.v)).DATA.l.len);
+						(yyval).data.slice.l=(*((yyvsp[-6]).data.v)).DATA.l;
+						(yyval).data.slice.end=(yyvsp[-2]).type==0?(yyvsp[-2]).data.i:((*((yyvsp[-6]).data.v)).DATA.l->len);
 						(yyval).data.slice.begin=(yyvsp[-4]).type==0?(yyvsp[-4]).data.i:0;
 						(yyval).data.slice.step=(yyvsp[-1]).data.i;
 						(yyval).type=5;
@@ -1424,18 +1423,18 @@ yyreduce:
 				}
 				else {yyerror("type error");YYERROR;}
 				}
-#line 1428 "y.tab.c" /* yacc.c:1646  */
+#line 1427 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 26:
-#line 156 "minipy-lab.y" /* yacc.c:1646  */
+#line 155 "minipy-lab.y" /* yacc.c:1646  */
     {
 				if((yyvsp[-3]).type==5)
 				{
 					if((yyvsp[-1]).type==0)
 					{	
 						(yyvsp[-1]).data.i=(yyvsp[-3]).data.slice.begin+(yyvsp[-3]).data.slice.step*(yyvsp[-1]).data.i;
-						(yyvsp[-3]).type=3;(yyvsp[-3]).data.l=*((yyvsp[-3]).data.slice.l);
+						(yyvsp[-3]).type=3;(yyvsp[-3]).data.l=(yyvsp[-3]).data.slice.l;
 					}
 					else
 					{
@@ -1446,9 +1445,9 @@ yyreduce:
 				else if((yyvsp[-3]).type==4) {(yyvsp[-3])=unpack(*((yyvsp[-3]).data.v));}
 				if((yyvsp[-1]).type==0&&(yyvsp[-3]).type==3)
 				{
-					if((yyvsp[-1]).data.i<(yyvsp[-3]).data.l.len)
+					if((yyvsp[-1]).data.i<(yyvsp[-3]).data.l->len)
 					{
-						(yyval).type=4;(yyval).data.v=(yyvsp[-3]).data.l.val+(yyvsp[-1]).data.i;
+						(yyval).type=4;(yyval).data.v=(yyvsp[-3]).data.l->val+(yyvsp[-1]).data.i;
 					}
 					else yyerror("index out of bound");
 				}
@@ -1458,17 +1457,17 @@ yyreduce:
 					YYERROR;
 				}
 			}
-#line 1462 "y.tab.c" /* yacc.c:1646  */
+#line 1461 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 27:
-#line 185 "minipy-lab.y" /* yacc.c:1646  */
+#line 184 "minipy-lab.y" /* yacc.c:1646  */
     {(yyval).name=(yyvsp[0]).data.s;}
-#line 1468 "y.tab.c" /* yacc.c:1646  */
+#line 1467 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 28:
-#line 186 "minipy-lab.y" /* yacc.c:1646  */
+#line 185 "minipy-lab.y" /* yacc.c:1646  */
     {
 			if(!strcmp((yyvsp[-4]).name,"len"))
 			{
@@ -1478,20 +1477,20 @@ yyreduce:
 					yyerror("TypeError: object is not callable");
 					YYERROR;
 				}
-				int len=(yyvsp[-2]).data.l.len;
+				int len=(yyvsp[-2]).data.l->len;
 				if(len>1)
 				{
 					yyerror("TypeError: len() takes exactly one argument");
 					YYERROR;
 				}
-				int type=(yyvsp[-2]).data.l.val[0].flag;
+				int type=(yyvsp[-2]).data.l->val[0].flag;
 				if(type==2)
 				{
-					(yyval).data.i=strlen((yyvsp[-2]).data.l.val[0].DATA.s);
+					(yyval).data.i=strlen((yyvsp[-2]).data.l->val[0].DATA.s);
 				}
 				else if(type==3)
 				{
-					(yyval).data.i=(yyvsp[-2]).data.l.val[0].DATA.l.len;
+					(yyval).data.i=(yyvsp[-2]).data.l->val[0].DATA.l->len;
 				}
 				else{
 					yyerror("TypeError: object has no len()");
@@ -1507,10 +1506,10 @@ yyreduce:
 					yyerror("TypeError: object is not callable");
 					YYERROR;
 				}
-				int len=(yyvsp[-2]).data.l.len;
+				int len=(yyvsp[-2]).data.l->len;
 				for(i=0;i<len;i++)
 				{
-					if((yyvsp[-2]).data.l.val[i].flag==3)
+					if((yyvsp[-2]).data.l->val[i].flag==3)
 					{
 						yyerror("TypeError: range() integer end argument expected, got list.");
 						YYERROR;
@@ -1519,9 +1518,9 @@ yyreduce:
 				
 				if(len==1)
 				{
-					struct list l;
+					struct list *l;
 					l=newlist();
-					for(int i=0;i<(yyvsp[-2]).data.l.val[0].DATA.i;i++)
+					for(int i=0;i<(yyvsp[-2]).data.l->val[0].DATA.i;i++)
 					{
 						VAL val;
 						val.flag=0;
@@ -1533,10 +1532,10 @@ yyreduce:
 				}
 				else if(len==2)
 				{
-					struct list l;
+					struct list *l;
 					l=newlist();
-					int start=(yyvsp[-2]).data.l.val[0].DATA.i;
-					int end=(yyvsp[-2]).data.l.val[1].DATA.i;
+					int start=(yyvsp[-2]).data.l->val[0].DATA.i;
+					int end=(yyvsp[-2]).data.l->val[1].DATA.i;
 					for(int i=start;i<end;i++)
 					{
 						VAL val;
@@ -1549,12 +1548,21 @@ yyreduce:
 				}
 				else if(len==3)
 				{
-					struct list l;
+					struct list *l;
 					l=newlist();
-					int start=(yyvsp[-2]).data.l.val[0].DATA.i;
-					int end=(yyvsp[-2]).data.l.val[1].DATA.i;
-					int step=(yyvsp[-2]).data.l.val[2].DATA.i;
-					for(int i=start;i!=end;i+=step)
+					int start=(yyvsp[-2]).data.l->val[0].DATA.i;
+					int end=(yyvsp[-2]).data.l->val[1].DATA.i;
+					int step=(yyvsp[-2]).data.l->val[2].DATA.i;
+					if(step>0)
+					for(int i=start;i<=end;i+=step)
+					{
+						VAL val;
+						val.flag=0;
+						val.DATA.i=i;
+						append(l,val);
+					}
+					else
+					for(int i=start;i>=end;i+=step)
 					{
 						VAL val;
 						val.flag=0;
@@ -1578,10 +1586,10 @@ yyreduce:
 					yyerror("TypeError: object is not callable");
 					YYERROR;
 				}
-				int len=(yyvsp[-2]).data.l.len;
+				int len=(yyvsp[-2]).data.l->len;
 				for(int i=0;i<len;i++)
 				{
-					print((yyvsp[-2]).data.l.val[i]);
+					print((yyvsp[-2]).data.l->val[i]);
 					cout<<" ";
 				}
 				yyerror("");
@@ -1589,7 +1597,7 @@ yyreduce:
 			}
 			else if(!strcmp((yyvsp[-4]).name,"append"))
 			{
-				int len=(yyvsp[-2]).data.l.len;
+				int len=(yyvsp[-2]).data.l->len;
 				if(len==1)
 				{
 					if((yyvsp[-4]).type==4)
@@ -1600,10 +1608,10 @@ yyreduce:
 							yyerror("Unsupported append operation");
 							YYERROR;
 						}
-						append((*((yyval).data.v)).DATA.l,(yyvsp[-2]).data.l.val[0]);
+						append((*((yyval).data.v)).DATA.l,(yyvsp[-2]).data.l->val[0]);
 					}
 					else if((yyvsp[-4]).type==3)
-					append((yyval).data.l,(yyvsp[-2]).data.l.val[0]); 
+					append((yyval).data.l,(yyvsp[-2]).data.l->val[0]); 
 					(yyval).type=-1;
 					print_or_not=0;
 				}
@@ -1621,22 +1629,23 @@ yyreduce:
 					yyerror("TypeError: object is not callable");
 					YYERROR;
 				}
-				int len=(yyvsp[-2]).data.l.len;
+				int len=(yyvsp[-2]).data.l->len;
 				if(len>1)
 				{
 					yyerror("TypeError: list() takes at most 1 argument");
 					YYERROR;
 				}
-				int type=(yyvsp[-2]).data.l.val[0].flag;
+				int type=(yyvsp[-2]).data.l->val[0].flag;
 				if(type==2)
 				{
-					struct list l;
+					struct list *l;
 					l=newlist();
-					int str_len=strlen((yyvsp[-2]).data.l.val[0].DATA.s);
+					int str_len=strlen((yyvsp[-2]).data.l->val[0].DATA.s);
 					for(int i=0;i<str_len;i++)
 					{
-						VAL val;val.flag=2;val.DATA.s=(char *)malloc(sizeof(char));
-						*val.DATA.s=(yyvsp[-2]).data.l.val[0].DATA.s[i];
+						VAL val;val.flag=2;val.DATA.s=(char *)malloc(sizeof(char)*2);
+						*val.DATA.s=(yyvsp[-2]).data.l->val[0].DATA.s[i];
+						*(val.DATA.s+1)=0;
 						append(l,val);
 					}
 					(yyval).type=3;
@@ -1645,7 +1654,7 @@ yyreduce:
 				else if(type==3)
 				{
 					(yyval).type=3;
-					(yyval).data.l=(yyvsp[-2]).data.l.val[0].DATA.l;
+					(yyval).data.l=(yyvsp[-2]).data.l->val[0].DATA.l;
 				}
 				else
 				{
@@ -1653,13 +1662,13 @@ yyreduce:
 					YYERROR;
 				}
 			}
-			free((yyvsp[-2]).data.l.val);
+			free((yyvsp[-2]).data.l->val);
 		}
-#line 1659 "y.tab.c" /* yacc.c:1646  */
+#line 1668 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 29:
-#line 373 "minipy-lab.y" /* yacc.c:1646  */
+#line 382 "minipy-lab.y" /* yacc.c:1646  */
     {
 			if(!strcmp((yyvsp[-2]).name,"quit"))
 			{
@@ -1688,65 +1697,65 @@ yyreduce:
 		}
 			else if(!strcmp((yyvsp[-2]).name,"list"))
 			{
-				struct list l;
+				struct list *l;
 				l=newlist();
 				(yyval).data.l=l;
 				(yyval).type=3;
 			}
 		}
-#line 1698 "y.tab.c" /* yacc.c:1646  */
+#line 1707 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 30:
-#line 408 "minipy-lab.y" /* yacc.c:1646  */
+#line 417 "minipy-lab.y" /* yacc.c:1646  */
     {
-				struct list l;
+				struct list *l;
 				l=newlist();
 				append(l,pack((yyvsp[0])));
 				(yyval).type=3;
 				(yyval).data.l=l;
 			}
-#line 1710 "y.tab.c" /* yacc.c:1646  */
+#line 1719 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 31:
-#line 415 "minipy-lab.y" /* yacc.c:1646  */
+#line 424 "minipy-lab.y" /* yacc.c:1646  */
     {append((yyvsp[-2]).data.l,pack((yyvsp[0])));(yyval)=(yyvsp[-2]);}
-#line 1716 "y.tab.c" /* yacc.c:1646  */
+#line 1725 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 32:
-#line 417 "minipy-lab.y" /* yacc.c:1646  */
+#line 426 "minipy-lab.y" /* yacc.c:1646  */
     {(yyval).type=3;(yyval).data.l=newlist();}
-#line 1722 "y.tab.c" /* yacc.c:1646  */
+#line 1731 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 33:
-#line 418 "minipy-lab.y" /* yacc.c:1646  */
+#line 427 "minipy-lab.y" /* yacc.c:1646  */
     {(yyval)=(yyvsp[-2]);}
-#line 1728 "y.tab.c" /* yacc.c:1646  */
+#line 1737 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 36:
-#line 424 "minipy-lab.y" /* yacc.c:1646  */
+#line 433 "minipy-lab.y" /* yacc.c:1646  */
     {
-					struct list l;
+					struct list *l;
 					l=newlist();
 					append(l,pack((yyvsp[0])));
 					(yyval).type=3;
 					(yyval).data.l=l;
 				}
-#line 1740 "y.tab.c" /* yacc.c:1646  */
+#line 1749 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 37:
-#line 431 "minipy-lab.y" /* yacc.c:1646  */
+#line 440 "minipy-lab.y" /* yacc.c:1646  */
     {append((yyvsp[-2]).data.l,pack((yyvsp[0])));(yyval)=(yyvsp[-2]);}
-#line 1746 "y.tab.c" /* yacc.c:1646  */
+#line 1755 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 38:
-#line 433 "minipy-lab.y" /* yacc.c:1646  */
+#line 442 "minipy-lab.y" /* yacc.c:1646  */
     {
 	 			if((yyvsp[-2]).type==-1||(yyvsp[0]).type==-1)
 				{
@@ -1810,11 +1819,11 @@ yyreduce:
 				case 5: yyerror("internal error");YYERROR;
 				}
 				}
-#line 1814 "y.tab.c" /* yacc.c:1646  */
+#line 1823 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 39:
-#line 496 "minipy-lab.y" /* yacc.c:1646  */
+#line 505 "minipy-lab.y" /* yacc.c:1646  */
     {
 				if((yyvsp[-2]).type==-1||(yyvsp[0]).type==-1)
 				{
@@ -1871,11 +1880,11 @@ yyreduce:
 				case 5: yyerror("internal error");YYERROR;
 				}
 				}
-#line 1875 "y.tab.c" /* yacc.c:1646  */
+#line 1884 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 41:
-#line 554 "minipy-lab.y" /* yacc.c:1646  */
+#line 563 "minipy-lab.y" /* yacc.c:1646  */
     {
 				if((yyvsp[-2]).type==-1||(yyvsp[0]).type==-1)
 				{
@@ -1960,11 +1969,11 @@ yyreduce:
 				case 5: yyerror("internal error");YYERROR;
 				}
 				}
-#line 1964 "y.tab.c" /* yacc.c:1646  */
+#line 1973 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 42:
-#line 638 "minipy-lab.y" /* yacc.c:1646  */
+#line 647 "minipy-lab.y" /* yacc.c:1646  */
     {
 				if((yyvsp[-2]).type==-1||(yyvsp[0]).type==-1)
 				{
@@ -1975,11 +1984,11 @@ yyreduce:
 
 				else {yyerror("type error");YYERROR;};
 				}
-#line 1979 "y.tab.c" /* yacc.c:1646  */
+#line 1988 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 43:
-#line 648 "minipy-lab.y" /* yacc.c:1646  */
+#line 657 "minipy-lab.y" /* yacc.c:1646  */
     {
 					if((yyvsp[-2]).type==-1||(yyvsp[0]).type==-1)
 					{
@@ -2005,11 +2014,11 @@ yyreduce:
 						YYERROR;
 					}
 				}
-#line 2009 "y.tab.c" /* yacc.c:1646  */
+#line 2018 "y.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 2013 "y.tab.c" /* yacc.c:1646  */
+#line 2022 "y.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2237,7 +2246,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 676 "minipy-lab.y" /* yacc.c:1906  */
+#line 685 "minipy-lab.y" /* yacc.c:1906  */
 
 
 int main()
@@ -2318,6 +2327,7 @@ int FIND(char *s)
 void print(VAL val)
 {
 	int i;
+	static vector<unsigned long> print_stack;
 	switch(val.flag)
 	{
 		case -1:
@@ -2335,19 +2345,19 @@ void print(VAL val)
 		case 3:
 			for(auto& p : print_stack)
 			{
-				if(p==*(unsigned long *)(&val.DATA.l.val))
+				if(p==*(unsigned long *)(&val.DATA.l))
 				{
 					cout<<"[...]";
 					return;
 				}
 			}
-			print_stack.push_back(*(unsigned long *)(&val.DATA.l.val));
+			print_stack.push_back(*(unsigned long *)(&val.DATA.l));
 			cout<<'[';
-			if(val.DATA.l.len>0) print(val.DATA.l.val[0]);
-			for(i=1;i<val.DATA.l.len;i++)
+			if(val.DATA.l->len>0) print(val.DATA.l->val[0]);
+			for(i=1;i<val.DATA.l->len;i++)
 			{
 				cout<<", ";
-				print(val.DATA.l.val[i]);
+				print(val.DATA.l->val[i]);
 			}
 			cout<<']';
 			print_stack.pop_back();
@@ -2360,111 +2370,111 @@ inline void print(YYSTYPE val)
 	print(pack(val));
 }
 
-struct list newlist()  //TODO:gc
+struct list* newlist()  //TODO:gc
 {
-	struct list l;
-	l.len=0;
-	l.size=INIT_LIST_SIZE;
-	l.val=(VAL*)malloc(INIT_LIST_SIZE*sizeof(VAL));
-	if(l.val==0) 
+	struct list *l=(struct list *)malloc(sizeof(struct list));
+	l->len=0;
+	l->size=INIT_LIST_SIZE;
+	l->val=(VAL*)malloc(INIT_LIST_SIZE*sizeof(VAL));
+	if(l->val==0) 
 	{
 		yyerror("malloc fail");
 	}
 	return l;
 }
 
-void exlist(struct list &l) //extend
+void exlist(struct list *l) //extend
 {
-	l.size*=2;
-	l.val=(VAL*)realloc(l.val,l.size*sizeof(VAL));
-	if(l.val==0) 
+	l->size*=2;
+	l->val=(VAL*)realloc(l->val,l->size*sizeof(VAL));
+	if(l->val==0) 
 	{
 		yyerror("malloc fail");
 	}
 	return;
 }
 
-void append(struct list &l,VAL _val)
+void append(struct list *l,VAL _val)
 {
-	if(l.len>=l.size) exlist(l);
-	l.val[l.len++]=_val;
+	if(l->len>=l->size) exlist(l);
+	l->val[l->len++]=_val;
 }
 
-void add(struct list &l,struct list o)
+void add(struct list *l,struct list *o)
 {
 	int i;
-	while(l.len+o.len-1>=l.size) exlist(l);
-	for(i=0;i<o.len;i++)l.val[l.len++]=o.val[i];
+	while(l->len+o->len-1>=l->size) exlist(l);
+	for(i=0;i<o->len;i++)l->val[l->len++]=o->val[i];
 }
 
-void insert(struct list &l,int index,VAL _val)
+void insert(struct list *l,int index,VAL _val)
 {
 	int i;
-	if(index>l.len) 
+	if(index>l->len) 
 	{
 		yyerror("index out of bound");
 	}
-	if(l.len>=l.size) exlist(l);
-	for(i=l.len;i>index;i--) l.val[i]=l.val[i-1];
-	l.len++;
-	l.val[index]=_val;
+	if(l->len>=l->size) exlist(l);
+	for(i=l->len;i>index;i--) l->val[i]=l->val[i-1];
+	l->len++;
+	l->val[index]=_val;
 }
 
-VAL pop(struct list &l,int index)
+VAL pop(struct list *l,int index)
 {
 	int i;
-	VAL _val=l.val[index];
-	for(i=index+1;i<l.len;i++) l.val[i-1]=l.val[i];
-	l.len--;
+	VAL _val=l->val[index];
+	for(i=index+1;i<l->len;i++) l->val[i-1]=l->val[i];
+	l->len--;
 	return _val;
 }
 
-struct list slice(struct list l,int begin,int end,int step)
+struct list* slice(struct list *l,int begin,int end,int step)
 {
-	struct list _val;
+	struct list* _val;
 	int i;
 	_val=newlist();
-	while(begin<0) begin+=l.len;
-	while(end<0) begin+=l.len;
-	for(i=begin;i<end;i+=step) append(_val,l.val[i]);
+	while(begin<0) begin+=l->len;
+	while(end<0) begin+=l->len;
+	for(i=begin;step>0?(i<end):(i>end);i+=step) append(_val,l->val[i]);
 	return _val;
 }
 
-inline struct list slice(struct slice s)
+inline struct list* slice(struct slice s)
 {
-	return slice(*(s.l),s.begin,s.end,s.step);
+	return slice(s.l,s.begin,s.end,s.step);
 }
 
-void setslice(struct list &l,int begin,int end,int step,struct list o)
+void setslice(struct list *l,int begin,int end,int step,struct list *o)
 {
 	int i,j;
-	if(begin<0||step<1||end>l.len) yyerror("index out of bound");
+	if(begin<0||step<1||end>l->len) yyerror("index out of bound");
 	if(step!=1)
 	{
-		if((int)ceil((double)(end-begin)/step)!=o.len) yyerror("incompatible length");
-		for(i=begin,j=0;i<end;i+=step) l.val[i]=o.val[j++];
+		if((int)ceil((double)(end-begin)/step)!=o->len) yyerror("incompatible length");
+		for(i=begin,j=0;i<end;i+=step) l->val[i]=o->val[j++];
 	}
 	else//step=1
 	{
-		if(end-begin>o.len)
+		if(end-begin>o->len)
 		{
-			while(l.len+o.len-end+begin-1>=l.size) exlist(l);
-			for(i=l.len+o.len-1-end+begin,j=l.len-1;j>=end;i--,j--) l.val[i]=l.val[j];
+			while(l->len+o->len-end+begin-1>=l->size) exlist(l);
+			for(i=l->len+o->len-1-end+begin,j=l->len-1;j>=end;i--,j--) l->val[i]=l->val[j];
 		}
-		else if(end-begin<o.len)
+		else if(end-begin<o->len)
 		{
-			for(i=begin+o.len,j=end;j<l.len;i++,j++) l.val[i]=l.val[j];
+			for(i=begin+o->len,j=end;j<l->len;i++,j++) l->val[i]=l->val[j];
 
 		}
-		for(i=begin,j=0;j<o.len;i++,j++) l.val[i]=o.val[j]; 
-		l.len=l.len+o.len-end+begin;
+		for(i=begin,j=0;j<o->len;i++,j++) l->val[i]=o->val[j]; 
+		l->len=l->len+o->len-end+begin;
 	}
 	return;
 }
 
-inline void setslice(struct slice s,struct list o)
+inline void setslice(struct slice s,struct list *o)
 {
-	setslice(*(s.l),s.begin,s.end,s.step,o);
+	setslice(s.l,s.begin,s.end,s.step,o);
 	return;
 }
 
