@@ -1,5 +1,5 @@
 
-#line 3 "lex.yy.c"
+#line 2 "lex.yy.c"
 
 #define  YY_INT_ALIGNED short int
 
@@ -454,8 +454,8 @@ char *yytext;
 #define YYSTYPE_IS_DECLARED 
 #include "types.h"
 #include "y.tab.h"
+#line 457 "lex.yy.c"
 #line 458 "lex.yy.c"
-#line 459 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -674,7 +674,7 @@ YY_DECL
 	{
 #line 21 "minipy-lab.l"
 
-#line 678 "lex.yy.c"
+#line 677 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -789,7 +789,7 @@ YY_RULE_SETUP
 #line 49 "minipy-lab.l"
 ECHO;
 	YY_BREAK
-#line 793 "lex.yy.c"
+#line 792 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 

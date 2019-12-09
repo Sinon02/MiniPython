@@ -110,7 +110,7 @@ atom  : ID {
       | List 
       | number
       ;
-slice_op :  /*  empty production */{$$.type=1; $$.data.i=1;}
+slice_op :  {$$.type=0; $$.data.i=1;}
         | ':' add_expr {
 			if($2.type!=0)
 			{
@@ -148,6 +148,30 @@ atom_expr : atom
 						$$.data.slice.step=$6.data.i;
 						$$.type=5;
 					}	
+					else if((*($1.data.v)).flag==2)
+					{
+						if($6.type!=0&&$6.type!=-1)
+						{
+							yyerror("TypeError: slice indices must be integers or None or have an __index__ method");
+							YYERROR;
+						}	
+						if($6.type==0&&$6.data.i>0||$6.type==-1)
+						{
+							int start=$3.type==0?$3.data.i:0;
+							int end=$5.type==0?$5.data.i:strlen((*($1.data.v)).DATA.s);
+							int step=$6.type==0?$6.data.i:1;	
+							int len=(end-start)/step+1;
+							$$.data.s=(char *) malloc(sizeof(char)*len);
+							$$.type=2;
+							int index=0;
+							for(int i=start;i<=end-1;i+=step)
+							{
+								$$.data.s[index++]=(*($1.data.v)).DATA.s[i];	
+							}	
+							$$.data.s[index]=0;
+						}
+						
+					}
 					else {yyerror("type error");YYERROR;}
 				}
 				else {yyerror("type error");YYERROR;}
