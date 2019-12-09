@@ -2321,13 +2321,13 @@ void print(VAL val)
 		case 3:
 			for(auto& p : print_stack)
 			{
-				if(p==(unsigned long)val.DATA.l.val)
+				if(p==*(unsigned long *)(&val.DATA.l.val))
 				{
 					cout<<"[...]";
 					return;
 				}
 			}
-			print_stack.push_back((unsigned long)val.DATA.l.val);
+			print_stack.push_back(*(unsigned long *)(&val.DATA.l.val));
 			cout<<'[';
 			if(val.DATA.l.len>0) print(val.DATA.l.val[0]);
 			for(i=1;i<val.DATA.l.len;i++)
