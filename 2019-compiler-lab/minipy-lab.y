@@ -19,6 +19,7 @@
 TABLE *table;
 int tablelen=0;
 int tablesize=INIT_TABLE_SIZE;
+int print_or_not=1;
 vector<unsigned long> print_stack;
 
 %}
@@ -33,7 +34,7 @@ Lines : Lines  stat '\n' prompt
       | 
       | error '\n' {yyerrok;}
       ;
-prompt : {cout << "\nminiPy> ";}
+prompt : {cout << "miniPy> ";}
        ;
 stat  : assignExpr 
       ;
@@ -58,7 +59,11 @@ assignExpr:
 					}
 					}
       | add_expr	{
-			print($1);
+			if(print_or_not)
+			{	print($1);
+				cout<<endl;
+			}
+			print_or_not=1;
 			}
       ;
 number : INT 
@@ -302,10 +307,19 @@ atom_expr : atom
 				if(len==1)
 				{
 					if($1.type==4)
-					append((*($$.data.v)).DATA.l,$3.data.l.val[0]);
+					{
+						YYSTYPE r=unpack(*($1.data.v));
+						if(r.type!=3)
+						{
+							yyerror("Unsupported append operation");
+							YYERROR;
+						}
+						append((*($$.data.v)).DATA.l,$3.data.l.val[0]);
+					}
 					else if($1.type==3)
 					append($$.data.l,$3.data.l.val[0]); 
 					$$.type=-1;
+					print_or_not=0;
 				}
 				else
 				{
@@ -381,8 +395,8 @@ atom_expr : atom
      			sprintf(tmp, "%04d-%02d-%02d %02d:%02d:%02d", 1900+stime->tm_year, 1+stime->tm_mon,stime->tm_mday, stime->tm_hour, stime->tm_min, stime->tm_sec);
 				$$.data.s=tmp;
 				$$.type=2;
-			}
-			else if(!strcmp($1.name,"list"))/*TODO:list.append(5)*/
+		}
+			else if(!strcmp($1.name,"list"))
 			{
 				struct list l;
 				l=newlist();
