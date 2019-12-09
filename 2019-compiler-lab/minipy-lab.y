@@ -861,7 +861,7 @@ struct list slice(struct list l,int begin,int end,int step)
 	_val=newlist();
 	while(begin<0) begin+=l.len;
 	while(end<0) begin+=l.len;
-	for(i=begin;i<end;i+=step) append(_val,l.val[i]);
+	for(i=begin;step>0?(i<end):(i>end);i+=step) append(_val,l.val[i]);
 	return _val;
 }
 
