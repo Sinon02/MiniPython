@@ -1371,9 +1371,9 @@ yyreduce:
   case 21:
 #line 114 "minipy-lab.y" /* yacc.c:1646  */
     {
-			if((yyvsp[-1]).type!=0)
+			if((yyvsp[0]).type!=0)
 			{
-				yyerror("type error"); 
+				yyerror("type error sliceop"); 
 				YYERROR;
 			}
 			else (yyval)=(yyvsp[0]);
@@ -1389,7 +1389,7 @@ yyreduce:
 
   case 23:
 #line 124 "minipy-lab.y" /* yacc.c:1646  */
-    {if((yyvsp[0]).type!=0) {yyerror("type error");YYERROR;}}
+    {if((yyvsp[0]).type!=0) {yyerror("type error sub expr");YYERROR;}}
 #line 1394 "y.tab.c" /* yacc.c:1646  */
     break;
 
@@ -2431,12 +2431,20 @@ VAL pop(struct list *l,int index)
 
 struct list* slice(struct list *l,int begin,int end,int step)
 {
+	while(begin<0) begin+=l->len;
+	while(end<0) begin+=l->len;
+	if(begin>l->len-1) begin=l->len;
+	if(end>l->len-1) end=l->len;
+	if(begin==0&&end==l->len&&step<0)
+	{
+		begin=end-1;
+		end=-1;
+	}
 	struct list* _val;
 	int i;
 	_val=newlist();
-	while(begin<0) begin+=l->len;
-	while(end<0) begin+=l->len;
-	for(i=begin;step>0?(i<end):(i>end);i+=step) append(_val,l->val[i]);
+	for(i=begin;step>0?(i<end):(i>end);i+=step) 
+		append(_val,l->val[i]);
 	return _val;
 }
 

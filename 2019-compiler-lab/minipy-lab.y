@@ -866,12 +866,20 @@ VAL pop(struct list *l,int index)
 
 struct list* slice(struct list *l,int begin,int end,int step)
 {
+	while(begin<0) begin+=l->len;
+	while(end<0) begin+=l->len;
+	if(begin>l->len-1) begin=l->len;
+	if(end>l->len-1) end=l->len;
+	if(begin==0&&end==l->len&&step<0)
+	{
+		begin=end-1;
+		end=-1;
+	}
 	struct list* _val;
 	int i;
 	_val=newlist();
-	while(begin<0) begin+=l->len;
-	while(end<0) begin+=l->len;
-	for(i=begin;step>0?(i<end):(i>end);i+=step) append(_val,l->val[i]);
+	for(i=begin;step>0?(i<end):(i>end);i+=step) 
+		append(_val,l->val[i]);
 	return _val;
 }
 
