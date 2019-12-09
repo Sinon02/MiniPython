@@ -112,16 +112,16 @@ atom  : ID {
       ;
 slice_op :  /*  empty production */{$$.type=1; $$.data.i=1;}
         | ':' add_expr {
-			if($1.type!=0)
+			if($2.type!=0)
 			{
-				yyerror("type error"); 
+				yyerror("type error sliceop"); 
 				YYERROR;
 			}
 			else $$=$2;
 			}
         ;
 sub_expr:  /*  empty production */  {$$.type=-1;}
-        | add_expr {if($1.type!=0) {yyerror("type error");YYERROR;}}
+        | add_expr {if($1.type!=0) {yyerror("type error sub expr");YYERROR;}}
         ;        
 atom_expr : atom 
         | atom_expr  '[' sub_expr  ':' sub_expr  slice_op ']'{
