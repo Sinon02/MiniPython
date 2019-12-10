@@ -761,6 +761,7 @@ YY_RULE_SETUP
 				int len = strlen(yytext);
 				yylval.data.s = (char *)malloc(sizeof(char)*(len+1)); 
 				strcpy(yylval.data.s,yytext);
+				yylval.data.s[len]=0;
 				yylval.type=2;
 				return ID; 
 			}
@@ -768,7 +769,7 @@ YY_RULE_SETUP
 case 5:
 /* rule 5 can match eol */
 YY_RULE_SETUP
-#line 40 "minipy-lab.l"
+#line 41 "minipy-lab.l"
 {
 						int len = strlen(yytext);
 						yylval.data.s = (char *)malloc(sizeof(char)*len); 
@@ -781,15 +782,15 @@ YY_RULE_SETUP
 case 6:
 /* rule 6 can match eol */
 YY_RULE_SETUP
-#line 48 "minipy-lab.l"
+#line 49 "minipy-lab.l"
 { return yytext[0];}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 49 "minipy-lab.l"
+#line 50 "minipy-lab.l"
 ECHO;
 	YY_BREAK
-#line 792 "lex.yy.c"
+#line 793 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1794,7 +1795,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 49 "minipy-lab.l"
+#line 50 "minipy-lab.l"
 
 #ifdef LEX
 YYSTYPE yylval;

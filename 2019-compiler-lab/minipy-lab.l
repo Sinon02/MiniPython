@@ -34,6 +34,7 @@ real     {number}"."{number}?|{number}?"."{number}
 				int len = strlen(yytext);
 				yylval.data.s = (char *)malloc(sizeof(char)*(len+1)); 
 				strcpy(yylval.data.s,yytext);
+				yylval.data.s[len]=0;
 				yylval.type=2;
 				return ID; 
 			}

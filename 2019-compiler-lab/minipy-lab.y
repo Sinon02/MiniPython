@@ -35,7 +35,13 @@ Lines : Lines  stat '\n' prompt
       ;
 prompt : {cout << "miniPy> ";}
        ;
-stat  : assignExpr 
+stat  : assignExpr	{
+						if(print_or_not)
+						{	print($1);
+							cout<<endl;
+						}
+						print_or_not=1;
+					}
       ;
 assignExpr:
         atom_expr '=' assignExpr	{
@@ -44,7 +50,7 @@ assignExpr:
 					case 0:
 					case 1:
 					case 2:
-					case 3:yyerror("assign to right value");break;
+					case 3:yyerror("assign to right value");YYERROR;break;
 					case 4:{	
 							*($1.data.v)=pack($3);
 				 			int i=FIND($1.name);
@@ -56,15 +62,11 @@ assignExpr:
 					}
 					case 5:if($3.type==3)setslice($1.data.slice,$3.data.l);else {yyerror("type error");YYERROR;}
 					}
+					print_or_not=0;
 					}
-      | add_expr	{
-			if(print_or_not)
-			{	print($1);
-				cout<<endl;
-			}
-			print_or_not=1;
-			}
-      ;
+      | add_expr	      
+	  ;
+	  
 number : INT 
        | REAL
        ;
@@ -122,7 +124,7 @@ slice_op :  {$$.type=0; $$.data.i=1;}
 		| ':' {$$.type=0;$$.data.i=1;}
         ;
 sub_expr:  /*  empty production */  {$$.type=-1;}
-        | add_expr {if($1.type!=0) {yyerror("type error sub expr");YYERROR;}}
+        | add_expr 
         ;        
 atom_expr : atom 
         | atom_expr  '[' sub_expr  ':' sub_expr  slice_op ']'{
@@ -181,6 +183,7 @@ atom_expr : atom
 					else {yyerror("type error");YYERROR;}
 				}
 				else {yyerror("type error");YYERROR;}
+				print_or_not=1;
 				}
         | atom_expr  '[' add_expr ']'{
 				if($1.type==5)
@@ -312,6 +315,7 @@ atom_expr : atom
 					yyerror("TypeError: range expected at most 3 arguments");
 					YYERROR;
 				}
+				print_or_not=1;
 			}
 			else if(!strcmp($1.name,"print"))
 			{
@@ -327,8 +331,9 @@ atom_expr : atom
 					print($3.data.l->val[i]);
 					cout<<" ";
 				}
-				yyerror("");
-				YYERROR;
+				cout<<endl;
+				$$.type=-1;
+				print_or_not=0;
 			}
 			else if(!strcmp($1.name,"append"))
 			{
@@ -396,6 +401,7 @@ atom_expr : atom
 					yyerror("TypeError: object is not iterable");
 					YYERROR;
 				}
+				print_or_not=1;	
 			}
 			free($3.data.l->val);
 		}
