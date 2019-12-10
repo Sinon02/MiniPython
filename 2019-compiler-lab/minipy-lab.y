@@ -119,6 +119,7 @@ slice_op :  {$$.type=0; $$.data.i=1;}
 			}
 			else $$=$2;
 			}
+		| ':' {$$.type=0;$$.data.i=1;}
         ;
 sub_expr:  /*  empty production */  {$$.type=-1;}
         | add_expr {if($1.type!=0) {yyerror("type error sub expr");YYERROR;}}
@@ -150,26 +151,31 @@ atom_expr : atom
 					}	
 					else if((*($1.data.v)).flag==2)
 					{
-						if($6.type!=0&&$6.type!=-1)
+						if($6.type!=0)
 						{
 							yyerror("TypeError: slice indices must be integers or None or have an __index__ method");
 							YYERROR;
 						}	
-						if($6.type==0&&$6.data.i>0||$6.type==-1)
+						int length=strlen((*($1.data.v)).DATA.s);
+						int step=$6.data.i;
+						if(step==0)
 						{
-							int start=$3.type==0?$3.data.i:0;
-							int end=$5.type==0?$5.data.i:strlen((*($1.data.v)).DATA.s);
-							int step=$6.type==0?$6.data.i:1;	
-							int len=(end-start)/step+1;
-							$$.data.s=(char *) malloc(sizeof(char)*len);
-							$$.type=2;
-							int index=0;
-							for(int i=start;i<=end-1;i+=step)
-							{
-								$$.data.s[index++]=(*($1.data.v)).DATA.s[i];	
-							}	
-							$$.data.s[index]=0;
+							yyerror("ValueError: slice step cannot be zero");
+							YYERROR;
 						}
+						int start,end;
+						start=($3.type==0)?GetPlaceInSlice($3.data.i,length,1):((step>0)?0:length-1);
+						end=($5.type==0)?GetPlaceInSlice($5.data.i,length,0):((step>0)?length:-1);
+						int len=(end-start)/(step);
+						len=(len>0)?len:0;
+						$$.data.s=(char *) malloc(sizeof(char)*(len+1));
+						$$.type=2;
+						int index=0;
+						for(int i=start;((step>0)?(i<end):(i>end));i+=step)
+						{
+							$$.data.s[index++]=(*($1.data.v)).DATA.s[i];	
+						}	
+						$$.data.s[index]=0;
 						
 					}
 					else {yyerror("type error");YYERROR;}
@@ -291,16 +297,7 @@ atom_expr : atom
 					int start=$3.data.l->val[0].DATA.i;
 					int end=$3.data.l->val[1].DATA.i;
 					int step=$3.data.l->val[2].DATA.i;
-					if(step>0)
-					for(int i=start;i<=end;i+=step)
-					{
-						VAL val;
-						val.flag=0;
-						val.DATA.i=i;
-						append(l,val);
-					}
-					else
-					for(int i=start;i>=end;i+=step)
+					for(int i=start;((step>0)?(i<end):(i>end));i+=step)
 					{
 						VAL val;
 						val.flag=0;
@@ -967,4 +964,16 @@ void PrintFloat(float a)
 		std::cout<<a;
 	}
     	std::cout << std::defaultfloat << std::setprecision(ss);
+}
+int GetPlaceInSlice(int index,int len,int left)
+{
+	if(index<len&&index>=-len)
+	{
+		index=(index+len)%len;
+	}
+	else
+	{
+		index=(index>0)?len:(left?0:-1);
+	}
+	return index;
 }
