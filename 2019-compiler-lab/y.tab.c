@@ -446,9 +446,9 @@ static const yytype_uint16 yyrline[] =
 {
        0,    29,    29,    31,    32,    33,    34,    36,    38,    47,
       67,    70,    71,    73,    74,    87,   105,   111,   112,   113,
-     115,   116,   124,   126,   127,   129,   130,   188,   217,   218,
-     408,   444,   451,   453,   454,   456,   457,   460,   467,   469,
-     532,   588,   590,   674,   684,   709
+     115,   116,   124,   126,   127,   129,   130,   188,   241,   242,
+     432,   468,   475,   477,   478,   480,   481,   484,   491,   493,
+     556,   612,   614,   698,   708,   733
 };
 #endif
 
@@ -1482,8 +1482,32 @@ yyreduce:
 						YYERROR;
 					}
 				}
-				else if(yyvsp[-3].type==4) {yyvsp[-3]=unpack(*(yyvsp[-3].data.v));}
-				if(yyvsp[-1].type==0&&yyvsp[-3].type==3)
+				else if(yyvsp[-3].type==4) {
+					if((*(yyvsp[-3].data.v)).flag==2)
+					{
+						if(yyvsp[-1].type!=0)
+						{
+							yyerror("TypeError: string indices must be integers");
+							YYERROR;
+						}
+						int index=yyvsp[-1].data.i;
+						int length=strlen((*(yyvsp[-3].data.v)).DATA.s);
+						if(index<length&&index>=-length)
+						{
+							index=(index+length)%length;
+							yyval.data.s=(char *) malloc(sizeof(char)*(2));
+							yyval.type=2;
+							yyval.data.s[0]=(*(yyvsp[-3].data.v)).DATA.s[index];
+							yyval.data.s[1]=0;
+						}
+						else
+						{
+							yyerror("IndexError: string index out of range");
+							YYERROR;
+						}
+					}
+				}
+				else if(yyvsp[-1].type==0&&yyvsp[-3].type==3)
 				{
 					if(yyvsp[-1].data.i<yyvsp[-3].data.l->len)
 					{
@@ -1497,17 +1521,17 @@ yyreduce:
 					YYERROR;
 				}
 			}
-#line 1501 "y.tab.c"
+#line 1525 "y.tab.c"
     break;
 
   case 28:
-#line 217 "minipy-lab.y"
+#line 241 "minipy-lab.y"
     {yyval.name=yyvsp[0].data.s;}
-#line 1507 "y.tab.c"
+#line 1531 "y.tab.c"
     break;
 
   case 29:
-#line 218 "minipy-lab.y"
+#line 242 "minipy-lab.y"
     {
 			if(!strcmp(yyvsp[-4].name,"len"))
 			{
@@ -1698,11 +1722,11 @@ yyreduce:
 			}
 			free(yyvsp[-2].data.l->val);
 		}
-#line 1702 "y.tab.c"
+#line 1726 "y.tab.c"
     break;
 
   case 30:
-#line 409 "minipy-lab.y"
+#line 433 "minipy-lab.y"
     {
 			if(!strcmp(yyvsp[-2].name,"quit"))
 			{
@@ -1737,11 +1761,11 @@ yyreduce:
 				yyval.type=3;
 			}
 		}
-#line 1741 "y.tab.c"
+#line 1765 "y.tab.c"
     break;
 
   case 31:
-#line 444 "minipy-lab.y"
+#line 468 "minipy-lab.y"
     {
 				struct list *l;
 				l=newlist();
@@ -1749,29 +1773,29 @@ yyreduce:
 				yyval.type=3;
 				yyval.data.l=l;
 			}
-#line 1753 "y.tab.c"
+#line 1777 "y.tab.c"
     break;
 
   case 32:
-#line 451 "minipy-lab.y"
+#line 475 "minipy-lab.y"
     {append(yyvsp[-2].data.l,pack(yyvsp[0]));yyval=yyvsp[-2];}
-#line 1759 "y.tab.c"
+#line 1783 "y.tab.c"
     break;
 
   case 33:
-#line 453 "minipy-lab.y"
+#line 477 "minipy-lab.y"
     {yyval.type=3;yyval.data.l=newlist();}
-#line 1765 "y.tab.c"
+#line 1789 "y.tab.c"
     break;
 
   case 34:
-#line 454 "minipy-lab.y"
+#line 478 "minipy-lab.y"
     {yyval=yyvsp[-2];}
-#line 1771 "y.tab.c"
+#line 1795 "y.tab.c"
     break;
 
   case 37:
-#line 460 "minipy-lab.y"
+#line 484 "minipy-lab.y"
     {
 					struct list *l;
 					l=newlist();
@@ -1779,17 +1803,17 @@ yyreduce:
 					yyval.type=3;
 					yyval.data.l=l;
 				}
-#line 1783 "y.tab.c"
+#line 1807 "y.tab.c"
     break;
 
   case 38:
-#line 467 "minipy-lab.y"
+#line 491 "minipy-lab.y"
     {append(yyvsp[-2].data.l,pack(yyvsp[0]));yyval=yyvsp[-2];}
-#line 1789 "y.tab.c"
+#line 1813 "y.tab.c"
     break;
 
   case 39:
-#line 469 "minipy-lab.y"
+#line 493 "minipy-lab.y"
     {
 	 			if(yyvsp[-2].type==-1||yyvsp[0].type==-1)
 				{
@@ -1853,11 +1877,11 @@ yyreduce:
 				case 5: yyerror("internal error");YYERROR;
 				}
 				}
-#line 1857 "y.tab.c"
+#line 1881 "y.tab.c"
     break;
 
   case 40:
-#line 532 "minipy-lab.y"
+#line 556 "minipy-lab.y"
     {
 				if(yyvsp[-2].type==-1||yyvsp[0].type==-1)
 				{
@@ -1914,11 +1938,11 @@ yyreduce:
 				case 5: yyerror("internal error");YYERROR;
 				}
 				}
-#line 1918 "y.tab.c"
+#line 1942 "y.tab.c"
     break;
 
   case 42:
-#line 590 "minipy-lab.y"
+#line 614 "minipy-lab.y"
     {
 				if(yyvsp[-2].type==-1||yyvsp[0].type==-1)
 				{
@@ -2003,11 +2027,11 @@ yyreduce:
 				case 5: yyerror("internal error");YYERROR;
 				}
 				}
-#line 2007 "y.tab.c"
+#line 2031 "y.tab.c"
     break;
 
   case 43:
-#line 674 "minipy-lab.y"
+#line 698 "minipy-lab.y"
     {
 				if(yyvsp[-2].type==-1||yyvsp[0].type==-1)
 				{
@@ -2018,11 +2042,11 @@ yyreduce:
 
 				else {yyerror("type error");YYERROR;};
 				}
-#line 2022 "y.tab.c"
+#line 2046 "y.tab.c"
     break;
 
   case 44:
-#line 684 "minipy-lab.y"
+#line 708 "minipy-lab.y"
     {
 					if(yyvsp[-2].type==-1||yyvsp[0].type==-1)
 					{
@@ -2048,11 +2072,11 @@ yyreduce:
 						YYERROR;
 					}
 				}
-#line 2052 "y.tab.c"
+#line 2076 "y.tab.c"
     break;
 
 
-#line 2056 "y.tab.c"
+#line 2080 "y.tab.c"
 
       default: break;
     }
@@ -2284,7 +2308,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 712 "minipy-lab.y"
+#line 736 "minipy-lab.y"
 
 
 int main()

@@ -199,8 +199,32 @@ atom_expr : atom
 						YYERROR;
 					}
 				}
-				else if($1.type==4) {$1=unpack(*($1.data.v));}
-				if($3.type==0&&$1.type==3)
+				else if($1.type==4) {
+					if((*($1.data.v)).flag==2)
+					{
+						if($3.type!=0)
+						{
+							yyerror("TypeError: string indices must be integers");
+							YYERROR;
+						}
+						int index=$3.data.i;
+						int length=strlen((*($1.data.v)).DATA.s);
+						if(index<length&&index>=-length)
+						{
+							index=(index+length)%length;
+							$$.data.s=(char *) malloc(sizeof(char)*(2));
+							$$.type=2;
+							$$.data.s[0]=(*($1.data.v)).DATA.s[index];
+							$$.data.s[1]=0;
+						}
+						else
+						{
+							yyerror("IndexError: string index out of range");
+							YYERROR;
+						}
+					}
+				}
+				else if($3.type==0&&$1.type==3)
 				{
 					if($3.data.i<$1.data.l->len)
 					{
