@@ -141,24 +141,15 @@ atom_expr : atom
 					$$.data.l=slice($1.data.l,$3.type==0?$3.data.i:0,$5.type==0?$5.data.i:$1.data.l->len,$6.data.i);
 					$$.type=3;
 				}
-				else if($1.type==4)
+				else if($1.type==2||$1.type==4&&(*($1.data.v)).flag==2)
 				{
-					if((*($1.data.v)).flag==3)
-					{
-						$$.data.slice.l=(*($1.data.v)).DATA.l;
-						$$.data.slice.end=$5.type==0?$5.data.i:((*($1.data.v)).DATA.l->len);
-						$$.data.slice.begin=$3.type==0?$3.data.i:0;
-						$$.data.slice.step=$6.data.i;
-						$$.type=5;
-					}	
-					else if((*($1.data.v)).flag==2)
-					{
 						if($6.type!=0)
 						{
 							yyerror("TypeError: slice indices must be integers or None or have an __index__ method");
 							YYERROR;
 						}	
-						int length=strlen((*($1.data.v)).DATA.s);
+						char *string=($1.type==2)?$1.data.s:(*($1.data.v)).DATA.s;
+						int length=strlen(string);
 						int step=$6.data.i;
 						if(step==0)
 						{
@@ -175,12 +166,18 @@ atom_expr : atom
 						int index=0;
 						for(int i=start;((step>0)?(i<end):(i>end));i+=step)
 						{
-							$$.data.s[index++]=(*($1.data.v)).DATA.s[i];	
+							$$.data.s[index++]=string[i];	
 						}	
 						$$.data.s[index]=0;
-						
-					}
-					else {yyerror("type error");YYERROR;}
+				}
+
+				else if($1.type==4&&(*($1.data.v)).flag==3)
+				{
+						$$.data.slice.l=(*($1.data.v)).DATA.l;
+						$$.data.slice.end=$5.type==0?$5.data.i:((*($1.data.v)).DATA.l->len);
+						$$.data.slice.begin=$3.type==0?$3.data.i:0;
+						$$.data.slice.step=$6.data.i;
+						$$.type=5;
 				}
 				else {yyerror("type error");YYERROR;}
 				print_or_not=1;
@@ -199,29 +196,27 @@ atom_expr : atom
 						YYERROR;
 					}
 				}
-				else if($1.type==4) {
-					if((*($1.data.v)).flag==2)
+				else if($1.type==4&&(*($1.data.v)).flag==2||$1.type==2) {
+					if($3.type!=0)
 					{
-						if($3.type!=0)
-						{
-							yyerror("TypeError: string indices must be integers");
-							YYERROR;
-						}
-						int index=$3.data.i;
-						int length=strlen((*($1.data.v)).DATA.s);
-						if(index<length&&index>=-length)
-						{
-							index=(index+length)%length;
-							$$.data.s=(char *) malloc(sizeof(char)*(2));
-							$$.type=2;
-							$$.data.s[0]=(*($1.data.v)).DATA.s[index];
-							$$.data.s[1]=0;
-						}
-						else
-						{
-							yyerror("IndexError: string index out of range");
-							YYERROR;
-						}
+						yyerror("TypeError: string indices must be integers");
+						YYERROR;
+					}
+					int index=$3.data.i;
+					char *string=($1.type==2)?$1.data.s:(*($1.data.v)).DATA.s;
+					int length=strlen(string);
+					if(index<length&&index>=-length)
+					{
+						index=(index+length)%length;
+						$$.data.s=(char *) malloc(sizeof(char)*(2));
+						$$.type=2;
+						$$.data.s[0]=string[index];
+						$$.data.s[1]=0;
+					}
+					else
+					{
+						yyerror("IndexError: string index out of range");
+						YYERROR;
 					}
 				}
 				else if($3.type==0&&$1.type==3)

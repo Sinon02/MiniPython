@@ -446,9 +446,9 @@ static const yytype_uint16 yyrline[] =
 {
        0,    29,    29,    31,    32,    33,    34,    36,    38,    47,
       67,    70,    71,    73,    74,    87,   105,   111,   112,   113,
-     115,   116,   124,   126,   127,   129,   130,   188,   241,   242,
-     432,   468,   475,   477,   478,   480,   481,   484,   491,   493,
-     556,   612,   614,   698,   708,   733
+     115,   116,   124,   126,   127,   129,   130,   185,   236,   237,
+     427,   463,   470,   472,   473,   475,   476,   479,   486,   488,
+     551,   607,   609,   693,   703,   728
 };
 #endif
 
@@ -1419,24 +1419,15 @@ yyreduce:
 					yyval.data.l=slice(yyvsp[-6].data.l,yyvsp[-4].type==0?yyvsp[-4].data.i:0,yyvsp[-2].type==0?yyvsp[-2].data.i:yyvsp[-6].data.l->len,yyvsp[-1].data.i);
 					yyval.type=3;
 				}
-				else if(yyvsp[-6].type==4)
+				else if(yyvsp[-6].type==2||yyvsp[-6].type==4&&(*(yyvsp[-6].data.v)).flag==2)
 				{
-					if((*(yyvsp[-6].data.v)).flag==3)
-					{
-						yyval.data.slice.l=(*(yyvsp[-6].data.v)).DATA.l;
-						yyval.data.slice.end=yyvsp[-2].type==0?yyvsp[-2].data.i:((*(yyvsp[-6].data.v)).DATA.l->len);
-						yyval.data.slice.begin=yyvsp[-4].type==0?yyvsp[-4].data.i:0;
-						yyval.data.slice.step=yyvsp[-1].data.i;
-						yyval.type=5;
-					}	
-					else if((*(yyvsp[-6].data.v)).flag==2)
-					{
 						if(yyvsp[-1].type!=0)
 						{
 							yyerror("TypeError: slice indices must be integers or None or have an __index__ method");
 							YYERROR;
 						}	
-						int length=strlen((*(yyvsp[-6].data.v)).DATA.s);
+						char *string=(yyvsp[-6].type==2)?yyvsp[-6].data.s:(*(yyvsp[-6].data.v)).DATA.s;
+						int length=strlen(string);
 						int step=yyvsp[-1].data.i;
 						if(step==0)
 						{
@@ -1453,21 +1444,27 @@ yyreduce:
 						int index=0;
 						for(int i=start;((step>0)?(i<end):(i>end));i+=step)
 						{
-							yyval.data.s[index++]=(*(yyvsp[-6].data.v)).DATA.s[i];	
+							yyval.data.s[index++]=string[i];	
 						}	
 						yyval.data.s[index]=0;
-						
-					}
-					else {yyerror("type error");YYERROR;}
+				}
+
+				else if(yyvsp[-6].type==4&&(*(yyvsp[-6].data.v)).flag==3)
+				{
+						yyval.data.slice.l=(*(yyvsp[-6].data.v)).DATA.l;
+						yyval.data.slice.end=yyvsp[-2].type==0?yyvsp[-2].data.i:((*(yyvsp[-6].data.v)).DATA.l->len);
+						yyval.data.slice.begin=yyvsp[-4].type==0?yyvsp[-4].data.i:0;
+						yyval.data.slice.step=yyvsp[-1].data.i;
+						yyval.type=5;
 				}
 				else {yyerror("type error");YYERROR;}
 				print_or_not=1;
 				}
-#line 1467 "y.tab.c"
+#line 1464 "y.tab.c"
     break;
 
   case 27:
-#line 188 "minipy-lab.y"
+#line 185 "minipy-lab.y"
     {
 				if(yyvsp[-3].type==5)
 				{
@@ -1482,29 +1479,27 @@ yyreduce:
 						YYERROR;
 					}
 				}
-				else if(yyvsp[-3].type==4) {
-					if((*(yyvsp[-3].data.v)).flag==2)
+				else if(yyvsp[-3].type==4&&(*(yyvsp[-3].data.v)).flag==2||yyvsp[-3].type==2) {
+					if(yyvsp[-1].type!=0)
 					{
-						if(yyvsp[-1].type!=0)
-						{
-							yyerror("TypeError: string indices must be integers");
-							YYERROR;
-						}
-						int index=yyvsp[-1].data.i;
-						int length=strlen((*(yyvsp[-3].data.v)).DATA.s);
-						if(index<length&&index>=-length)
-						{
-							index=(index+length)%length;
-							yyval.data.s=(char *) malloc(sizeof(char)*(2));
-							yyval.type=2;
-							yyval.data.s[0]=(*(yyvsp[-3].data.v)).DATA.s[index];
-							yyval.data.s[1]=0;
-						}
-						else
-						{
-							yyerror("IndexError: string index out of range");
-							YYERROR;
-						}
+						yyerror("TypeError: string indices must be integers");
+						YYERROR;
+					}
+					int index=yyvsp[-1].data.i;
+					char *string=(yyvsp[-3].type==2)?yyvsp[-3].data.s:(*(yyvsp[-3].data.v)).DATA.s;
+					int length=strlen(string);
+					if(index<length&&index>=-length)
+					{
+						index=(index+length)%length;
+						yyval.data.s=(char *) malloc(sizeof(char)*(2));
+						yyval.type=2;
+						yyval.data.s[0]=string[index];
+						yyval.data.s[1]=0;
+					}
+					else
+					{
+						yyerror("IndexError: string index out of range");
+						YYERROR;
 					}
 				}
 				else if(yyvsp[-1].type==0&&yyvsp[-3].type==3)
@@ -1521,17 +1516,17 @@ yyreduce:
 					YYERROR;
 				}
 			}
-#line 1525 "y.tab.c"
+#line 1520 "y.tab.c"
     break;
 
   case 28:
-#line 241 "minipy-lab.y"
+#line 236 "minipy-lab.y"
     {yyval.name=yyvsp[0].data.s;}
-#line 1531 "y.tab.c"
+#line 1526 "y.tab.c"
     break;
 
   case 29:
-#line 242 "minipy-lab.y"
+#line 237 "minipy-lab.y"
     {
 			if(!strcmp(yyvsp[-4].name,"len"))
 			{
@@ -1722,11 +1717,11 @@ yyreduce:
 			}
 			free(yyvsp[-2].data.l->val);
 		}
-#line 1726 "y.tab.c"
+#line 1721 "y.tab.c"
     break;
 
   case 30:
-#line 433 "minipy-lab.y"
+#line 428 "minipy-lab.y"
     {
 			if(!strcmp(yyvsp[-2].name,"quit"))
 			{
@@ -1761,11 +1756,11 @@ yyreduce:
 				yyval.type=3;
 			}
 		}
-#line 1765 "y.tab.c"
+#line 1760 "y.tab.c"
     break;
 
   case 31:
-#line 468 "minipy-lab.y"
+#line 463 "minipy-lab.y"
     {
 				struct list *l;
 				l=newlist();
@@ -1773,29 +1768,29 @@ yyreduce:
 				yyval.type=3;
 				yyval.data.l=l;
 			}
-#line 1777 "y.tab.c"
+#line 1772 "y.tab.c"
     break;
 
   case 32:
-#line 475 "minipy-lab.y"
+#line 470 "minipy-lab.y"
     {append(yyvsp[-2].data.l,pack(yyvsp[0]));yyval=yyvsp[-2];}
-#line 1783 "y.tab.c"
+#line 1778 "y.tab.c"
     break;
 
   case 33:
-#line 477 "minipy-lab.y"
+#line 472 "minipy-lab.y"
     {yyval.type=3;yyval.data.l=newlist();}
-#line 1789 "y.tab.c"
+#line 1784 "y.tab.c"
     break;
 
   case 34:
-#line 478 "minipy-lab.y"
+#line 473 "minipy-lab.y"
     {yyval=yyvsp[-2];}
-#line 1795 "y.tab.c"
+#line 1790 "y.tab.c"
     break;
 
   case 37:
-#line 484 "minipy-lab.y"
+#line 479 "minipy-lab.y"
     {
 					struct list *l;
 					l=newlist();
@@ -1803,17 +1798,17 @@ yyreduce:
 					yyval.type=3;
 					yyval.data.l=l;
 				}
-#line 1807 "y.tab.c"
+#line 1802 "y.tab.c"
     break;
 
   case 38:
-#line 491 "minipy-lab.y"
+#line 486 "minipy-lab.y"
     {append(yyvsp[-2].data.l,pack(yyvsp[0]));yyval=yyvsp[-2];}
-#line 1813 "y.tab.c"
+#line 1808 "y.tab.c"
     break;
 
   case 39:
-#line 493 "minipy-lab.y"
+#line 488 "minipy-lab.y"
     {
 	 			if(yyvsp[-2].type==-1||yyvsp[0].type==-1)
 				{
@@ -1877,11 +1872,11 @@ yyreduce:
 				case 5: yyerror("internal error");YYERROR;
 				}
 				}
-#line 1881 "y.tab.c"
+#line 1876 "y.tab.c"
     break;
 
   case 40:
-#line 556 "minipy-lab.y"
+#line 551 "minipy-lab.y"
     {
 				if(yyvsp[-2].type==-1||yyvsp[0].type==-1)
 				{
@@ -1938,11 +1933,11 @@ yyreduce:
 				case 5: yyerror("internal error");YYERROR;
 				}
 				}
-#line 1942 "y.tab.c"
+#line 1937 "y.tab.c"
     break;
 
   case 42:
-#line 614 "minipy-lab.y"
+#line 609 "minipy-lab.y"
     {
 				if(yyvsp[-2].type==-1||yyvsp[0].type==-1)
 				{
@@ -2027,11 +2022,11 @@ yyreduce:
 				case 5: yyerror("internal error");YYERROR;
 				}
 				}
-#line 2031 "y.tab.c"
+#line 2026 "y.tab.c"
     break;
 
   case 43:
-#line 698 "minipy-lab.y"
+#line 693 "minipy-lab.y"
     {
 				if(yyvsp[-2].type==-1||yyvsp[0].type==-1)
 				{
@@ -2042,11 +2037,11 @@ yyreduce:
 
 				else {yyerror("type error");YYERROR;};
 				}
-#line 2046 "y.tab.c"
+#line 2041 "y.tab.c"
     break;
 
   case 44:
-#line 708 "minipy-lab.y"
+#line 703 "minipy-lab.y"
     {
 					if(yyvsp[-2].type==-1||yyvsp[0].type==-1)
 					{
@@ -2072,11 +2067,11 @@ yyreduce:
 						YYERROR;
 					}
 				}
-#line 2076 "y.tab.c"
+#line 2071 "y.tab.c"
     break;
 
 
-#line 2080 "y.tab.c"
+#line 2075 "y.tab.c"
 
       default: break;
     }
@@ -2308,7 +2303,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 736 "minipy-lab.y"
+#line 731 "minipy-lab.y"
 
 
 int main()
