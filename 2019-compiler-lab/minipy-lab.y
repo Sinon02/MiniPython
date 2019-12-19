@@ -136,11 +136,6 @@ atom_expr : atom
 					$$.data.slice.begin+=$1.data.slice.step*($3.type==0?$3.data.i:0);
 					$$.data.slice.step=$1.data.slice.step*$6.data.i;
 				} 
-				else if($1.type==3)
-				{
-					$$.data.l=slice($1.data.l,$3.type==0?$3.data.i:0,$5.type==0?$5.data.i:$1.data.l->len,$6.data.i);
-					$$.type=3;
-				}
 				else if($1.type==2||$1.type==4&&(*($1.data.v)).flag==2)
 				{
 						if($6.type!=0)
@@ -170,14 +165,33 @@ atom_expr : atom
 						}	
 						$$.data.s[index]=0;
 				}
-
-				else if($1.type==4&&(*($1.data.v)).flag==3)
+				else if($1.type==3||$1.type==4&&(*($1.data.v)).flag==3)
 				{
-						$$.data.slice.l=(*($1.data.v)).DATA.l;
-						$$.data.slice.end=$5.type==0?$5.data.i:((*($1.data.v)).DATA.l->len);
-						$$.data.slice.begin=$3.type==0?$3.data.i:0;
-						$$.data.slice.step=$6.data.i;
-						$$.type=5;
+						if($6.type!=0)
+						{
+							yyerror("TypeError: slice indices must be integers or None or have an __index__ method");
+							YYERROR;
+						}	
+						list *L=($1.type==3)?$1.data.l:(*($1.data.v)).DATA.l;
+						int length=L->len;
+						int step=$6.data.i;
+						if(step==0)
+						{
+							yyerror("ValueError: slice step cannot be zero");
+							YYERROR;
+						}
+						int start,end;
+						start=($3.type==0)?GetPlaceInSlice($3.data.i,length,1):((step>0)?0:length-1);
+						end=($5.type==0)?GetPlaceInSlice($5.data.i,length,0):((step>0)?length:-1);
+						int len=(end-start)/(step);
+						len=(len>0)?len:0;
+						$$.data.l=newlist();
+						int index=0;
+						for(int i=start;((step>0)?(i<end):(i>end));i+=step)
+						{
+							append($$.data.l,L->val[i]);
+						}
+						$$.type=3;
 				}
 				else {yyerror("type error");YYERROR;}
 				print_or_not=1;
@@ -219,13 +233,26 @@ atom_expr : atom
 						YYERROR;
 					}
 				}
-				else if($3.type==0&&$1.type==3)
-				{
-					if($3.data.i<$1.data.l->len)
+				else if($1.type==4&&(*($1.data.v)).flag==3||$1.type==3) {
+					if($3.type!=0)
 					{
-						$$.type=4;$$.data.v=$1.data.l->val+$3.data.i;
+						yyerror("TypeError: indices must be integers");
+						YYERROR;
 					}
-					else yyerror("index out of bound");
+					int index=$3.data.i;
+					list *L=($1.type==3)?$1.data.l:(*($1.data.v)).DATA.l;
+					int length=L->len;
+					if(index<length&&index>=-length)
+					{
+						index=(index+length)%length;
+						$$.data.v=L->val+index;
+						$$.type=4;
+					}
+					else
+					{
+						yyerror("IndexError: index out of range");
+						YYERROR;
+					}
 				}
 				else 
 				{
