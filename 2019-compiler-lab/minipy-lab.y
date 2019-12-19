@@ -128,15 +128,7 @@ sub_expr:  /*  empty production */  {$$.type=-1;}
         ;        
 atom_expr : atom 
         | atom_expr  '[' sub_expr  ':' sub_expr  slice_op ']'{
-				if($1.type==5)
-				{
-					$$.type=5;
-					$$.data.slice.l=$1.data.slice.l;
-					$$.data.slice.end=$5.type==0?($1.data.slice.begin+$1.data.slice.step*$5.data.i):$1.data.slice.end;
-					$$.data.slice.begin+=$1.data.slice.step*($3.type==0?$3.data.i:0);
-					$$.data.slice.step=$1.data.slice.step*$6.data.i;
-				} 
-				else if($1.type==2||$1.type==4&&(*($1.data.v)).flag==2)
+				if($1.type==2||$1.type==4&&(*($1.data.v)).flag==2)
 				{
 						if($6.type!=0)
 						{
@@ -197,20 +189,7 @@ atom_expr : atom
 				print_or_not=1;
 				}
         | atom_expr  '[' add_expr ']'{
-				if($1.type==5)
-				{
-					if($3.type==0)
-					{	
-						$3.data.i=$1.data.slice.begin+$1.data.slice.step*$3.data.i;
-						$1.type=3;$1.data.l=$1.data.slice.l;
-					}
-					else
-					{
-						yyerror("type error");
-						YYERROR;
-					}
-				}
-				else if($1.type==4&&(*($1.data.v)).flag==2||$1.type==2) {
+				if($1.type==4&&(*($1.data.v)).flag==2||$1.type==2) {
 					if($3.type!=0)
 					{
 						yyerror("TypeError: string indices must be integers");
