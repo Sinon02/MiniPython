@@ -1,9 +1,8 @@
-/* A Bison parser, made by GNU Bison 3.4.2.  */
+/* A Bison parser, made by GNU Bison 3.0.4.  */
 
 /* Bison implementation for Yacc-like parsers in C
 
-   Copyright (C) 1984, 1989-1990, 2000-2015, 2018-2019 Free Software Foundation,
-   Inc.
+   Copyright (C) 1984, 1989-1990, 2000-2015 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -41,14 +40,11 @@
    define necessary library symbols; they are noted "INFRINGES ON
    USER NAME SPACE" below.  */
 
-/* Undocumented macros, especially those whose name start with YY_,
-   are private implementation details.  Do not rely on them.  */
-
 /* Identify Bison output.  */
 #define YYBISON 1
 
 /* Bison version.  */
-#define YYBISON_VERSION "3.4.2"
+#define YYBISON_VERSION "3.0.4"
 
 /* Skeleton name.  */
 #define YYSKELETON_NAME "yacc.c"
@@ -65,8 +61,8 @@
 
 
 
-/* First part of user prologue.  */
-#line 1 "minipy-lab.y"
+/* Copy the first part of user declarations.  */
+#line 1 "minipy-lab.y" /* yacc.c:339  */
 
    /* definition */
    #include <stdio.h>
@@ -91,17 +87,13 @@ int tablesize=INIT_TABLE_SIZE;
 int print_or_not=1;
 
 
-#line 95 "y.tab.c"
+#line 91 "y.tab.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
-#  if defined __cplusplus
-#   if 201103L <= __cplusplus
-#    define YY_NULLPTR nullptr
-#   else
-#    define YY_NULLPTR 0
-#   endif
+#  if defined __cplusplus && 201103L <= __cplusplus
+#   define YY_NULLPTR nullptr
 #  else
-#   define YY_NULLPTR ((void*)0)
+#   define YY_NULLPTR 0
 #  endif
 # endif
 
@@ -153,7 +145,9 @@ int yyparse (void);
 
 
 
+/* Copy the second part of user declarations.  */
 
+#line 151 "y.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -174,13 +168,13 @@ typedef signed char yytype_int8;
 #ifdef YYTYPE_UINT16
 typedef YYTYPE_UINT16 yytype_uint16;
 #else
-typedef unsigned short yytype_uint16;
+typedef unsigned short int yytype_uint16;
 #endif
 
 #ifdef YYTYPE_INT16
 typedef YYTYPE_INT16 yytype_int16;
 #else
-typedef short yytype_int16;
+typedef short int yytype_int16;
 #endif
 
 #ifndef YYSIZE_T
@@ -192,7 +186,7 @@ typedef short yytype_int16;
 #  include <stddef.h> /* INFRINGES ON USER NAME SPACE */
 #  define YYSIZE_T size_t
 # else
-#  define YYSIZE_T unsigned
+#  define YYSIZE_T unsigned int
 # endif
 #endif
 
@@ -228,6 +222,15 @@ typedef short yytype_int16;
 # define YY_ATTRIBUTE_UNUSED YY_ATTRIBUTE ((__unused__))
 #endif
 
+#if !defined _Noreturn \
+     && (!defined __STDC_VERSION__ || __STDC_VERSION__ < 201112)
+# if defined _MSC_VER && 1200 <= _MSC_VER
+#  define _Noreturn __declspec (noreturn)
+# else
+#  define _Noreturn YY_ATTRIBUTE ((__noreturn__))
+# endif
+#endif
+
 /* Suppress unused-variable warnings by "using" E.  */
 #if ! defined lint || defined __GNUC__
 # define YYUSE(E) ((void) (E))
@@ -235,7 +238,7 @@ typedef short yytype_int16;
 # define YYUSE(E) /* empty */
 #endif
 
-#if defined __GNUC__ && ! defined __ICC && 407 <= __GNUC__ * 100 + __GNUC_MINOR__
+#if defined __GNUC__ && 407 <= __GNUC__ * 100 + __GNUC_MINOR__
 /* Suppress an incorrect diagnostic about yylval being uninitialized.  */
 # define YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN \
     _Pragma ("GCC diagnostic push") \
@@ -254,8 +257,6 @@ typedef short yytype_int16;
 # define YY_INITIAL_VALUE(Value) /* Nothing. */
 #endif
 
-
-#define YY_ASSERT(E) ((void) (0 && (E)))
 
 #if ! defined yyoverflow || YYERROR_VERBOSE
 
@@ -399,16 +400,16 @@ union yyalloc
 /* YYNSTATES -- Number of states.  */
 #define YYNSTATES  70
 
+/* YYTRANSLATE[YYX] -- Symbol number corresponding to YYX as returned
+   by yylex, with out-of-bounds checking.  */
 #define YYUNDEFTOK  2
 #define YYMAXUTOK   261
 
-/* YYTRANSLATE(TOKEN-NUM) -- Symbol number corresponding to TOKEN-NUM
-   as returned by yylex, with out-of-bounds checking.  */
 #define YYTRANSLATE(YYX)                                                \
-  ((unsigned) (YYX) <= YYMAXUTOK ? yytranslate[YYX] : YYUNDEFTOK)
+  ((unsigned int) (YYX) <= YYMAXUTOK ? yytranslate[YYX] : YYUNDEFTOK)
 
 /* YYTRANSLATE[TOKEN-NUM] -- Symbol number corresponding to TOKEN-NUM
-   as returned by yylex.  */
+   as returned by yylex, without out-of-bounds checking.  */
 static const yytype_uint8 yytranslate[] =
 {
        0,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -446,9 +447,9 @@ static const yytype_uint16 yyrline[] =
 {
        0,    29,    29,    31,    32,    33,    34,    36,    38,    47,
       67,    70,    71,    73,    74,    87,   105,   111,   112,   113,
-     115,   116,   124,   126,   127,   129,   130,   185,   236,   237,
-     427,   463,   470,   472,   473,   475,   476,   479,   486,   488,
-     551,   607,   609,   693,   703,   728
+     115,   116,   124,   126,   127,   129,   130,   191,   242,   243,
+     433,   469,   476,   478,   479,   481,   482,   485,   492,   494,
+     557,   613,   615,   699,   709,   734
 };
 #endif
 
@@ -603,22 +604,22 @@ static const yytype_uint8 yyr2[] =
 
 #define YYRECOVERING()  (!!yyerrstatus)
 
-#define YYBACKUP(Token, Value)                                    \
-  do                                                              \
-    if (yychar == YYEMPTY)                                        \
-      {                                                           \
-        yychar = (Token);                                         \
-        yylval = (Value);                                         \
-        YYPOPSTACK (yylen);                                       \
-        yystate = *yyssp;                                         \
-        goto yybackup;                                            \
-      }                                                           \
-    else                                                          \
-      {                                                           \
-        yyerror (YY_("syntax error: cannot back up")); \
-        YYERROR;                                                  \
-      }                                                           \
-  while (0)
+#define YYBACKUP(Token, Value)                                  \
+do                                                              \
+  if (yychar == YYEMPTY)                                        \
+    {                                                           \
+      yychar = (Token);                                         \
+      yylval = (Value);                                         \
+      YYPOPSTACK (yylen);                                       \
+      yystate = *yyssp;                                         \
+      goto yybackup;                                            \
+    }                                                           \
+  else                                                          \
+    {                                                           \
+      yyerror (YY_("syntax error: cannot back up")); \
+      YYERROR;                                                  \
+    }                                                           \
+while (0)
 
 /* Error token number */
 #define YYTERROR        1
@@ -658,39 +659,37 @@ do {                                                                      \
 } while (0)
 
 
-/*-----------------------------------.
-| Print this symbol's value on YYO.  |
-`-----------------------------------*/
+/*----------------------------------------.
+| Print this symbol's value on YYOUTPUT.  |
+`----------------------------------------*/
 
 static void
-yy_symbol_value_print (FILE *yyo, int yytype, YYSTYPE const * const yyvaluep)
+yy_symbol_value_print (FILE *yyoutput, int yytype, YYSTYPE const * const yyvaluep)
 {
-  FILE *yyoutput = yyo;
-  YYUSE (yyoutput);
+  FILE *yyo = yyoutput;
+  YYUSE (yyo);
   if (!yyvaluep)
     return;
 # ifdef YYPRINT
   if (yytype < YYNTOKENS)
-    YYPRINT (yyo, yytoknum[yytype], *yyvaluep);
+    YYPRINT (yyoutput, yytoknum[yytype], *yyvaluep);
 # endif
-  YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN
   YYUSE (yytype);
-  YY_IGNORE_MAYBE_UNINITIALIZED_END
 }
 
 
-/*---------------------------.
-| Print this symbol on YYO.  |
-`---------------------------*/
+/*--------------------------------.
+| Print this symbol on YYOUTPUT.  |
+`--------------------------------*/
 
 static void
-yy_symbol_print (FILE *yyo, int yytype, YYSTYPE const * const yyvaluep)
+yy_symbol_print (FILE *yyoutput, int yytype, YYSTYPE const * const yyvaluep)
 {
-  YYFPRINTF (yyo, "%s %s (",
+  YYFPRINTF (yyoutput, "%s %s (",
              yytype < YYNTOKENS ? "token" : "nterm", yytname[yytype]);
 
-  yy_symbol_value_print (yyo, yytype, yyvaluep);
-  YYFPRINTF (yyo, ")");
+  yy_symbol_value_print (yyoutput, yytype, yyvaluep);
+  YYFPRINTF (yyoutput, ")");
 }
 
 /*------------------------------------------------------------------.
@@ -724,7 +723,7 @@ do {                                                            \
 static void
 yy_reduce_print (yytype_int16 *yyssp, YYSTYPE *yyvsp, int yyrule)
 {
-  unsigned long yylno = yyrline[yyrule];
+  unsigned long int yylno = yyrline[yyrule];
   int yynrhs = yyr2[yyrule];
   int yyi;
   YYFPRINTF (stderr, "Reducing stack by rule %d (line %lu):\n",
@@ -735,7 +734,7 @@ yy_reduce_print (yytype_int16 *yyssp, YYSTYPE *yyvsp, int yyrule)
       YYFPRINTF (stderr, "   $%d = ", yyi + 1);
       yy_symbol_print (stderr,
                        yystos[yyssp[yyi + 1 - yynrhs]],
-                       &yyvsp[(yyi + 1) - (yynrhs)]
+                       &(yyvsp[(yyi + 1) - (yynrhs)])
                                               );
       YYFPRINTF (stderr, "\n");
     }
@@ -839,10 +838,7 @@ yytnamerr (char *yyres, const char *yystr)
           case '\\':
             if (*++yyp != '\\')
               goto do_not_strip_quotes;
-            else
-              goto append;
-
-          append:
+            /* Fall through.  */
           default:
             if (yyres)
               yyres[yyn] = *yyp;
@@ -860,7 +856,7 @@ yytnamerr (char *yyres, const char *yystr)
   if (! yyres)
     return yystrlen (yystr);
 
-  return (YYSIZE_T) (yystpcpy (yyres, yystr) - yyres);
+  return yystpcpy (yyres, yystr) - yyres;
 }
 # endif
 
@@ -938,10 +934,10 @@ yysyntax_error (YYSIZE_T *yymsg_alloc, char **yymsg,
                 yyarg[yycount++] = yytname[yyx];
                 {
                   YYSIZE_T yysize1 = yysize + yytnamerr (YY_NULLPTR, yytname[yyx]);
-                  if (yysize <= yysize1 && yysize1 <= YYSTACK_ALLOC_MAXIMUM)
-                    yysize = yysize1;
-                  else
+                  if (! (yysize <= yysize1
+                         && yysize1 <= YYSTACK_ALLOC_MAXIMUM))
                     return 2;
+                  yysize = yysize1;
                 }
               }
         }
@@ -953,7 +949,6 @@ yysyntax_error (YYSIZE_T *yymsg_alloc, char **yymsg,
       case N:                               \
         yyformat = S;                       \
       break
-    default: /* Avoid compiler warnings. */
       YYCASE_(0, YY_("syntax error"));
       YYCASE_(1, YY_("syntax error, unexpected %s"));
       YYCASE_(2, YY_("syntax error, unexpected %s, expecting %s"));
@@ -965,10 +960,9 @@ yysyntax_error (YYSIZE_T *yymsg_alloc, char **yymsg,
 
   {
     YYSIZE_T yysize1 = yysize + yystrlen (yyformat);
-    if (yysize <= yysize1 && yysize1 <= YYSTACK_ALLOC_MAXIMUM)
-      yysize = yysize1;
-    else
+    if (! (yysize <= yysize1 && yysize1 <= YYSTACK_ALLOC_MAXIMUM))
       return 2;
+    yysize = yysize1;
   }
 
   if (*yymsg_alloc < yysize)
@@ -1094,33 +1088,23 @@ yyparse (void)
   yychar = YYEMPTY; /* Cause a token to be read.  */
   goto yysetstate;
 
-
 /*------------------------------------------------------------.
-| yynewstate -- push a new state, which is found in yystate.  |
+| yynewstate -- Push a new state, which is found in yystate.  |
 `------------------------------------------------------------*/
-yynewstate:
+ yynewstate:
   /* In all cases, when you get here, the value and location stacks
      have just been pushed.  So pushing a state here evens the stacks.  */
   yyssp++;
 
-
-/*--------------------------------------------------------------------.
-| yynewstate -- set current state (the top of the stack) to yystate.  |
-`--------------------------------------------------------------------*/
-yysetstate:
-  YYDPRINTF ((stderr, "Entering state %d\n", yystate));
-  YY_ASSERT (0 <= yystate && yystate < YYNSTATES);
-  *yyssp = (yytype_int16) yystate;
+ yysetstate:
+  *yyssp = yystate;
 
   if (yyss + yystacksize - 1 <= yyssp)
-#if !defined yyoverflow && !defined YYSTACK_RELOCATE
-    goto yyexhaustedlab;
-#else
     {
       /* Get the current used size of the three stacks, in elements.  */
-      YYSIZE_T yysize = (YYSIZE_T) (yyssp - yyss + 1);
+      YYSIZE_T yysize = yyssp - yyss + 1;
 
-# if defined yyoverflow
+#ifdef yyoverflow
       {
         /* Give user a chance to reallocate the stack.  Use copies of
            these so that the &'s don't force the real ones into
@@ -1136,10 +1120,14 @@ yysetstate:
                     &yyss1, yysize * sizeof (*yyssp),
                     &yyvs1, yysize * sizeof (*yyvsp),
                     &yystacksize);
+
         yyss = yyss1;
         yyvs = yyvs1;
       }
-# else /* defined YYSTACK_RELOCATE */
+#else /* no yyoverflow */
+# ifndef YYSTACK_RELOCATE
+      goto yyexhaustedlab;
+# else
       /* Extend the stack our own way.  */
       if (YYMAXDEPTH <= yystacksize)
         goto yyexhaustedlab;
@@ -1155,33 +1143,35 @@ yysetstate:
           goto yyexhaustedlab;
         YYSTACK_RELOCATE (yyss_alloc, yyss);
         YYSTACK_RELOCATE (yyvs_alloc, yyvs);
-# undef YYSTACK_RELOCATE
+#  undef YYSTACK_RELOCATE
         if (yyss1 != yyssa)
           YYSTACK_FREE (yyss1);
       }
 # endif
+#endif /* no yyoverflow */
 
       yyssp = yyss + yysize - 1;
       yyvsp = yyvs + yysize - 1;
 
       YYDPRINTF ((stderr, "Stack size increased to %lu\n",
-                  (unsigned long) yystacksize));
+                  (unsigned long int) yystacksize));
 
       if (yyss + yystacksize - 1 <= yyssp)
         YYABORT;
     }
-#endif /* !defined yyoverflow && !defined YYSTACK_RELOCATE */
+
+  YYDPRINTF ((stderr, "Entering state %d\n", yystate));
 
   if (yystate == YYFINAL)
     YYACCEPT;
 
   goto yybackup;
 
-
 /*-----------.
 | yybackup.  |
 `-----------*/
 yybackup:
+
   /* Do appropriate processing given the current state.  Read a
      lookahead token if we need one and don't already have one.  */
 
@@ -1239,6 +1229,7 @@ yybackup:
   YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN
   *++yyvsp = yylval;
   YY_IGNORE_MAYBE_UNINITIALIZED_END
+
   goto yynewstate;
 
 
@@ -1253,7 +1244,7 @@ yydefault:
 
 
 /*-----------------------------.
-| yyreduce -- do a reduction.  |
+| yyreduce -- Do a reduction.  |
 `-----------------------------*/
 yyreduce:
   /* yyn is the number of a rule to reduce with.  */
@@ -1273,62 +1264,62 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-  case 6:
-#line 34 "minipy-lab.y"
+        case 6:
+#line 34 "minipy-lab.y" /* yacc.c:1646  */
     {yyerrok;}
-#line 1280 "y.tab.c"
+#line 1271 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 36 "minipy-lab.y"
+#line 36 "minipy-lab.y" /* yacc.c:1646  */
     {cout << "miniPy> ";}
-#line 1286 "y.tab.c"
+#line 1277 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 38 "minipy-lab.y"
+#line 38 "minipy-lab.y" /* yacc.c:1646  */
     {
 						if(print_or_not)
-						{	print(yyvsp[0]);
+						{	print((yyvsp[0]));
 							cout<<endl;
 						}
 						print_or_not=1;
 					}
-#line 1298 "y.tab.c"
+#line 1289 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 47 "minipy-lab.y"
+#line 47 "minipy-lab.y" /* yacc.c:1646  */
     {
-					switch(yyvsp[-2].type)
+					switch((yyvsp[-2]).type)
 					{
 					case 0:
 					case 1:
 					case 2:
 					case 3:yyerror("assign to right value");YYERROR;break;
 					case 4:{	
-							*(yyvsp[-2].data.v)=pack(yyvsp[0]);
-				 			int i=FIND(yyvsp[-2].name);
+							*((yyvsp[-2]).data.v)=pack((yyvsp[0]));
+				 			int i=FIND((yyvsp[-2]).name);
 							if(table[i].Res==1)
 							{
 								table[i].Res=0;
 							}
 							break;
 					}
-					case 5:if(yyvsp[0].type==3)setslice(yyvsp[-2].data.slice,yyvsp[0].data.l);else {yyerror("type error");YYERROR;}
+					case 5:if((yyvsp[0]).type==3)setslice((yyvsp[-2]).data.slice,(yyvsp[0]).data.l);else {yyerror("type error");YYERROR;}
 					}
 					print_or_not=0;
 					}
-#line 1323 "y.tab.c"
+#line 1314 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 14:
-#line 74 "minipy-lab.y"
+#line 74 "minipy-lab.y" /* yacc.c:1646  */
     {
-				switch(yyvsp[0].type)
+				switch((yyvsp[0]).type)
 				{
-					case 0: yyval.data.i=-yyvsp[0].data.i;yyval.type=yyvsp[0].type;break;
-					case 1: yyval.data.f=-yyvsp[0].data.f;yyval.type=yyvsp[0].type;break;
+					case 0: (yyval).data.i=-(yyvsp[0]).data.i;(yyval).type=(yyvsp[0]).type;break;
+					case 1: (yyval).data.f=-(yyvsp[0]).data.f;(yyval).type=(yyvsp[0]).type;break;
 					case 2:	yyerror("TypeError: bad operand type for unary -: 'str'");
 						YYERROR;
 					case 3: yyerror("TypeError: bad operand type for unary -: 'list'");
@@ -1337,164 +1328,157 @@ yyreduce:
 						YYERROR;
 				}	
 			}
-#line 1341 "y.tab.c"
+#line 1332 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 15:
-#line 87 "minipy-lab.y"
+#line 87 "minipy-lab.y" /* yacc.c:1646  */
     {
 			{
-				switch(yyvsp[0].type)
+				switch((yyvsp[0]).type)
 				{	
 					case 4: 
-						yyval=unpack(*(yyvsp[0].data.v));
+						(yyval)=unpack(*((yyvsp[0]).data.v));
 						break;
 					case 5:
-						yyval.type=3;
-						yyval.data.l=slice(yyvsp[0].data.slice); 
+						(yyval).type=3;
+						(yyval).data.l=slice((yyvsp[0]).data.slice); 
 						break;
 					default:
 						break;
 				}
 			}
 		}
-#line 1362 "y.tab.c"
+#line 1353 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 16:
-#line 105 "minipy-lab.y"
+#line 105 "minipy-lab.y" /* yacc.c:1646  */
     {
-			yyval.name=(char *)malloc(sizeof(char)*strlen(yyvsp[0].data.s));
-			strcpy(yyval.name,yyvsp[0].data.s);
-			yyval.data.v=&(table[FIND(yyvsp[0].data.s)].val);
-			yyval.type=4;
+			(yyval).name=(char *)malloc(sizeof(char)*strlen((yyvsp[0]).data.s));
+			strcpy((yyval).name,(yyvsp[0]).data.s);
+			(yyval).data.v=&(table[FIND((yyvsp[0]).data.s)].val);
+			(yyval).type=4;
 		}
-#line 1373 "y.tab.c"
+#line 1364 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 20:
-#line 115 "minipy-lab.y"
-    {yyval.type=0; yyval.data.i=1;}
-#line 1379 "y.tab.c"
+#line 115 "minipy-lab.y" /* yacc.c:1646  */
+    {(yyval).type=0; (yyval).data.i=1;}
+#line 1370 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 21:
-#line 116 "minipy-lab.y"
+#line 116 "minipy-lab.y" /* yacc.c:1646  */
     {
-			if(yyvsp[0].type!=0)
+			if((yyvsp[0]).type!=0)
 			{
 				yyerror("type error sliceop"); 
 				YYERROR;
 			}
-			else yyval=yyvsp[0];
+			else (yyval)=(yyvsp[0]);
 			}
-#line 1392 "y.tab.c"
+#line 1383 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 22:
-#line 124 "minipy-lab.y"
-    {yyval.type=0;yyval.data.i=1;}
-#line 1398 "y.tab.c"
+#line 124 "minipy-lab.y" /* yacc.c:1646  */
+    {(yyval).type=0;(yyval).data.i=1;}
+#line 1389 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 23:
-#line 126 "minipy-lab.y"
-    {yyval.type=-1;}
-#line 1404 "y.tab.c"
+#line 126 "minipy-lab.y" /* yacc.c:1646  */
+    {(yyval).type=-1;}
+#line 1395 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 26:
-#line 130 "minipy-lab.y"
+#line 130 "minipy-lab.y" /* yacc.c:1646  */
     {
-				if(yyvsp[-6].type==5)
+				if((yyvsp[-6]).type==2||(yyvsp[-6]).type==4&&(*((yyvsp[-6]).data.v)).flag==2)
 				{
-					yyval.type=5;
-					yyval.data.slice.l=yyvsp[-6].data.slice.l;
-					yyval.data.slice.end=yyvsp[-2].type==0?(yyvsp[-6].data.slice.begin+yyvsp[-6].data.slice.step*yyvsp[-2].data.i):yyvsp[-6].data.slice.end;
-					yyval.data.slice.begin+=yyvsp[-6].data.slice.step*(yyvsp[-4].type==0?yyvsp[-4].data.i:0);
-					yyval.data.slice.step=yyvsp[-6].data.slice.step*yyvsp[-1].data.i;
-				} 
-				else if(yyvsp[-6].type==3)
-				{
-					yyval.data.l=slice(yyvsp[-6].data.l,yyvsp[-4].type==0?yyvsp[-4].data.i:0,yyvsp[-2].type==0?yyvsp[-2].data.i:yyvsp[-6].data.l->len,yyvsp[-1].data.i);
-					yyval.type=3;
-				}
-				else if(yyvsp[-6].type==2||yyvsp[-6].type==4&&(*(yyvsp[-6].data.v)).flag==2)
-				{
-						if(yyvsp[-1].type!=0)
+						if((yyvsp[-1]).type!=0)
 						{
 							yyerror("TypeError: slice indices must be integers or None or have an __index__ method");
 							YYERROR;
 						}	
-						char *string=(yyvsp[-6].type==2)?yyvsp[-6].data.s:(*(yyvsp[-6].data.v)).DATA.s;
+						char *string=((yyvsp[-6]).type==2)?(yyvsp[-6]).data.s:(*((yyvsp[-6]).data.v)).DATA.s;
 						int length=strlen(string);
-						int step=yyvsp[-1].data.i;
+						int step=(yyvsp[-1]).data.i;
 						if(step==0)
 						{
 							yyerror("ValueError: slice step cannot be zero");
 							YYERROR;
 						}
 						int start,end;
-						start=(yyvsp[-4].type==0)?GetPlaceInSlice(yyvsp[-4].data.i,length,1):((step>0)?0:length-1);
-						end=(yyvsp[-2].type==0)?GetPlaceInSlice(yyvsp[-2].data.i,length,0):((step>0)?length:-1);
+						start=((yyvsp[-4]).type==0)?GetPlaceInSlice((yyvsp[-4]).data.i,length,1,step):((step>0)?0:length-1);
+						end=((yyvsp[-2]).type==0)?GetPlaceInSlice((yyvsp[-2]).data.i,length,0,step):((step>0)?length:-1);
 						int len=(end-start)/(step);
 						len=(len>0)?len:0;
-						yyval.data.s=(char *) malloc(sizeof(char)*(len+1));
-						yyval.type=2;
+						(yyval).data.s=(char *) malloc(sizeof(char)*(len+1));
+						(yyval).type=2;
 						int index=0;
 						for(int i=start;((step>0)?(i<end):(i>end));i+=step)
 						{
-							yyval.data.s[index++]=string[i];	
+							(yyval).data.s[index++]=string[i];	
 						}	
-						yyval.data.s[index]=0;
+						(yyval).data.s[index]=0;
 				}
-
-				else if(yyvsp[-6].type==4&&(*(yyvsp[-6].data.v)).flag==3)
+				else if((yyvsp[-6]).type==3||(yyvsp[-6]).type==4&&(*((yyvsp[-6]).data.v)).flag==3)
 				{
-						yyval.data.slice.l=(*(yyvsp[-6].data.v)).DATA.l;
-						yyval.data.slice.end=yyvsp[-2].type==0?yyvsp[-2].data.i:((*(yyvsp[-6].data.v)).DATA.l->len);
-						yyval.data.slice.begin=yyvsp[-4].type==0?yyvsp[-4].data.i:0;
-						yyval.data.slice.step=yyvsp[-1].data.i;
-						yyval.type=5;
+						if((yyvsp[-1]).type!=0)
+						{
+							yyerror("TypeError: slice indices must be integers or None or have an __index__ method");
+							YYERROR;
+						}	
+						list *L=((yyvsp[-6]).type==3)?(yyvsp[-6]).data.l:(*((yyvsp[-6]).data.v)).DATA.l;
+						int length=L->len;
+						int step=(yyvsp[-1]).data.i;
+						if(step==0)
+						{
+							yyerror("ValueError: slice step cannot be zero");
+							YYERROR;
+						}
+						int start,end;
+						start=((yyvsp[-4]).type==0)?GetPlaceInSlice((yyvsp[-4]).data.i,length,1,step):((step>0)?0:length-1);
+						end=((yyvsp[-2]).type==0)?GetPlaceInSlice((yyvsp[-2]).data.i,length,0,step):((step>0)?length:-1);
+						int len=(end-start)/(step);
+						len=(len>0)?len:0;
+						(yyval).data.l=newlist();
+						int index=0;
+						for(int i=start;((step>0)?(i<end):(i>end));i+=step)
+						{
+							append((yyval).data.l,L->val[i]);
+						}
+						(yyval).type=3;
 				}
 				else {yyerror("type error");YYERROR;}
 				print_or_not=1;
 				}
-#line 1464 "y.tab.c"
+#line 1461 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 27:
-#line 185 "minipy-lab.y"
+#line 191 "minipy-lab.y" /* yacc.c:1646  */
     {
-				if(yyvsp[-3].type==5)
-				{
-					if(yyvsp[-1].type==0)
-					{	
-						yyvsp[-1].data.i=yyvsp[-3].data.slice.begin+yyvsp[-3].data.slice.step*yyvsp[-1].data.i;
-						yyvsp[-3].type=3;yyvsp[-3].data.l=yyvsp[-3].data.slice.l;
-					}
-					else
-					{
-						yyerror("type error");
-						YYERROR;
-					}
-				}
-				else if(yyvsp[-3].type==4&&(*(yyvsp[-3].data.v)).flag==2||yyvsp[-3].type==2) {
-					if(yyvsp[-1].type!=0)
+				if((yyvsp[-3]).type==4&&(*((yyvsp[-3]).data.v)).flag==2||(yyvsp[-3]).type==2) {
+					if((yyvsp[-1]).type!=0)
 					{
 						yyerror("TypeError: string indices must be integers");
 						YYERROR;
 					}
-					int index=yyvsp[-1].data.i;
-					char *string=(yyvsp[-3].type==2)?yyvsp[-3].data.s:(*(yyvsp[-3].data.v)).DATA.s;
+					int index=(yyvsp[-1]).data.i;
+					char *string=((yyvsp[-3]).type==2)?(yyvsp[-3]).data.s:(*((yyvsp[-3]).data.v)).DATA.s;
 					int length=strlen(string);
 					if(index<length&&index>=-length)
 					{
 						index=(index+length)%length;
-						yyval.data.s=(char *) malloc(sizeof(char)*(2));
-						yyval.type=2;
-						yyval.data.s[0]=string[index];
-						yyval.data.s[1]=0;
+						(yyval).data.s=(char *) malloc(sizeof(char)*(2));
+						(yyval).type=2;
+						(yyval).data.s[0]=string[index];
+						(yyval).data.s[1]=0;
 					}
 					else
 					{
@@ -1502,13 +1486,26 @@ yyreduce:
 						YYERROR;
 					}
 				}
-				else if(yyvsp[-1].type==0&&yyvsp[-3].type==3)
-				{
-					if(yyvsp[-1].data.i<yyvsp[-3].data.l->len)
+				else if((yyvsp[-3]).type==4&&(*((yyvsp[-3]).data.v)).flag==3||(yyvsp[-3]).type==3) {
+					if((yyvsp[-1]).type!=0)
 					{
-						yyval.type=4;yyval.data.v=yyvsp[-3].data.l->val+yyvsp[-1].data.i;
+						yyerror("TypeError: indices must be integers");
+						YYERROR;
 					}
-					else yyerror("index out of bound");
+					int index=(yyvsp[-1]).data.i;
+					list *L=((yyvsp[-3]).type==3)?(yyvsp[-3]).data.l:(*((yyvsp[-3]).data.v)).DATA.l;
+					int length=L->len;
+					if(index<length&&index>=-length)
+					{
+						index=(index+length)%length;
+						(yyval).data.v=L->val+index;
+						(yyval).type=4;
+					}
+					else
+					{
+						yyerror("IndexError: index out of range");
+						YYERROR;
+					}
 				}
 				else 
 				{
@@ -1516,59 +1513,59 @@ yyreduce:
 					YYERROR;
 				}
 			}
-#line 1520 "y.tab.c"
+#line 1517 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 28:
-#line 236 "minipy-lab.y"
-    {yyval.name=yyvsp[0].data.s;}
-#line 1526 "y.tab.c"
+#line 242 "minipy-lab.y" /* yacc.c:1646  */
+    {(yyval).name=(yyvsp[0]).data.s;}
+#line 1523 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 29:
-#line 237 "minipy-lab.y"
+#line 243 "minipy-lab.y" /* yacc.c:1646  */
     {
-			if(!strcmp(yyvsp[-4].name,"len"))
+			if(!strcmp((yyvsp[-4]).name,"len"))
 			{
-				int i=FIND(yyvsp[-4].name);
+				int i=FIND((yyvsp[-4]).name);
 				if(table[i].Res==0)
 				{
 					yyerror("TypeError: object is not callable");
 					YYERROR;
 				}
-				int len=yyvsp[-2].data.l->len;
+				int len=(yyvsp[-2]).data.l->len;
 				if(len>1)
 				{
 					yyerror("TypeError: len() takes exactly one argument");
 					YYERROR;
 				}
-				int type=yyvsp[-2].data.l->val[0].flag;
+				int type=(yyvsp[-2]).data.l->val[0].flag;
 				if(type==2)
 				{
-					yyval.data.i=strlen(yyvsp[-2].data.l->val[0].DATA.s);
+					(yyval).data.i=strlen((yyvsp[-2]).data.l->val[0].DATA.s);
 				}
 				else if(type==3)
 				{
-					yyval.data.i=yyvsp[-2].data.l->val[0].DATA.l->len;
+					(yyval).data.i=(yyvsp[-2]).data.l->val[0].DATA.l->len;
 				}
 				else{
 					yyerror("TypeError: object has no len()");
 					YYERROR;
 				}
-				yyval.type=0;
+				(yyval).type=0;
 			}
-			else if(!strcmp(yyvsp[-4].name,"range"))
+			else if(!strcmp((yyvsp[-4]).name,"range"))
 			{	
-				int i=FIND(yyvsp[-4].name);
+				int i=FIND((yyvsp[-4]).name);
 				if(table[i].Res==0)
 				{
 					yyerror("TypeError: object is not callable");
 					YYERROR;
 				}
-				int len=yyvsp[-2].data.l->len;
+				int len=(yyvsp[-2]).data.l->len;
 				for(i=0;i<len;i++)
 				{
-					if(yyvsp[-2].data.l->val[i].flag==3)
+					if((yyvsp[-2]).data.l->val[i].flag==3)
 					{
 						yyerror("TypeError: range() integer end argument expected, got list.");
 						YYERROR;
@@ -1579,22 +1576,22 @@ yyreduce:
 				{
 					struct list *l;
 					l=newlist();
-					for(int i=0;i<yyvsp[-2].data.l->val[0].DATA.i;i++)
+					for(int i=0;i<(yyvsp[-2]).data.l->val[0].DATA.i;i++)
 					{
 						VAL val;
 						val.flag=0;
 						val.DATA.i=i;
 						append(l,val);
 					}
-				    yyval.data.l=l;
-					yyval.type=3;
+				    (yyval).data.l=l;
+					(yyval).type=3;
 				}
 				else if(len==2)
 				{
 					struct list *l;
 					l=newlist();
-					int start=yyvsp[-2].data.l->val[0].DATA.i;
-					int end=yyvsp[-2].data.l->val[1].DATA.i;
+					int start=(yyvsp[-2]).data.l->val[0].DATA.i;
+					int end=(yyvsp[-2]).data.l->val[1].DATA.i;
 					for(int i=start;i<end;i++)
 					{
 						VAL val;
@@ -1602,16 +1599,16 @@ yyreduce:
 						val.DATA.i=i;
 						append(l,val);
 					}
-					yyval.data.l=l;
-					yyval.type=3;
+					(yyval).data.l=l;
+					(yyval).type=3;
 				}
 				else if(len==3)
 				{
 					struct list *l;
 					l=newlist();
-					int start=yyvsp[-2].data.l->val[0].DATA.i;
-					int end=yyvsp[-2].data.l->val[1].DATA.i;
-					int step=yyvsp[-2].data.l->val[2].DATA.i;
+					int start=(yyvsp[-2]).data.l->val[0].DATA.i;
+					int end=(yyvsp[-2]).data.l->val[1].DATA.i;
+					int step=(yyvsp[-2]).data.l->val[2].DATA.i;
 					for(int i=start;((step>0)?(i<end):(i>end));i+=step)
 					{
 						VAL val;
@@ -1619,8 +1616,8 @@ yyreduce:
 						val.DATA.i=i;
 						append(l,val);
 					}
-					yyval.data.l=l;
-					yyval.type=3;
+					(yyval).data.l=l;
+					(yyval).type=3;
 				}
 				else
 				{
@@ -1629,42 +1626,42 @@ yyreduce:
 				}
 				print_or_not=1;
 			}
-			else if(!strcmp(yyvsp[-4].name,"print"))
+			else if(!strcmp((yyvsp[-4]).name,"print"))
 			{
-				int i=FIND(yyvsp[-4].name);
+				int i=FIND((yyvsp[-4]).name);
 				if(table[i].Res==0)
 				{
 					yyerror("TypeError: object is not callable");
 					YYERROR;
 				}
-				int len=yyvsp[-2].data.l->len;
+				int len=(yyvsp[-2]).data.l->len;
 				for(int i=0;i<len;i++)
 				{
-					print(yyvsp[-2].data.l->val[i]);
+					print((yyvsp[-2]).data.l->val[i]);
 					cout<<" ";
 				}
 				cout<<endl;
-				yyval.type=-1;
+				(yyval).type=-1;
 				print_or_not=0;
 			}
-			else if(!strcmp(yyvsp[-4].name,"append"))
+			else if(!strcmp((yyvsp[-4]).name,"append"))
 			{
-				int len=yyvsp[-2].data.l->len;
+				int len=(yyvsp[-2]).data.l->len;
 				if(len==1)
 				{
-					if(yyvsp[-4].type==4)
+					if((yyvsp[-4]).type==4)
 					{
-						YYSTYPE r=unpack(*(yyvsp[-4].data.v));
+						YYSTYPE r=unpack(*((yyvsp[-4]).data.v));
 						if(r.type!=3)
 						{
 							yyerror("Unsupported append operation");
 							YYERROR;
 						}
-						append((*(yyval.data.v)).DATA.l,yyvsp[-2].data.l->val[0]);
+						append((*((yyval).data.v)).DATA.l,(yyvsp[-2]).data.l->val[0]);
 					}
-					else if(yyvsp[-4].type==3)
-					append(yyval.data.l,yyvsp[-2].data.l->val[0]); 
-					yyval.type=-1;
+					else if((yyvsp[-4]).type==3)
+					append((yyval).data.l,(yyvsp[-2]).data.l->val[0]); 
+					(yyval).type=-1;
 					print_or_not=0;
 				}
 				else
@@ -1673,40 +1670,40 @@ yyreduce:
 					YYERROR;
 				}
 			}
-			else if(!strcmp(yyvsp[-4].name,"list"))
+			else if(!strcmp((yyvsp[-4]).name,"list"))
 			{
-				int i=FIND(yyvsp[-4].name);
+				int i=FIND((yyvsp[-4]).name);
 				if(table[i].Res==0)
 				{
 					yyerror("TypeError: object is not callable");
 					YYERROR;
 				}
-				int len=yyvsp[-2].data.l->len;
+				int len=(yyvsp[-2]).data.l->len;
 				if(len>1)
 				{
 					yyerror("TypeError: list() takes at most 1 argument");
 					YYERROR;
 				}
-				int type=yyvsp[-2].data.l->val[0].flag;
+				int type=(yyvsp[-2]).data.l->val[0].flag;
 				if(type==2)
 				{
 					struct list *l;
 					l=newlist();
-					int str_len=strlen(yyvsp[-2].data.l->val[0].DATA.s);
+					int str_len=strlen((yyvsp[-2]).data.l->val[0].DATA.s);
 					for(int i=0;i<str_len;i++)
 					{
 						VAL val;val.flag=2;val.DATA.s=(char *)malloc(sizeof(char)*2);
-						*val.DATA.s=yyvsp[-2].data.l->val[0].DATA.s[i];
+						*val.DATA.s=(yyvsp[-2]).data.l->val[0].DATA.s[i];
 						*(val.DATA.s+1)=0;
 						append(l,val);
 					}
-					yyval.type=3;
-					yyval.data.l=l;
+					(yyval).type=3;
+					(yyval).data.l=l;
 				}
 				else if(type==3)
 				{
-					yyval.type=3;
-					yyval.data.l=yyvsp[-2].data.l->val[0].DATA.l;
+					(yyval).type=3;
+					(yyval).data.l=(yyvsp[-2]).data.l->val[0].DATA.l;
 				}
 				else
 				{
@@ -1715,17 +1712,17 @@ yyreduce:
 				}
 				print_or_not=1;	
 			}
-			free(yyvsp[-2].data.l->val);
+			free((yyvsp[-2]).data.l->val);
 		}
-#line 1721 "y.tab.c"
+#line 1718 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 30:
-#line 428 "minipy-lab.y"
+#line 434 "minipy-lab.y" /* yacc.c:1646  */
     {
-			if(!strcmp(yyvsp[-2].name,"quit"))
+			if(!strcmp((yyvsp[-2]).name,"quit"))
 			{
-				int i=FIND(yyvsp[-2].name);
+				int i=FIND((yyvsp[-2]).name);
 				if(table[i].Res==0)
 				{
 					yyerror("TypeError: object is not callable");
@@ -1733,9 +1730,9 @@ yyreduce:
 				}
 				exit(-1);
 			}
-			else if(!strcmp(yyvsp[-2].name,"time"))
+			else if(!strcmp((yyvsp[-2]).name,"time"))
 			{
-				int i=FIND(yyvsp[-2].name);
+				int i=FIND((yyvsp[-2]).name);
 				if(table[i].Res==0)
 				{
 					yyerror("TypeError: object is not callable");
@@ -1745,83 +1742,83 @@ yyreduce:
     			struct tm* stime=localtime(&t);
 				char *tmp=(char*)malloc(sizeof(char)*32);
      			sprintf(tmp, "%04d-%02d-%02d %02d:%02d:%02d", 1900+stime->tm_year, 1+stime->tm_mon,stime->tm_mday, stime->tm_hour, stime->tm_min, stime->tm_sec);
-				yyval.data.s=tmp;
-				yyval.type=2;
+				(yyval).data.s=tmp;
+				(yyval).type=2;
 		}
-			else if(!strcmp(yyvsp[-2].name,"list"))
+			else if(!strcmp((yyvsp[-2]).name,"list"))
 			{
 				struct list *l;
 				l=newlist();
-				yyval.data.l=l;
-				yyval.type=3;
+				(yyval).data.l=l;
+				(yyval).type=3;
 			}
 		}
-#line 1760 "y.tab.c"
+#line 1757 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 31:
-#line 463 "minipy-lab.y"
+#line 469 "minipy-lab.y" /* yacc.c:1646  */
     {
 				struct list *l;
 				l=newlist();
-				append(l,pack(yyvsp[0]));
-				yyval.type=3;
-				yyval.data.l=l;
+				append(l,pack((yyvsp[0])));
+				(yyval).type=3;
+				(yyval).data.l=l;
 			}
-#line 1772 "y.tab.c"
+#line 1769 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 32:
-#line 470 "minipy-lab.y"
-    {append(yyvsp[-2].data.l,pack(yyvsp[0]));yyval=yyvsp[-2];}
-#line 1778 "y.tab.c"
+#line 476 "minipy-lab.y" /* yacc.c:1646  */
+    {append((yyvsp[-2]).data.l,pack((yyvsp[0])));(yyval)=(yyvsp[-2]);}
+#line 1775 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 33:
-#line 472 "minipy-lab.y"
-    {yyval.type=3;yyval.data.l=newlist();}
-#line 1784 "y.tab.c"
+#line 478 "minipy-lab.y" /* yacc.c:1646  */
+    {(yyval).type=3;(yyval).data.l=newlist();}
+#line 1781 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 34:
-#line 473 "minipy-lab.y"
-    {yyval=yyvsp[-2];}
-#line 1790 "y.tab.c"
+#line 479 "minipy-lab.y" /* yacc.c:1646  */
+    {(yyval)=(yyvsp[-2]);}
+#line 1787 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 37:
-#line 479 "minipy-lab.y"
+#line 485 "minipy-lab.y" /* yacc.c:1646  */
     {
 					struct list *l;
 					l=newlist();
-					append(l,pack(yyvsp[0]));
-					yyval.type=3;
-					yyval.data.l=l;
+					append(l,pack((yyvsp[0])));
+					(yyval).type=3;
+					(yyval).data.l=l;
 				}
-#line 1802 "y.tab.c"
+#line 1799 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 38:
-#line 486 "minipy-lab.y"
-    {append(yyvsp[-2].data.l,pack(yyvsp[0]));yyval=yyvsp[-2];}
-#line 1808 "y.tab.c"
+#line 492 "minipy-lab.y" /* yacc.c:1646  */
+    {append((yyvsp[-2]).data.l,pack((yyvsp[0])));(yyval)=(yyvsp[-2]);}
+#line 1805 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 39:
-#line 488 "minipy-lab.y"
+#line 494 "minipy-lab.y" /* yacc.c:1646  */
     {
-	 			if(yyvsp[-2].type==-1||yyvsp[0].type==-1)
+	 			if((yyvsp[-2]).type==-1||(yyvsp[0]).type==-1)
 				{
 					yyerror("TypeError: unsupported operand type(s) for +: 'NoneType'");
 					YYERROR;
 				}
-	 			switch(yyvsp[-2].type)
+	 			switch((yyvsp[-2]).type)
 				{
 				case 0:
-					switch(yyvsp[0].type)
+					switch((yyvsp[0]).type)
 					{
-						case 0: yyval.type=0;yyval.data.i=yyvsp[-2].data.i+yyvsp[0].data.i;break;
-						case 1: yyval.type=1;yyval.data.f=yyvsp[-2].data.i+yyvsp[0].data.f;break;
+						case 0: (yyval).type=0;(yyval).data.i=(yyvsp[-2]).data.i+(yyvsp[0]).data.i;break;
+						case 1: (yyval).type=1;(yyval).data.f=(yyvsp[-2]).data.i+(yyvsp[0]).data.f;break;
 						case 2: 
 						case 3: yyerror("type error");YYERROR; break;
 						case 4:
@@ -1829,10 +1826,10 @@ yyreduce:
 					}
 					break;
 				case 1:
-					switch(yyvsp[0].type)
+					switch((yyvsp[0]).type)
 					{
-						case 0: yyval.type=1;yyval.data.f=yyvsp[-2].data.f+yyvsp[0].data.i;break;
-						case 1: yyval.type=1;yyval.data.f=yyvsp[-2].data.f+yyvsp[0].data.f;break;
+						case 0: (yyval).type=1;(yyval).data.f=(yyvsp[-2]).data.f+(yyvsp[0]).data.i;break;
+						case 1: (yyval).type=1;(yyval).data.f=(yyvsp[-2]).data.f+(yyvsp[0]).data.f;break;
 						case 2:
 						case 3: yyerror("type error");YYERROR; break;
 						case 4:
@@ -1840,14 +1837,14 @@ yyreduce:
 					}
 					break;
 				case 2:
-					switch(yyvsp[0].type)
+					switch((yyvsp[0]).type)
 					{
 					case 2:	{
-						int sum_len = strlen(yyvsp[-2].data.s)+strlen(yyvsp[0].data.s)+1;
+						int sum_len = strlen((yyvsp[-2]).data.s)+strlen((yyvsp[0]).data.s)+1;
 						char *temp = (char *)malloc(sizeof(char)*sum_len);
-						sprintf(temp,"%s%s",yyvsp[-2].data.s,yyvsp[0].data.s);
-						yyval.type=2;
-						yyval.data.s=temp;  
+						sprintf(temp,"%s%s",(yyvsp[-2]).data.s,(yyvsp[0]).data.s);
+						(yyval).type=2;
+						(yyval).data.s=temp;  
 						break;
 					} 
 					case 1:
@@ -1858,12 +1855,12 @@ yyreduce:
 					}
 					break;
 				case 3:
-					switch(yyvsp[0].type)
+					switch((yyvsp[0]).type)
 					{
 						case 0: 
 						case 1:
 						case 2: yyerror("type error");YYERROR; break;
-						case 3: yyval.type=3;yyval.data.l=newlist();add(yyval.data.l,yyvsp[-2].data.l);add(yyval.data.l,yyvsp[0].data.l);break;
+						case 3: (yyval).type=3;(yyval).data.l=newlist();add((yyval).data.l,(yyvsp[-2]).data.l);add((yyval).data.l,(yyvsp[0]).data.l);break;
 						case 4:
 						case 5: yyerror("internal error");YYERROR;break;
 					}
@@ -1872,24 +1869,24 @@ yyreduce:
 				case 5: yyerror("internal error");YYERROR;
 				}
 				}
-#line 1876 "y.tab.c"
+#line 1873 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 40:
-#line 551 "minipy-lab.y"
+#line 557 "minipy-lab.y" /* yacc.c:1646  */
     {
-				if(yyvsp[-2].type==-1||yyvsp[0].type==-1)
+				if((yyvsp[-2]).type==-1||(yyvsp[0]).type==-1)
 				{
 					yyerror("TypeError: unsupported operand type(s) for -: 'NoneType'");
 					YYERROR;
 				}
-	 			switch(yyvsp[-2].type)
+	 			switch((yyvsp[-2]).type)
 				{
 				case 0:
-					switch(yyvsp[0].type)
+					switch((yyvsp[0]).type)
 					{
-						case 0: yyval.type=0;yyval.data.i=yyvsp[-2].data.i-yyvsp[0].data.i;break;
-						case 1: yyval.type=1;yyval.data.f=yyvsp[-2].data.i-yyvsp[0].data.f;break;
+						case 0: (yyval).type=0;(yyval).data.i=(yyvsp[-2]).data.i-(yyvsp[0]).data.i;break;
+						case 1: (yyval).type=1;(yyval).data.f=(yyvsp[-2]).data.i-(yyvsp[0]).data.f;break;
 						case 2: 
 						case 3: yyerror("type error");YYERROR; break;
 						case 4:
@@ -1897,10 +1894,10 @@ yyreduce:
 					}
 					break;
 				case 1:
-					switch(yyvsp[0].type)
+					switch((yyvsp[0]).type)
 					{
-						case 0: yyval.type=1;yyval.data.f=yyvsp[-2].data.f-yyvsp[0].data.i;break;
-						case 1: yyval.type=1;yyval.data.f=yyvsp[-2].data.f-yyvsp[0].data.f;break;
+						case 0: (yyval).type=1;(yyval).data.f=(yyvsp[-2]).data.f-(yyvsp[0]).data.i;break;
+						case 1: (yyval).type=1;(yyval).data.f=(yyvsp[-2]).data.f-(yyvsp[0]).data.f;break;
 						case 2:
 						case 3: yyerror("type error"); YYERROR;break;
 						case 4:
@@ -1908,7 +1905,7 @@ yyreduce:
 					}
 					break;
 				case 2:
-					switch(yyvsp[0].type)
+					switch((yyvsp[0]).type)
 					{
 						case 2: yyerror("TypeError: unsupported operand type(s) for -: 'str' and 'str'");YYERROR;  break; 
 						case 1:
@@ -1919,7 +1916,7 @@ yyreduce:
 					}
 					break;
 				case 3:
-					switch(yyvsp[0].type)
+					switch((yyvsp[0]).type)
 					{
 						case 0: 
 						case 1:
@@ -1933,51 +1930,51 @@ yyreduce:
 				case 5: yyerror("internal error");YYERROR;
 				}
 				}
-#line 1937 "y.tab.c"
+#line 1934 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 42:
-#line 609 "minipy-lab.y"
+#line 615 "minipy-lab.y" /* yacc.c:1646  */
     {
-				if(yyvsp[-2].type==-1||yyvsp[0].type==-1)
+				if((yyvsp[-2]).type==-1||(yyvsp[0]).type==-1)
 				{
 					yyerror("TypeError: unsupported operand type(s) for *: 'NoneType'");
 					YYERROR;
 				}
-	 			switch(yyvsp[-2].type)
+	 			switch((yyvsp[-2]).type)
 				{
 				case 0:
-					switch(yyvsp[0].type)
+					switch((yyvsp[0]).type)
 					{
-						case 0: yyval.type=0;yyval.data.i=yyvsp[-2].data.i*yyvsp[0].data.i;break;
-						case 1: yyval.type=1;yyval.data.f=yyvsp[-2].data.i*yyvsp[0].data.f;break;
+						case 0: (yyval).type=0;(yyval).data.i=(yyvsp[-2]).data.i*(yyvsp[0]).data.i;break;
+						case 1: (yyval).type=1;(yyval).data.f=(yyvsp[-2]).data.i*(yyvsp[0]).data.f;break;
 						case 2:
 							{
-							int sum_len = strlen(yyvsp[0].data.s)*yyvsp[-2].data.i+1;
+							int sum_len = strlen((yyvsp[0]).data.s)*(yyvsp[-2]).data.i+1;
 							char *temp = (char *)malloc(sizeof(char)*sum_len);
-							strcpy(temp,yyvsp[0].data.s);
-							for(int i=0;i<yyvsp[-2].data.i-1;i++)
+							strcpy(temp,(yyvsp[0]).data.s);
+							for(int i=0;i<(yyvsp[-2]).data.i-1;i++)
 							{	
-								sprintf(temp,"%s%s",temp,yyvsp[0].data.s);
+								sprintf(temp,"%s%s",temp,(yyvsp[0]).data.s);
 							}
-							yyval.type=2;
-							yyval.data.s=temp;  
+							(yyval).type=2;
+							(yyval).data.s=temp;  
 							break;
 							} 
-						case 3: yyval.type=3;
-								yyval.data.l=newlist();
-								for(int i=0;i<yyvsp[-2].data.i;i++) 
-									add(yyval.data.l,yyvsp[0].data.l);
+						case 3: (yyval).type=3;
+								(yyval).data.l=newlist();
+								for(int i=0;i<(yyvsp[-2]).data.i;i++) 
+									add((yyval).data.l,(yyvsp[0]).data.l);
 								break;
 						case 4:
 						case 5: yyerror("internal error");YYERROR;break;
 					}
 					break;
 				case 1:
-					switch(yyvsp[0].type)
+					switch((yyvsp[0]).type)
 					{
-						case 0: yyval.type=1;yyval.data.f=yyvsp[-2].data.f*yyvsp[0].data.i;break;
-						case 1: yyval.type=1;yyval.data.f=yyvsp[-2].data.f*yyvsp[0].data.f;break;
+						case 0: (yyval).type=1;(yyval).data.f=(yyvsp[-2]).data.f*(yyvsp[0]).data.i;break;
+						case 1: (yyval).type=1;(yyval).data.f=(yyvsp[-2]).data.f*(yyvsp[0]).data.f;break;
 						case 2:
 						case 3: yyerror("type error");YYERROR; break;
 						case 4:
@@ -1985,19 +1982,19 @@ yyreduce:
 					}
 					break;
 				case 2:
-					switch(yyvsp[0].type)
+					switch((yyvsp[0]).type)
 					{
 						case 0: 
 						{
-							int sum_len = strlen(yyvsp[-2].data.s)*yyvsp[0].data.i+1;
+							int sum_len = strlen((yyvsp[-2]).data.s)*(yyvsp[0]).data.i+1;
 							char *temp = (char *)malloc(sizeof(char)*sum_len);
-							strcpy(temp,yyvsp[-2].data.s);
-							for(int i=0;i<yyvsp[0].data.i-1;i++)
+							strcpy(temp,(yyvsp[-2]).data.s);
+							for(int i=0;i<(yyvsp[0]).data.i-1;i++)
 							{	
-								sprintf(temp,"%s%s",temp,yyvsp[-2].data.s);
+								sprintf(temp,"%s%s",temp,(yyvsp[-2]).data.s);
 							}
-							yyval.type=2;
-							yyval.data.s=temp;  
+							(yyval).type=2;
+							(yyval).data.s=temp;  
 							break;
 						}
 						case 1:
@@ -2008,9 +2005,9 @@ yyreduce:
 					}
 					break;
 				case 3:
-					switch(yyvsp[0].type)
+					switch((yyvsp[0]).type)
 					{
-						case 0: yyval.type=3;yyval.data.l=newlist();for(int i=0;i<yyvsp[0].data.i;i++) add(yyval.data.l,yyvsp[-2].data.l); break;
+						case 0: (yyval).type=3;(yyval).data.l=newlist();for(int i=0;i<(yyvsp[0]).data.i;i++) add((yyval).data.l,(yyvsp[-2]).data.l); break;
 						case 1:
 						case 2:
 						case 3: yyerror("type error"); YYERROR;break;
@@ -2022,43 +2019,43 @@ yyreduce:
 				case 5: yyerror("internal error");YYERROR;
 				}
 				}
-#line 2026 "y.tab.c"
+#line 2023 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 43:
-#line 693 "minipy-lab.y"
+#line 699 "minipy-lab.y" /* yacc.c:1646  */
     {
-				if(yyvsp[-2].type==-1||yyvsp[0].type==-1)
+				if((yyvsp[-2]).type==-1||(yyvsp[0]).type==-1)
 				{
 					yyerror("TypeError: unsupported operand type(s) for /: 'NoneType'");
 					YYERROR;
 				}
-				if(yyvsp[-2].type<2&&yyvsp[0].type<2) {yyval.type=1;yyval.data.f=(yyvsp[-2].type?yyvsp[-2].data.f:yyvsp[-2].data.i)/(yyvsp[0].type?yyvsp[0].data.f:yyvsp[0].data.i);}
+				if((yyvsp[-2]).type<2&&(yyvsp[0]).type<2) {(yyval).type=1;(yyval).data.f=((yyvsp[-2]).type?(yyvsp[-2]).data.f:(yyvsp[-2]).data.i)/((yyvsp[0]).type?(yyvsp[0]).data.f:(yyvsp[0]).data.i);}
 
 				else {yyerror("type error");YYERROR;};
 				}
-#line 2041 "y.tab.c"
+#line 2038 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 44:
-#line 703 "minipy-lab.y"
+#line 709 "minipy-lab.y" /* yacc.c:1646  */
     {
-					if(yyvsp[-2].type==-1||yyvsp[0].type==-1)
+					if((yyvsp[-2]).type==-1||(yyvsp[0]).type==-1)
 					{
 						yyerror("TypeError: unsupported operand type(s) for /: 'NoneType'");
 						YYERROR;
 					}	
-					if(yyvsp[-2].type<2&&yyvsp[0].type<2)
+					if((yyvsp[-2]).type<2&&(yyvsp[0]).type<2)
 					{
-						if(yyvsp[-2].type==0&&yyvsp[0].type==0)
+						if((yyvsp[-2]).type==0&&(yyvsp[0]).type==0)
 						{
-							yyval.type=0;
-							yyval.data.i=MOD(yyvsp[-2].data.i,yyvsp[0].data.i);
+							(yyval).type=0;
+							(yyval).data.i=MOD((yyvsp[-2]).data.i,(yyvsp[0]).data.i);
 						}
 						else
 						{
-							yyval.type=1;
-							yyval.data.f=FMOD(yyvsp[-2].type?yyvsp[-2].data.f:yyvsp[-2].data.i,yyvsp[0].type?yyvsp[0].data.f:yyvsp[0].data.i);
+							(yyval).type=1;
+							(yyval).data.f=FMOD((yyvsp[-2]).type?(yyvsp[-2]).data.f:(yyvsp[-2]).data.i,(yyvsp[0]).type?(yyvsp[0]).data.f:(yyvsp[0]).data.i);
 						}
 					}
 					else
@@ -2067,12 +2064,11 @@ yyreduce:
 						YYERROR;
 					}
 				}
-#line 2071 "y.tab.c"
+#line 2068 "y.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 2075 "y.tab.c"
-
+#line 2072 "y.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2097,13 +2093,14 @@ yyreduce:
   /* Now 'shift' the result of the reduction.  Determine what state
      that goes to, based on the state we popped back to and the rule
      number reduced by.  */
-  {
-    const int yylhs = yyr1[yyn] - YYNTOKENS;
-    const int yyi = yypgoto[yylhs] + *yyssp;
-    yystate = (0 <= yyi && yyi <= YYLAST && yycheck[yyi] == *yyssp
-               ? yytable[yyi]
-               : yydefgoto[yylhs]);
-  }
+
+  yyn = yyr1[yyn];
+
+  yystate = yypgoto[yyn - YYNTOKENS] + *yyssp;
+  if (0 <= yystate && yystate <= YYLAST && yycheck[yystate] == *yyssp)
+    yystate = yytable[yystate];
+  else
+    yystate = yydefgoto[yyn - YYNTOKENS];
 
   goto yynewstate;
 
@@ -2186,10 +2183,12 @@ yyerrlab:
 | yyerrorlab -- error raised explicitly by YYERROR.  |
 `---------------------------------------------------*/
 yyerrorlab:
-  /* Pacify compilers when the user code never invokes YYERROR and the
-     label yyerrorlab therefore never appears in user code.  */
-  if (0)
-    YYERROR;
+
+  /* Pacify compilers like GCC when the user code never invokes
+     YYERROR and the label yyerrorlab therefore never appears in user
+     code.  */
+  if (/*CONSTCOND*/ 0)
+     goto yyerrorlab;
 
   /* Do not reclaim the symbols of the rule whose action triggered
      this YYERROR.  */
@@ -2251,14 +2250,12 @@ yyacceptlab:
   yyresult = 0;
   goto yyreturn;
 
-
 /*-----------------------------------.
 | yyabortlab -- YYABORT comes here.  |
 `-----------------------------------*/
 yyabortlab:
   yyresult = 1;
   goto yyreturn;
-
 
 #if !defined yyoverflow || YYERROR_VERBOSE
 /*-------------------------------------------------.
@@ -2270,10 +2267,6 @@ yyexhaustedlab:
   /* Fall through.  */
 #endif
 
-
-/*-----------------------------------------------------.
-| yyreturn -- parsing is finished, return the result.  |
-`-----------------------------------------------------*/
 yyreturn:
   if (yychar != YYEMPTY)
     {
@@ -2303,7 +2296,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 731 "minipy-lab.y"
+#line 737 "minipy-lab.y" /* yacc.c:1906  */
 
 
 int main()
@@ -2566,7 +2559,7 @@ void PrintFloat(float a)
 	}
     	std::cout << std::defaultfloat << std::setprecision(ss);
 }
-int GetPlaceInSlice(int index,int len,int left)
+int GetPlaceInSlice(int index,int len,int left,int step)
 {
 	if(index<len&&index>=-len)
 	{
@@ -2574,7 +2567,7 @@ int GetPlaceInSlice(int index,int len,int left)
 	}
 	else
 	{
-		index=(index>0)?len:(left?0:-1);
+		index=(index>0)?(left?((step>0)?len:len-1):len):(left?((step>0)?0:-1):-1);
 	}
 	return index;
 }

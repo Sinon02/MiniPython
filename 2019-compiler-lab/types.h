@@ -62,5 +62,5 @@ void setslice(struct list *l, int begin, int end, int step, struct list *o);
 int MOD(int n, int M);
 float FMOD(float n, float M);
 void PrintFloat(float a);
-int GetPlaceInSlice(int index, int len, int left);
+int GetPlaceInSlice(int index, int len, int left,int step);
 #endif

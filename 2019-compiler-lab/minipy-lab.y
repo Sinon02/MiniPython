@@ -144,8 +144,8 @@ atom_expr : atom
 							YYERROR;
 						}
 						int start,end;
-						start=($3.type==0)?GetPlaceInSlice($3.data.i,length,1):((step>0)?0:length-1);
-						end=($5.type==0)?GetPlaceInSlice($5.data.i,length,0):((step>0)?length:-1);
+						start=($3.type==0)?GetPlaceInSlice($3.data.i,length,1,step):((step>0)?0:length-1);
+						end=($5.type==0)?GetPlaceInSlice($5.data.i,length,0,step):((step>0)?length:-1);
 						int len=(end-start)/(step);
 						len=(len>0)?len:0;
 						$$.data.s=(char *) malloc(sizeof(char)*(len+1));
@@ -173,8 +173,8 @@ atom_expr : atom
 							YYERROR;
 						}
 						int start,end;
-						start=($3.type==0)?GetPlaceInSlice($3.data.i,length,1):((step>0)?0:length-1);
-						end=($5.type==0)?GetPlaceInSlice($5.data.i,length,0):((step>0)?length:-1);
+						start=($3.type==0)?GetPlaceInSlice($3.data.i,length,1,step):((step>0)?0:length-1);
+						end=($5.type==0)?GetPlaceInSlice($5.data.i,length,0,step):((step>0)?length:-1);
 						int len=(end-start)/(step);
 						len=(len>0)?len:0;
 						$$.data.l=newlist();
@@ -996,7 +996,7 @@ void PrintFloat(float a)
 	}
     	std::cout << std::defaultfloat << std::setprecision(ss);
 }
-int GetPlaceInSlice(int index,int len,int left)
+int GetPlaceInSlice(int index,int len,int left,int step)
 {
 	if(index<len&&index>=-len)
 	{
@@ -1004,7 +1004,7 @@ int GetPlaceInSlice(int index,int len,int left)
 	}
 	else
 	{
-		index=(index>0)?len:(left?0:-1);
+		index=(index>0)?(left?((step>0)?len:len-1):len):(left?((step>0)?0:-1):-1);
 	}
 	return index;
 }
