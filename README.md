@@ -3,7 +3,7 @@
 **a simple python interpreter mainly implemeted by lex and yacc.**
 ## How to use it?
 1. cd ./2019-compiler-lab/
-2. make (or you can use ./make or g++ y.tab.c)
+2. make (or you can use ./make.sh or g++ y.tab.c)
 3. ./a.out
 4. then you can input instructions and MiniPython will operate
 5. use CTRL-C or quit() to end MiniPython
